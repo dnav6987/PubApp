@@ -12,6 +12,7 @@ class MenuItems {
     var items = [String: MenuItem]()
     
     init() {
+        // APPETIZERS
         items["GhBreadsticks"] = MenuItem(description: "Garlic-Herb Breadsticks with Marinara Sauce",
                                           options: [MenuOption(description: "Small", price: 2.25),
                                             MenuOption(description: "Large", price: 3.75)])
@@ -43,11 +44,22 @@ class MenuItems {
                                        options: [MenuOption(description: "Plain", price: 4.75),
                                                 MenuOption(description: "Add Veggies", price: 5.50),
                                                 MenuOption(description: "Add Chicken", price: 5.50)])
-        
+        // SALADS
         items["SpinachFeta"] = MenuItem(description: "Fresh baby spinach with craisins, toasted walnuts, crumbled feta cheese, sliced apple & lemon poppy seed vinaigrette",
                                         options: [MenuOption(description: "", price: 6.50)])
         items["Cobb"] = MenuItem(description: "Romaine lettuce, chicken, crisp bacon, tomato, avocado, and egg with blue cheese",
                                  options: [MenuOption(description: "", price: 6.25)])
+        items["Garden"] = MenuItem(description: "Magee's Garden Salad",
+                                   options: [MenuOption(description: "Small", price: 2.25),
+                                            MenuOption(description: "Large", price: 3.75)])
+        items["Caesar"] = MenuItem(description: "Jack's Casear Salad",
+                                   options: [MenuOption(description: "Small", price: 3.00),
+                                            MenuOption(description: "Large", price: 4.25)])
+        items["MandarinAlmond"] = MenuItem(description: "Mixed lettuces with mandarin oranges, crisp noodles and slices almonds with Asain peanut dressing",
+                                           options: [MenuOption(description: "", price: 5.00)])
+        items["Greek"] = MenuItem(description: "Romaine lettuce, cucumbers, cherry tomatoes, artichoke hearts, pepperoncini, red onion, feta cheese and kalamata olives with a side of hummus and warm pita",
+                                  options: [MenuOption(description: "", price: 5.25)])
+        
     }
 }
 
