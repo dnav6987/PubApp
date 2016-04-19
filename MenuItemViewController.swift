@@ -25,7 +25,7 @@ class MenuItemViewController: UIViewController {
             
             for option in menuItem.options  {
                 let button = UIButton(type: UIButtonType.System) as UIButton
-                button.setTitle(option.description + " $\(option.price)", forState: .Normal)
+                button.setTitle(option.description+" $"+String(format: "%.2f", option.price), forState: .Normal)
                 button.sizeToFit()
                 let origin = CGPoint(x: view.frame.width/2 - button.frame.width/2, y: nextButtonHeight)
                 button.frame = CGRect(origin: origin, size: CGSize(width: button.frame.width, height: Constants.BUTTON_HEIGHT))
@@ -60,5 +60,12 @@ private extension UILabel {
         label.text = self.text
         label.sizeToFit()
         return 2*label.frame.height // TODO
+    }
+}
+
+private extension Float {
+    func floatAsPriceString() -> String {
+        let format = ".2"
+        return String(format: "%\(format)f", self)
     }
 }

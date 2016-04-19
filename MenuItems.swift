@@ -19,7 +19,7 @@ class MenuItems {
                                           options: [MenuOption(description: "Small", price: 2.25),
                                         MenuOption(description: "Large", price: 3.75)])
         items["FriedPickles"] = MenuItem(description: "Fried Pickles with Chipotle Mayo",
-                                          options: [MenuOption(description: "", price: 4.75)])
+                                         options: [MenuOption(description: "", price: 4.75)])
         items["FriedMushroom"] = MenuItem(description: "Fried Mushrooms with Homemade Ranch Dressing",
                                           options: [MenuOption(description: "", price: 4.95)])
         items["Hummus"] = MenuItem(description: "Hummus & Pita with Veggies",
@@ -27,11 +27,11 @@ class MenuItems {
         items["MozzSticks"] = MenuItem(description: "Mozzarella Sticks",
                                        options: [MenuOption(description: "", price: 4.95)])
         items["ChipsSalsa"] = MenuItem(description: "Tortilla Chips and Salsa",
-                                          options: [MenuOption(description: "", price: 2.50)])
+                                       options: [MenuOption(description: "", price: 2.50)])
         items["FriedMushroom"] = MenuItem(description: "Fried Mushrooms with Homemade Ranch Dressing",
                                           options: [MenuOption(description: "", price: 2.25)])
         items["Pretzels"] = MenuItem(description: "Two Soft Pretzels, Served Warm",
-                                          options: [MenuOption(description: "", price: 2.75)])
+                                     options: [MenuOption(description: "", price: 2.75)])
         items["Fingers"] = MenuItem(description: "Chicken Fingers",
                                     options: [MenuOption(description: "Buffalo", price: 5.95),
                                             MenuOption(description: "Plain", price: 5.95)])
@@ -40,10 +40,14 @@ class MenuItems {
                                             MenuOption(description: "BBQ", price: 6.25),
                                             MenuOption(description: "Honey Mustard", price: 6.25)])
         items["Quesadilla"] = MenuItem(description: "Chicken Wings",
-                                  options: [MenuOption(description: "Plain", price: 4.75),
-                                    MenuOption(description: "Add Veggies", price: 5.50),
-                                    MenuOption(description: "Add Chicken", price: 5.50)])
+                                       options: [MenuOption(description: "Plain", price: 4.75),
+                                                MenuOption(description: "Add Veggies", price: 5.50),
+                                                MenuOption(description: "Add Chicken", price: 5.50)])
         
+        items["SpinachFeta"] = MenuItem(description: "Fresh baby spinach with craisins, toasted walnuts, crumbled feta cheese, sliced apple & lemon poppy seed vinaigrette",
+                                        options: [MenuOption(description: "", price: 6.50)])
+        items["Cobb"] = MenuItem(description: "Romaine lettuce, chicken, crisp bacon, tomato, avocado, and egg with blue cheese",
+                                 options: [MenuOption(description: "", price: 6.25)])
     }
 }
 
