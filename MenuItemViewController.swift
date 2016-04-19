@@ -21,9 +21,7 @@ class MenuItemViewController: UIViewController {
     override func viewDidLoad() {
         if menuItem != nil && view != nil {
             
-            var nextButtonHeight = UILabel.heightOfLabel(descriptionLabel.frame.width,
-                                                         text: descriptionLabel.text!,
-                                                         font: descriptionLabel.font!) + 1
+            var nextButtonHeight = descriptionLabel.heightOfLabel() + 1
             
             for option in menuItem.options  {
                 let button = UIButton(type: UIButtonType.System) as UIButton
@@ -42,10 +40,7 @@ class MenuItemViewController: UIViewController {
                 let sizeThatFits = view.sizeThatFits(presentingViewController!.view.bounds.size)
                 return CGSize(width: sizeThatFits.width,
                               height: CGFloat(menuItem.options.count)*Constants.BUTTON_SIZE.height +
-                                CGFloat(menuItem.options.count) +
-                                UILabel.heightOfLabel(descriptionLabel.frame.width,
-                                    text: descriptionLabel.text!,
-                                    font: descriptionLabel.font!))
+                                CGFloat(menuItem.options.count) + descriptionLabel.heightOfLabel())
             } else {
                 return super.preferredContentSize
             }
@@ -55,15 +50,14 @@ class MenuItemViewController: UIViewController {
 }
 
 private extension UILabel {
-    static func heightOfLabel(width: CGFloat, text: String, font: UIFont) -> CGFloat {
-        let label:UILabel = UILabel(frame: CGRectMake(0, 0, width, CGFloat.max))
+    func heightOfLabel() -> CGFloat {
+        let label:UILabel = UILabel(frame: CGRectMake(0, 0, self.frame.width, CGFloat.max))
         label.numberOfLines = 0
         label.textAlignment = .Center
-        label.lineBreakMode = NSLineBreakMode.ByWordWrapping
-        label.font = font
-        label.text = text
-        
+        label.lineBreakMode = NSLineBreakMode.ByCharWrapping
+        label.font = self.font
+        label.text = self.text
         label.sizeToFit()
-        return label.frame.height
+        return 2*label.frame.height
     }
 }

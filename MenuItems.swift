@@ -12,7 +12,7 @@ class MenuItems {
     var items = [String: MenuItem]()
     
     init() {
-        items["GhBreadsticks"] = MenuItem(description: "Garlic-Herb Breadsticks with Marinara SauceGarlic-Herb Breadsticks with Marinara SauceGarlic-Herb Breadsticks with Marinara Sauce",
+        items["GhBreadsticks"] = MenuItem(description: "Garlic-Herb Breadsticks with Marinara Sauce",
                                           options: [MenuOption(description: "Small", price: 2.25),
                                             MenuOption(description: "Large", price: 3.75)])
         items["ChBreadsticks"] = MenuItem(description: "Cheese Breadsticks with Marinara",
