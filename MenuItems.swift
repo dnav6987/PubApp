@@ -27,6 +27,7 @@ class MenuItems {
         static let CALZONE = "CALZONE"
         static let SIDE = "SIDE"
         static let BEVERAGE = "BEVERAGE"
+        static let SANDWICH = "SANDWICH"
     }
     
     init() {
@@ -117,7 +118,54 @@ class MenuItems {
                                        options: [MenuOption(description: Options.NO_OPTIONS, price: 6.50)],
                                        type: foodTypes.BASKET)
         
-        // TODO Cold and hot sandies
+        // Cold Sandwiches
+        
+        items["DeliSand"] = MenuItem(description: "TODO need to work on this stull",
+                                    options: [MenuOption(description: Options.NO_OPTIONS, price: 5.50)],
+                                    type: foodTypes.SANDWICH)
+        items["TurkeyClub"] = MenuItem(description: "Jack’s Double-Decker Turkey Club",
+                                       options: [MenuOption(description: Options.NO_OPTIONS, price: 5.75)],
+                                       type: foodTypes.SANDWICH)
+        items["BLT"] = MenuItem(description: "On toasted white or wheat bread",
+                                options: [MenuOption(description: Options.NO_OPTIONS, price: 4.25)],
+                                type: foodTypes.SANDWICH)
+        items["Flatbread"] = MenuItem(description: "Lettuce, tomato, cucumber, red onion, carrots, cabbage, avocado and dried cranberries in a grilled whole wheat  atbread with balsamic vinaigrette",
+                                      options: [MenuOption(description: Options.NO_OPTIONS, price: 5.50)],
+                                      type: foodTypes.SANDWICH)
+        
+        // Hot Sandwiches
+        
+        items["Burger"] = MenuItem(description: "Freshly ground in our own meat shop",
+                                      options: [MenuOption(description: Options.NO_OPTIONS, price: 4.00)],
+                                      type: foodTypes.SANDWICH)
+        items["CheeseBurger"] = MenuItem(description: "Cheeseburger",
+                                         options: [MenuOption(description: Options.NO_OPTIONS, price: 4.75)],
+                                         type: foodTypes.SANDWICH)
+        items["TurkeyBurger"] = MenuItem(description: "Turkey Burger",
+                                         options: [MenuOption(description: Options.NO_OPTIONS, price: 4.75)],
+                                         type: foodTypes.SANDWICH)
+        items["PolarBurger"] = MenuItem(description: "Our signature quarter pounder with grilled onions, mushrooms, bacon & Swiss cheese",
+                                        options: [MenuOption(description: Options.NO_OPTIONS, price: 5.95)],
+                                        type: foodTypes.SANDWICH)
+        items["SmokeBurger"] = MenuItem(description: "Choice of beef or turkey burger with Swiss cheese, bacon, crisp onion rings & BBQ sauce",
+                                        options: [MenuOption(description: Options.NO_OPTIONS, price: 5.75)],
+                                        type: foodTypes.SANDWICH)
+        items["MangoBurger"] = MenuItem(description: "Locally made black bean & spinach veggie burger serverd on a bulkie roll with lettuce & tomato",
+                                        options: [MenuOption(description: Options.NO_OPTIONS, price: 5.50)],
+                                        type: foodTypes.SANDWICH)
+        items["PhillyCheese"] = MenuItem(description: "Served with grilled onions and peppers on a toasted roll",
+                                         options: [MenuOption(description: Options.NO_OPTIONS, price: 5.75)],
+                                         type: foodTypes.SANDWICH)
+        items["Falafel"] = MenuItem(description: "Grilled falafel in our home-made pita with lettuce, tomato & tzatziki",
+                                    options: [MenuOption(description: Options.NO_OPTIONS, price: 4.75)],
+                                    type: foodTypes.SANDWICH)
+        items["ChickenParm"] = MenuItem(description: "Deep fried chicken patty with marinara, mozarella and parmesan on a bulkie roll",
+                                    options: [MenuOption(description: Options.NO_OPTIONS, price: 4.75)],
+                                    type: foodTypes.SANDWICH)
+        items["GrilledCheese"] = MenuItem(description: "Classic Grilled Cheese Sandwich (V)",
+                                          options: [MenuOption(description: Options.NO_OPTIONS, price: 3.00)],
+                                          type: foodTypes.SANDWICH)
+        
         
         // BURRITOS & WRAPS
         items["FishTaco"] = MenuItem(description: "A  our tortilla filled with fried fish, shredded cabbage, avocado, Monterey jack cheese, salsa & green onion-mayo",
@@ -208,7 +256,7 @@ class MenuItems {
                                     options: [MenuOption(description: Options.NO_OPTIONS, price: 1.20)],
                                     type: foodTypes.BEVERAGE)
         
-        // TODO gluten free bread and pizza dough, pizza toppings add (V) and (VE)
+        // TODO gluten free bread and pizza dough, pizza toppings add (V) and (VE), add ons and additional options in a drop down menu maybe
     }
 }
 
