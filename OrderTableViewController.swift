@@ -33,13 +33,20 @@ class OrderTableViewController: UITableViewController {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        refresh()
+    }
+    
+    func refresh() {
         navigationItem.leftBarButtonItem = editButtonItem()
         navigationItem.rightBarButtonItem = orderButton
         order = Order.defaults.arrayForKey(Order.ORDER_STRING) as? [String]
         tableView.reloadData()
     }
     
-    func placeOrder(sender:UIButton!) { navigationItem.rightBarButtonItem = cancelButton }
+    func placeOrder(sender:UIButton!) {
+        navigationItem.leftBarButtonItem = confirmButton
+        navigationItem.rightBarButtonItem = cancelButton
+    }
     
     func confirmOrder(sender:UIButton!) {
         // HUGE TODO
@@ -48,6 +55,11 @@ class OrderTableViewController: UITableViewController {
     func cancelOrder(sender:UIButton!) {
         navigationItem.leftBarButtonItem = editButtonItem()
         navigationItem.rightBarButtonItem = orderButton
+    }
+    
+    @IBAction func clearCart(sender: UIButton) {
+        Order.defaults.setObject([String](), forKey: Order.ORDER_STRING)
+        refresh()
     }
     
     // MARK: - Table view data source
@@ -74,8 +86,7 @@ class OrderTableViewController: UITableViewController {
             order.removeAtIndex(indexPath.row)
             Order.defaults.setObject(order, forKey: Order.ORDER_STRING)
             tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-        } else if editingStyle == .Insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
+            print("\(indexPath)")
         }
     }
     
@@ -83,7 +94,4 @@ class OrderTableViewController: UITableViewController {
         // Return false if you do not want the specified item to be editable.
         return true
     }
-    
-    
-
 }
