@@ -42,25 +42,25 @@ class MenuItems {
                                         MenuOption(description: Options.LARGE, price: 3.75)],
                                             type: foodTypes.APP)
         items["FriedPickles"] = MenuItem(description: "Fried Pickles with Chipotle Mayo",
-                                         options: [MenuOption(description: "", price: 4.75)],
+                                         options: [MenuOption(description: Options.NO_OPTIONS, price: 4.75)],
                                          type: foodTypes.APP)
         items["FriedMushroom"] = MenuItem(description: "Fried Mushrooms with Homemade Ranch Dressing",
-                                          options: [MenuOption(description: "", price: 4.95)],
+                                          options: [MenuOption(description: Options.NO_OPTIONS, price: 4.95)],
                                           type: foodTypes.APP)
         items["Hummus"] = MenuItem(description: "Hummus & Pita with Veggies",
-                                   options: [MenuOption(description: "", price: 3.25)],
+                                   options: [MenuOption(description: Options.NO_OPTIONS, price: 3.25)],
                                    type: foodTypes.APP)
         items["MozzSticks"] = MenuItem(description: "Mozzarella Sticks",
-                                       options: [MenuOption(description: "", price: 4.95)],
+                                       options: [MenuOption(description: Options.NO_OPTIONS, price: 4.95)],
                                        type: foodTypes.APP)
         items["ChipsSalsa"] = MenuItem(description: "Tortilla Chips and Salsa",
-                                       options: [MenuOption(description: "", price: 2.50)],
+                                       options: [MenuOption(description: Options.NO_OPTIONS, price: 2.50)],
                                        type: foodTypes.APP)
         items["FriedMushroom"] = MenuItem(description: "Fried Mushrooms with Homemade Ranch Dressing",
-                                          options: [MenuOption(description: "", price: 2.25)],
+                                          options: [MenuOption(description: Options.NO_OPTIONS, price: 2.25)],
                                           type: foodTypes.APP)
         items["Pretzels"] = MenuItem(description: "Two Soft Pretzels, Served Warm",
-                                     options: [MenuOption(description: "", price: 2.75)],
+                                     options: [MenuOption(description: Options.NO_OPTIONS, price: 2.75)],
                                      type: foodTypes.APP)
         items["Fingers"] = MenuItem(description: "Chicken Fingers",
                                     options: [MenuOption(description: "Buffalo", price: 5.95),
