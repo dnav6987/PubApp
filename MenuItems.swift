@@ -35,52 +35,52 @@ class MenuItems {
         
         // APPETIZERS
         items["GhBreadsticks"] = MenuItem(name: "Garlic - Herb Breadsticks with Marinara Sauce",
-                                          description: "Garlic-Herb Breadsticks with Marinara Sauce",
+                                          description: "",
                                           options: [MenuOption(description: Options.SMALL, price: 2.25),
                                             MenuOption(description: Options.LARGE, price: 3.75)],
                                           type: foodTypes.APP)
         items["ChBreadsticks"] = MenuItem(name: "Cheese Breadsticks with Marinara Sauce",
-                                          description: "Cheese Breadsticks with Marinara",
+                                          description: "",
                                           options: [MenuOption(description: Options.SMALL, price: 2.25),
                                         MenuOption(description: Options.LARGE, price: 3.75)],
                                           type: foodTypes.APP)
         items["FriedPickles"] = MenuItem(name: "Fried Pickles with Chipotle Mayo",
-                                         description: "Fried Pickles with Chipotle Mayo",
+                                         description: "",
                                          options: [MenuOption(description: Options.NO_OPTIONS, price: 4.75)],
                                          type: foodTypes.APP)
         items["FriedMushroom"] = MenuItem(name: "Fried Mushrooms with Homemade Ranch Dressing",
-                                          description: "Fried Mushrooms with Homemade Ranch Dressing",
+                                          description: "",
                                           options: [MenuOption(description: Options.NO_OPTIONS, price: 4.95)],
                                           type: foodTypes.APP)
         items["Hummus"] = MenuItem(name: "Hummus & Pita with Veggies",
-                                   description: "Hummus & Pita with Veggies",
+                                   description: "",
                                    options: [MenuOption(description: Options.NO_OPTIONS, price: 3.25)],
                                    type: foodTypes.APP)
         items["MozzSticks"] = MenuItem(name: "Mozzarella Sticks",
-                                       description: "Mozzarella Sticks",
+                                       description: "",
                                        options: [MenuOption(description: Options.NO_OPTIONS, price: 4.95)],
                                        type: foodTypes.APP)
         items["ChipsSalsa"] = MenuItem(name: "Tortilla Chips and Salsa",
-                                       description: "Tortilla Chips and Salsa",
+                                       description: "",
                                        options: [MenuOption(description: Options.NO_OPTIONS, price: 2.50)],
                                        type: foodTypes.APP)
         items["Pretzels"] = MenuItem(name: "Two Soft Pretzels, Served Warm",
-                                     description: "Two Soft Pretzels, Served Warm",
+                                     description: "",
                                      options: [MenuOption(description: Options.NO_OPTIONS, price: 2.75)],
                                      type: foodTypes.APP)
         items["Fingers"] = MenuItem(name: "Chicken Fingers",
-                                    description: "Chicken Fingers",
+                                    description: "",
                                     options: [MenuOption(description: "Buffalo", price: 5.95),
                                             MenuOption(description: "Plain", price: 5.95)],
                                     type: foodTypes.APP)
         items["Wings"] = MenuItem(name: "Chicken Wings",
-                                  description: "Chicken Wings",
+                                  description: "",
                                   options: [MenuOption(description: "Buffalo", price: 6.25),
                                             MenuOption(description: "BBQ", price: 6.25),
                                             MenuOption(description: "Honey Mustard", price: 6.25)],
                                   type: foodTypes.APP)
         items["Quesadilla"] = MenuItem(name: "Monterey Jack Cheese Quesadilla",
-                                       description: "Monterey Jack Cheese Quesadilla",
+                                       description: "",
                                        options: [MenuOption(description: "Plain", price: 4.75),
                                                 MenuOption(description: "Add Veggies", price: 5.50),
                                                 MenuOption(description: "Add Chicken", price: 5.50)],
@@ -97,12 +97,12 @@ class MenuItems {
                                  options: [MenuOption(description: Options.NO_OPTIONS, price: 6.25)],
                                  type: foodTypes.SALAD)
         items["Garden"] = MenuItem(name: "Magee's Garden Salad (VE)",
-                                   description: "Magee's Garden Salad",
+                                   description: "",
                                    options: [MenuOption(description: Options.SMALL, price: 2.25),
                                             MenuOption(description: Options.LARGE, price: 3.75)],
                                    type: foodTypes.SALAD)
         items["Caesar"] = MenuItem(name: "Jack's Casear Salad",
-                                   description: "Jack's Casear Salad",
+                                   description: "",
                                    options: [MenuOption(description: Options.SMALL, price: 3.00),
                                             MenuOption(description: Options.LARGE, price: 4.25)],
                                    type: foodTypes.SALAD)
@@ -145,7 +145,7 @@ class MenuItems {
                                      options: [MenuOption(description: Options.NO_OPTIONS, price: 5.50)],
                                      type: foodTypes.SANDWICH)
         items["TurkeyClub"] = MenuItem(name: "Jack’s Double-Decker Turkey Club",
-                                       description: "Jack’s Double-Decker Turkey Club",
+                                       description: "",
                                        options: [MenuOption(description: Options.NO_OPTIONS, price: 5.75)],
                                        type: foodTypes.SANDWICH)
         items["BLT"] = MenuItem(name: "BLT Sandwich",
@@ -164,11 +164,11 @@ class MenuItems {
                                    options: [MenuOption(description: Options.NO_OPTIONS, price: 4.00)],
                                    type: foodTypes.SANDWICH)
         items["CheeseBurger"] = MenuItem(name: "Cheeseburger",
-                                         description: "Cheeseburger",
+                                         description: "",
                                          options: [MenuOption(description: Options.NO_OPTIONS, price: 4.75)],
                                          type: foodTypes.SANDWICH)
         items["TurkeyBurger"] = MenuItem(name: "Turkey Burger",
-                                         description: "Turkey Burger",
+                                         description: "",
                                          options: [MenuOption(description: Options.NO_OPTIONS, price: 4.75)],
                                          type: foodTypes.SANDWICH)
         items["PolarBurger"] = MenuItem(name: "Polar Bear Burger",
@@ -196,7 +196,7 @@ class MenuItems {
                                         options: [MenuOption(description: Options.NO_OPTIONS, price: 4.75)],
                                         type: foodTypes.SANDWICH)
         items["GrilledCheese"] = MenuItem(name: "Classic Grilled Cheesesandwich (V)",
-                                          description: "Classic Grilled Cheese Sandwich (V)",
+                                          description: "",
                                           options: [MenuOption(description: Options.NO_OPTIONS, price: 3.00)],
                                           type: foodTypes.SANDWICH)
         
@@ -229,7 +229,7 @@ class MenuItems {
         
         // PIZZAS
         items["CheesePizza"] = MenuItem(name: "Basic Cheese Pizza (V)",
-                                        description: "Basic Cheese Pizza (V)",
+                                        description: "",
                                         options: [MenuOption(description: "10 inch", price: 5.50),
                                                 MenuOption(description: "16 inch", price: 8.95)],
                                         type: foodTypes.PIZZA)
@@ -247,69 +247,69 @@ class MenuItems {
         // CALZONES
         
         items["PestoCalzone"] = MenuItem(name: "Pesto Chicken Calzone",
-                                         description: "Pesto Chicken Calzone",
+                                         description: "",
                                          options: [MenuOption(description: Options.NO_OPTIONS, price: 6.25)],
                                          type: foodTypes.PIZZA)
         items["BuffCalzone"] = MenuItem(name: "Buffalo Chicken Calzone",
-                                        description: "Buffalo Chicken Calzone",
+                                        description: "",
                                         options: [MenuOption(description: Options.NO_OPTIONS, price: 7.25)],
                                         type: foodTypes.PIZZA)
         items["CheeseCalzone"] = MenuItem(name: "Cheese Calzone",
-                                          description: "Cheese Calzone",
+                                          description: "",
                                           options: [MenuOption(description: Options.NO_OPTIONS, price: 5.50)],
                                           type: foodTypes.PIZZA)
         
         // SIDES
         items["FrenchFries"] = MenuItem(name: "French Fries",
-                                        description: "French Fries",
+                                        description: "",
                                         options: [MenuOption(description: Options.SMALL, price: 1.75),
                                                 MenuOption(description: Options.LARGE, price: 2.25)],
                                        type: foodTypes.SIDE)
         items["SteakFries"] = MenuItem(name: "Steak Fries",
-                                       description: "Steak Fries",
+                                       description: "",
                                        options: [MenuOption(description: Options.SMALL, price: 2.25),
                                                 MenuOption(description: Options.LARGE, price: 2.75)],
                                        type: foodTypes.SIDE)
         items["FajitaFries"] = MenuItem(name: "Fajita Fries",
-                                        description: "Fajita Fries",
+                                        description: "",
                                         options: [MenuOption(description: Options.SMALL, price: 1.75),
                                                 MenuOption(description: Options.LARGE, price: 2.25)],
                                         type: foodTypes.SIDE)
         items["OnionRings"] = MenuItem(name: "Onion Rings",
-                                       description: "Onion Rings",
+                                       description: "",
                                        options: [MenuOption(description: Options.SMALL, price: 1.75),
                                                 MenuOption(description: Options.LARGE, price: 2.50)],
                                        type: foodTypes.SIDE)
         items["SweetFries"] = MenuItem(name: "Sweet Potato Fries",
-                                       description: "Sweet Potato Fries",
+                                       description: "",
                                        options: [MenuOption(description: Options.SMALL, price: 2.25),
                                                 MenuOption(description: Options.LARGE, price: 2.95)],
                                        type: foodTypes.SIDE)
         items["Guacomole"] = MenuItem(name: "Guacomole",
-                                      description: "Guacomole",
+                                      description: "",
                                       options: [MenuOption(description: Options.NO_OPTIONS, price: 1.50)],
                                       type: foodTypes.SIDE)
         
         // BEVERAGES
         
         items["Fountain"] = MenuItem(name: "Refillable Fountain Beverage",
-                                     description: "Refillable Fountain Beverage",
+                                     description: "",
                                      options: [MenuOption(description: Options.NO_OPTIONS, price: 1.25)],
                                      type: foodTypes.BEVERAGE)
         items["Milk"] = MenuItem(name: "Pint of Milk",
-                                 description: "Pint of Milk",
+                                 description: "",
                                  options: [MenuOption(description: Options.NO_OPTIONS, price: 1.19)],
                                  type: foodTypes.BEVERAGE)
         items["Coffee"] = MenuItem(name: "Coffee",
-                                   description: "Coffee",
+                                   description: "",
                                    options: [MenuOption(description: Options.NO_OPTIONS, price: 1.30)],
                                    type: foodTypes.BEVERAGE)
         items["Tea"] = MenuItem(name: "Tea",
-                                description: "Tea",
+                                description: "",
                                 options: [MenuOption(description: Options.NO_OPTIONS, price: 1.30)],
                                 type: foodTypes.BEVERAGE)
         items["IcedTea"] = MenuItem(name: "Fresh Brewed Iced Tea",
-                                    description: "Fresh Brewed Iced Tea",
+                                    description: "",
                                     options: [MenuOption(description: Options.NO_OPTIONS, price: 1.20)],
                                     type: foodTypes.BEVERAGE)
         
