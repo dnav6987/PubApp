@@ -24,6 +24,7 @@ class MenuItemViewController: UIViewController {
             
             var nextButtonHeight = descriptionLabel.heightOfLabel() + 1
             
+            var identifier = 0
             for option in menuItem.options  {
                 let button = UIButton(type: UIButtonType.System) as UIButton
                 button.addTarget(self, action: #selector(MenuItemViewController.addToOrder(_:)), forControlEvents: UIControlEvents.TouchUpInside)
@@ -32,6 +33,8 @@ class MenuItemViewController: UIViewController {
                 let origin = CGPoint(x: view.frame.width/2 - button.frame.width/2, y: nextButtonHeight)
                 button.frame = CGRect(origin: origin, size: CGSize(width: button.frame.width, height: Constants.BUTTON_HEIGHT))
                 view.addSubview(button)
+                button.accessibilityIdentifier = "\(identifier)"
+                identifier += 1
                 nextButtonHeight += Constants.BUTTON_HEIGHT + 1
             }
         }
@@ -53,17 +56,19 @@ class MenuItemViewController: UIViewController {
     
     func addToOrder(sender:UIButton!) {
         if sender.currentTitle != nil {
-            let optionSeparatedFromPrice = sender.currentTitle!.characters.split{ $0 == "$" }.map(String.init)
-            let thisOrderItem = optionSeparatedFromPrice[0] + menuItem.description + " $" + optionSeparatedFromPrice[1]
-            print(thisOrderItem)
-            
-            var test = Order.defaults.arrayForKey(Order.ORDER_STRING) as? [String]
-            if test != nil {
-                test?.append(thisOrderItem)
-                Order.defaults.setObject(test, forKey: Order.ORDER_STRING)
-                Order.defaults.synchronize()
+            let chosenOption = menuItem.options[Int(sender.accessibilityIdentifier!)!]
+            let orderedItem = menuItem.description + ", " + chosenOption.description
+            var order = Order.defaults.arrayForKey(Order.ORDER_STRING) as? [String]
+            var prices = Order.defaults.arrayForKey(Order.PRICES_STRING) as? [Float]
+            if order != nil && prices != nil {
+                order!.append(orderedItem)
+                Order.defaults.setObject(order!, forKey: Order.ORDER_STRING)
+                prices!.append(chosenOption.price)
+                Order.defaults.setObject(prices!, forKey: Order.PRICES_STRING)
+//                Order.defaults.synchronize()
             } else {
-                Order.defaults.setObject([thisOrderItem], forKey: Order.ORDER_STRING)
+                Order.defaults.setObject([orderedItem], forKey: Order.ORDER_STRING)
+                Order.defaults.setObject([chosenOption.price], forKey: Order.PRICES_STRING)
             }
         }
     }
@@ -79,12 +84,5 @@ private extension UILabel {
         label.text = self.text
         label.sizeToFit()
         return 2*label.frame.height // TODO
-    }
-}
-
-private extension Float {
-    func floatAsPriceString() -> String {
-        let format = ".2"
-        return String(format: "%\(format)f", self)
     }
 }

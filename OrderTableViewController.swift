@@ -8,8 +8,19 @@
 
 import UIKit
 
+//typealias 
+
 class OrderTableViewController: UITableViewController {
     var order: [String]!
+    var prices: [Float]!
+    
+    @IBOutlet weak var priceLabel: UILabel!
+    
+    var totalPrice: Float = 0.0 {
+        didSet {
+            if priceLabel != nil { priceLabel.text = "Total Price $" + String(format: "%.2f", totalPrice) }
+        }
+    }
     
     lazy var orderButton: UIBarButtonItem! = {
         return UIBarButtonItem(title: "Place Order",
@@ -40,6 +51,8 @@ class OrderTableViewController: UITableViewController {
         navigationItem.leftBarButtonItem = editButtonItem()
         navigationItem.rightBarButtonItem = orderButton
         order = Order.defaults.arrayForKey(Order.ORDER_STRING) as? [String]
+        prices = Order.defaults.arrayForKey(Order.PRICES_STRING) as? [Float]
+        totalPrice = prices.reduce(0, combine: +) // Sum of the list
         tableView.reloadData()
     }
     
@@ -59,14 +72,14 @@ class OrderTableViewController: UITableViewController {
     
     @IBAction func clearCart(sender: UIButton) {
         Order.defaults.setObject([String](), forKey: Order.ORDER_STRING)
+        Order.defaults.setObject([Float](), forKey: Order.PRICES_STRING)
         refresh()
     }
     
     // MARK: - Table view data source
     
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        if order != nil && order.count > 0 { return 1 }
-        return 0
+        return 1
     }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -76,7 +89,7 @@ class OrderTableViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("Item", forIndexPath: indexPath) as! OrderTableViewCell
-        if order != nil { cell.order = order[indexPath.row] }
+        if order != nil { cell.menuItem = (order[indexPath.row], prices[indexPath.row]) }
         return cell
     }
     
@@ -85,13 +98,14 @@ class OrderTableViewController: UITableViewController {
             // Delete the row from the data source
             order.removeAtIndex(indexPath.row)
             Order.defaults.setObject(order, forKey: Order.ORDER_STRING)
+            prices.removeAtIndex(indexPath.row)
+            Order.defaults.setObject(prices, forKey: Order.PRICES_STRING)
             tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-            print("\(indexPath)")
+            refresh()
         }
     }
     
     override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
         return true
     }
 }
