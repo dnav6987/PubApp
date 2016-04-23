@@ -14,7 +14,7 @@ class MenuItemViewController: UIViewController {
     }
     
     @IBOutlet weak var descriptionLabel: UILabel! {
-        didSet { if menuItem != nil { descriptionLabel.text = menuItem.description } }
+        didSet { if menuItem != nil { descriptionLabel.text = menuItem.name + "\n" + menuItem.description } }
     }
     
     var menuItem: MenuItem!
@@ -57,7 +57,7 @@ class MenuItemViewController: UIViewController {
     func addToOrder(sender:UIButton!) {
         if sender.currentTitle != nil {
             let chosenOption = menuItem.options[Int(sender.accessibilityIdentifier!)!]
-            let orderedItem = menuItem.description + ", " + chosenOption.description
+            let orderedItem = menuItem.name + ", " + chosenOption.description
             var order = Order.defaults.arrayForKey(Order.ORDER_STRING) as? [String]
             var prices = Order.defaults.arrayForKey(Order.PRICES_STRING) as? [Float]
             if order != nil && prices != nil {
