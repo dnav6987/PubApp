@@ -50,8 +50,16 @@ class OrderTableViewController: UITableViewController {
     func refresh() {
         navigationItem.leftBarButtonItem = editButtonItem()
         navigationItem.rightBarButtonItem = orderButton
+        
         order = Order.defaults.arrayForKey(Order.ORDER_STRING) as? [String]
         prices = Order.defaults.arrayForKey(Order.PRICES_STRING) as? [Float]
+        if order == nil {   // NOTE that if one is nil the other must be too
+            order = [String]()
+            prices = [Float]()
+            Order.defaults.setObject(order, forKey: Order.ORDER_STRING)
+            Order.defaults.setObject(prices, forKey: Order.PRICES_STRING)
+        }
+        
         totalPrice = prices.reduce(0, combine: +) // Sum of the list
         tableView.reloadData()
     }
