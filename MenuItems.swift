@@ -71,7 +71,7 @@ class MenuItems {
                                             MenuOption(description: "BBQ", price: 6.25),
                                             MenuOption(description: "Honey Mustard", price: 6.25)],
                                   type: foodTypes.APP)
-        items["Quesadilla"] = MenuItem(description: "Chicken Wings",
+        items["Quesadilla"] = MenuItem(description: "Monterey Jack Cheese Quesadilla",
                                        options: [MenuOption(description: "Plain", price: 4.75),
                                                 MenuOption(description: "Add Veggies", price: 5.50),
                                                 MenuOption(description: "Add Chicken", price: 5.50)],
