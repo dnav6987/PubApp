@@ -81,13 +81,15 @@ class OrderTableViewController: UITableViewController {
         
         NSStream.getStreamsToHostWithName(addr, port: port, inputStream: &inp, outputStream: &out)
         
-        let inputStream = inp!
         let outputStream = out!
-        inputStream.open()
         outputStream.open()
 
-        // buffer is a UInt8 array containing bytes of the string "Jonathan Yaniv.".
-        outputStream.write("Hello", maxLength: "Hello".length)
+        var orderDataString = "[ "
+        for item in order { orderDataString += item + " "}
+        orderDataString += "]"
+        outputStream.write(orderDataString, maxLength: orderDataString.characters.count)
+        
+        clearCart(UIButton())
     }
     
     func cancelOrder(sender:UIButton!) {
