@@ -13,45 +13,58 @@ class MenuItemViewController: UIViewController {
         static let BUTTON_HEIGHT = CGFloat(25)
     }
     
-    @IBOutlet weak var descriptionLabel: UILabel! {
-        didSet { if menuItem != nil { descriptionLabel.text = menuItem.name + "\n" + menuItem.description } }
+    var menuItem: MenuItem!
+
+    @IBOutlet weak var descriptionLabel: UILabel!
+    @IBOutlet weak var startOrderButton: UIButton!
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if let navCon = segue.destinationViewController as? UINavigationController {
+            if let optionMenu = navCon.visibleViewController as? OptionsTableViewController {
+                optionMenu.menuItem = menuItem
+            }
+        }
     }
     
-    var menuItem: MenuItem!
-    
-    override func viewDidLoad() {
-        if menuItem != nil && view != nil {
-            
-            var nextButtonHeight = descriptionLabel.heightOfLabel() + 1
-            
-            var identifier = 0
-            for option in menuItem.options  {
-                let button = UIButton(type: UIButtonType.System) as UIButton
-                button.addTarget(self, action: #selector(MenuItemViewController.addToOrder(_:)), forControlEvents: UIControlEvents.TouchUpInside)
-                button.setTitle(option.description+" $"+String(format: "%.2f", option.price), forState: .Normal)
-                button.sizeToFit()
-                let origin = CGPoint(x: view.frame.width/2 - button.frame.width/2, y: nextButtonHeight)
-                button.frame = CGRect(origin: origin, size: CGSize(width: button.frame.width, height: Constants.BUTTON_HEIGHT))
-                view.addSubview(button)
-                button.accessibilityIdentifier = "\(identifier)"
-                identifier += 1
-                nextButtonHeight += Constants.BUTTON_HEIGHT + 1
-            }
+    override func viewDidLoad() {        
+        if menuItem != nil && view != nil  && startOrderButton != nil {
+//            let label = UILabel(frame: CGRect(x: startOrderButton.frame.origin.x, y: startOrderButton.frame.height, width: startOrderButton.frame.width, height: 0))
+//            label.text = "Add to order"
+//            label.sizeToFit()
+//            view.addSubview(label)
+           //            var nextButtonHeight = descriptionLabel.heightOfLabel() + 1
+//            var nextButtonHeight = topLayoutGuide.bottomAnchor.accessibilityActivationPoint.y
+//            var identifier = 0
+//            
+//            for side in menuItem.addOns {
+//                let button = makeButton(side.description+" $"+String(format: "%.2f", side.price),
+//                                        height: nextButtonHeight,
+//                                        identifier: identifier)
+//                identifier += 1
+//                nextButtonHeight += Constants.BUTTON_HEIGHT + 1
+//            }
+//            
+//            identifier = 0
+//            for option in menuItem.options  {
+//                let button = makeButton(option.description+" $"+String(format: "%.2f", option.price),
+//                                        height: nextButtonHeight,
+//                                        identifier: identifier)
+//                button.addTarget(self, action: #selector(MenuItemViewController.addToOrder(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+//                identifier += 1
+//                nextButtonHeight += Constants.BUTTON_HEIGHT + 1
+//            }
         }
     }
 
-    override var preferredContentSize: CGSize {
-        get {
-            if view != nil && presentingViewController != nil && menuItem != nil && descriptionLabel != nil {
-                let sizeThatFits = view.sizeThatFits(presentingViewController!.view.bounds.size)
-                return CGSize(width: sizeThatFits.width,
-                              height: CGFloat(menuItem.options.count)*Constants.BUTTON_HEIGHT +
-                                CGFloat(menuItem.options.count) + descriptionLabel.heightOfLabel())
-            } else {
-                return super.preferredContentSize
-            }
-        }
-        set { super.preferredContentSize = newValue }
+    func makeButton(title: String, height: CGFloat, identifier: Int) -> UIButton {
+        let button = UIButton(type: UIButtonType.System) as UIButton
+        button.setTitle(title, forState: .Normal)
+        button.sizeToFit()
+        let origin = CGPoint(x: view.frame.width/2 - button.frame.width/2, y: height)
+        button.frame = CGRect(origin: origin, size: CGSize(width: button.frame.width, height: Constants.BUTTON_HEIGHT))
+        view.addSubview(button)
+        button.accessibilityIdentifier = "\(identifier)"
+        return button
     }
     
     func addToOrder(sender:UIButton!) {
@@ -72,6 +85,29 @@ class MenuItemViewController: UIViewController {
             }
         }
     }
+    
+    func setDescriptionLabel() {
+        if startOrderButton != nil && menuItem != nil {
+            var description = menuItem.name
+            if menuItem.description.characters.count > 0 { description += "\n" + menuItem.description }
+            for option in menuItem.options { description += "\n" + option.asString() }
+            descriptionLabel.text = description
+        }
+    }
+    
+    override var preferredContentSize: CGSize {
+        get {
+            if view != nil && presentingViewController != nil && menuItem != nil && startOrderButton != nil{
+                setDescriptionLabel()
+                let sizeThatFits = view.sizeThatFits(presentingViewController!.view.bounds.size)
+                return CGSize(width: sizeThatFits.width,
+                              height: startOrderButton.frame.height + descriptionLabel.heightOfLabel())
+            } else {
+                return super.preferredContentSize
+            }
+        }
+        set { super.preferredContentSize = newValue }
+    }
 }
 
 private extension UILabel {
@@ -79,10 +115,11 @@ private extension UILabel {
         let label:UILabel = UILabel(frame: CGRectMake(0, 0, self.frame.width, CGFloat.max))
         label.numberOfLines = 0
         label.textAlignment = .Center
-        label.lineBreakMode = NSLineBreakMode.ByCharWrapping
+        label.lineBreakMode = NSLineBreakMode.ByWordWrapping
         label.font = self.font
         label.text = self.text
         label.sizeToFit()
-        return 2*label.frame.height // TODO
+        label.adjustsFontSizeToFitWidth = false
+        return 1.5*label.frame.height // TODO
     }
 }

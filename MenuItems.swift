@@ -329,20 +329,45 @@ class MenuItems {
         
         // TODO gluten free bread and pizza dough, pizza toppings add (V) and (VE), add ons and additional options in a drop down menu maybe
         
-        
+        // TODO SO MANY LOOPS
+        for item in items {
+            if item.type == MenuItems.foodTypes.SALAD {
+                item.addOns.append(MenuOption(description: "Grilled Chicken", price: 2.00))
+                item.addOns.append(MenuOption(description: "Plain Chicken Finger", price: 1.00))
+                item.addOns.append(MenuOption(description: "Buffalo Chicken Finger", price: 1.00))
+                item.addOns.append(MenuOption(description: "Shaved Steal", price: 1.75))
+            }
+            
+            if item.type == MenuItems.foodTypes.COLD_SANDWICH || item.type == MenuItems.foodTypes.HOT_SANDWICH {
+                item.sides.append(MenuOption(description: "baked potato chips", price: 0.00))
+                item.sides.append(MenuOption(description: "side salada", price: 0.00))
+                item.sides.append(MenuOption(description: "sliced fresh veggies", price: 0.00))
+                item.sides.append(MenuOption(description: "sliced fresh fruit", price: 0.00))
+                item.sides.append(MenuOption(description: "French fries", price: 1.00))
+            }
+            
+            if item.type == MenuItems.foodTypes.PIZZA || item.type == MenuItems.foodTypes.CALZONE {
+                item.addOns = [MenuOption(description: "Pepperoni", price: 0.00), MenuOption(description: "Sausage", price: 0.00), MenuOption(description: "Ham", price: 0.00), MenuOption(description: "Ground Beed", price: 0.00), MenuOption(description: "Bacon", price: 0.00), MenuOption(description: "Chicken", price: 0.00), MenuOption(description: "Green Peppers", price: 0.00), MenuOption(description: "Roasted Red Peppers", price: 0.00), MenuOption(description: "Onions", price: 0.00), MenuOption(description: "Mushrooms", price: 0.00), MenuOption(description: "Artichoke Hearts", price: 0.00), MenuOption(description: "Tomato", price: 0.00), MenuOption(description: "Pineapple", price: 0.00), MenuOption(description: "Feta Cheese", price: 0.00), MenuOption(description: "Pesto", price: 0.00)]
+            }
+        }
         
         // TODO rethink this
-        for item in items { if item.type == MenuItems.foodTypes.APP { apps.append(item) } }
-        for item in items { if item.type == MenuItems.foodTypes.SALAD { salads.append(item) } }
-        for item in items { if item.type == MenuItems.foodTypes.PANINI { panini.append(item) } }
-        for item in items { if item.type == MenuItems.foodTypes.BASKET { baskets.append(item) } }
-        for item in items { if item.type == MenuItems.foodTypes.COLD_SANDWICH { coldSandwiches.append(item) } }
-        for item in items { if item.type == MenuItems.foodTypes.HOT_SANDWICH { hotSandwiches.append(item) } }
-        for item in items { if item.type == MenuItems.foodTypes.WRAP { wraps.append(item) } }
-        for item in items { if item.type == MenuItems.foodTypes.PIZZA { pizzas.append(item) } }
-        for item in items { if item.type == MenuItems.foodTypes.CALZONE { calzones.append(item) } }
-        for item in items { if item.type == MenuItems.foodTypes.SIDE { sides.append(item) } }
-        for item in items { if item.type == MenuItems.foodTypes.BEVERAGE { beverages.append(item) } }
+        for item in items {
+            switch item.type {
+            case foodTypes.APP: apps.append(item)
+            case foodTypes.SALAD: salads.append(item)
+            case foodTypes.PANINI: panini.append(item)
+            case foodTypes.BASKET: baskets.append(item)
+            case foodTypes.COLD_SANDWICH: coldSandwiches.append(item)
+            case foodTypes.HOT_SANDWICH: hotSandwiches.append(item)
+            case foodTypes.WRAP: wraps.append(item)
+            case foodTypes.PIZZA: pizzas.append(item)
+            case foodTypes.CALZONE: calzones.append(item)
+            case foodTypes.SIDE: sides.append(item)
+            case foodTypes.BEVERAGE: beverages.append(item)
+            default: break
+            }
+        }
         
         menu = [apps, salads, panini, baskets, coldSandwiches, hotSandwiches, wraps, pizzas, calzones, sides, beverages]
     }
@@ -353,6 +378,7 @@ class MenuItem {
     var description = ""
     var options = [MenuOption]()
     var addOns = [MenuOption]()
+    var sides = [MenuOption]()
     var type = ""
     
     init(name: String, description: String, options: [MenuOption], type: String) {
@@ -375,4 +401,9 @@ class MenuOption {
     }
     
     init() {}
+    
+    func asString() -> String {
+        if description != MenuItems.Options.NO_OPTIONS { return description + " $" + String(format: "%.2f", price) }
+        return "$" + String(format: "%.2f", price)
+    }
 }
