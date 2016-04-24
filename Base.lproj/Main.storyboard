@@ -89,7 +89,7 @@
                                     </subviews>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <segue destination="xKB-pn-Xye" kind="showDetail" id="uBF-X0-dak"/>
+                                    <segue destination="xKB-pn-Xye" kind="showDetail" identifier="ToSides" id="uBF-X0-dak"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>

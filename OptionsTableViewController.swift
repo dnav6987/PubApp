@@ -15,6 +15,19 @@ class OptionsTableViewController: UITableViewController {
         dismissViewControllerAnimated(true, completion: nil)
     }
 
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        if menuItem.options.count == 1 {
+            dispatch_async(dispatch_get_main_queue()) {
+                [unowned self] in
+                let fakeSender = UIButton()
+                fakeSender.accessibilityIdentifier = "0"
+                self.performSegueWithIdentifier("ToSides", sender: fakeSender)
+            }
+        }
+    }
+    
     // MARK: - Table view data source
 
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -54,5 +67,4 @@ class OptionsTableViewController: UITableViewController {
             }
         }
     }
-
 }
