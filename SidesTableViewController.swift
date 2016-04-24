@@ -15,6 +15,19 @@ class SidesTableViewController: UITableViewController {
         dismissViewControllerAnimated(true, completion: nil)
     }
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        if menuItem.sides.count <= 1 {
+            dispatch_async(dispatch_get_main_queue()) {
+                [unowned self] in
+                let fakeSender = UIButton()
+                fakeSender.accessibilityIdentifier = "0"
+                self.performSegueWithIdentifier("ToToppings", sender: fakeSender)
+            }
+        }
+    }
+    
     // MARK: - Table view data source
     
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -28,6 +41,7 @@ class SidesTableViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("SideCell", forIndexPath: indexPath)
+        cell.accessibilityIdentifier = "\(indexPath.row)"
         
         let side = menuItem.sides[indexPath.row].asString().characters.split{$0 == "$"}.map(String.init)
         if side.count == 1 {
@@ -40,12 +54,13 @@ class SidesTableViewController: UITableViewController {
         return cell
     }
     
-    /*
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-     // Get the new view controller using segue.destinationViewController.
-     // Pass the selected object to the new view controller.
-     }
-     */}
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if let navCon = segue.destinationViewController as? UINavigationController {
+            if let toppingMenu = navCon.visibleViewController as? ToppingsTableViewController {
+                menuItem.sides = [menuItem.sides[Int((sender?.accessibilityIdentifier)!)!]]
+                toppingMenu.menuItem = menuItem
+            }
+        }
+    }
+
+}
