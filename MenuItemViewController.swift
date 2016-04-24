@@ -22,66 +22,7 @@ class MenuItemViewController: UIViewController {
         if let navCon = segue.destinationViewController as? UINavigationController {
             if let optionMenu = navCon.visibleViewController as? OptionsTableViewController {
                 optionMenu.menuItem = menuItem
-            }
-        }
-    }
-    
-    override func viewDidLoad() {        
-        if menuItem != nil && view != nil  && startOrderButton != nil {
-//            let label = UILabel(frame: CGRect(x: startOrderButton.frame.origin.x, y: startOrderButton.frame.height, width: startOrderButton.frame.width, height: 0))
-//            label.text = "Add to order"
-//            label.sizeToFit()
-//            view.addSubview(label)
-           //            var nextButtonHeight = descriptionLabel.heightOfLabel() + 1
-//            var nextButtonHeight = topLayoutGuide.bottomAnchor.accessibilityActivationPoint.y
-//            var identifier = 0
-//            
-//            for side in menuItem.addOns {
-//                let button = makeButton(side.description+" $"+String(format: "%.2f", side.price),
-//                                        height: nextButtonHeight,
-//                                        identifier: identifier)
-//                identifier += 1
-//                nextButtonHeight += Constants.BUTTON_HEIGHT + 1
-//            }
-//            
-//            identifier = 0
-//            for option in menuItem.options  {
-//                let button = makeButton(option.description+" $"+String(format: "%.2f", option.price),
-//                                        height: nextButtonHeight,
-//                                        identifier: identifier)
-//                button.addTarget(self, action: #selector(MenuItemViewController.addToOrder(_:)), forControlEvents: UIControlEvents.TouchUpInside)
-//                identifier += 1
-//                nextButtonHeight += Constants.BUTTON_HEIGHT + 1
-//            }
-        }
-    }
-
-    func makeButton(title: String, height: CGFloat, identifier: Int) -> UIButton {
-        let button = UIButton(type: UIButtonType.System) as UIButton
-        button.setTitle(title, forState: .Normal)
-        button.sizeToFit()
-        let origin = CGPoint(x: view.frame.width/2 - button.frame.width/2, y: height)
-        button.frame = CGRect(origin: origin, size: CGSize(width: button.frame.width, height: Constants.BUTTON_HEIGHT))
-        view.addSubview(button)
-        button.accessibilityIdentifier = "\(identifier)"
-        return button
-    }
-    
-    func addToOrder(sender:UIButton!) {
-        if sender.currentTitle != nil {
-            let chosenOption = menuItem.options[Int(sender.accessibilityIdentifier!)!]
-            let orderedItem = menuItem.name + ", " + chosenOption.description
-            var order = Order.defaults.arrayForKey(Order.ORDER_STRING) as? [String]
-            var prices = Order.defaults.arrayForKey(Order.PRICES_STRING) as? [Float]
-            if order != nil && prices != nil {
-                order!.append(orderedItem)
-                Order.defaults.setObject(order!, forKey: Order.ORDER_STRING)
-                prices!.append(chosenOption.price)
-                Order.defaults.setObject(prices!, forKey: Order.PRICES_STRING)
-//                Order.defaults.synchronize()
-            } else {
-                Order.defaults.setObject([orderedItem], forKey: Order.ORDER_STRING)
-                Order.defaults.setObject([chosenOption.price], forKey: Order.PRICES_STRING)
+                print("\(menuItem.addOns)")
             }
         }
     }

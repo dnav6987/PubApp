@@ -330,24 +330,24 @@ class MenuItems {
         // TODO gluten free bread and pizza dough, pizza toppings add (V) and (VE), add ons and additional options in a drop down menu maybe
         
         // TODO SO MANY LOOPS
-        for item in items {
-            if item.type == MenuItems.foodTypes.SALAD {
-                item.addOns.append(MenuOption(description: "Grilled Chicken", price: 2.00))
-                item.addOns.append(MenuOption(description: "Plain Chicken Finger", price: 1.00))
-                item.addOns.append(MenuOption(description: "Buffalo Chicken Finger", price: 1.00))
-                item.addOns.append(MenuOption(description: "Shaved Steal", price: 1.75))
+        for i in 0..<items.count {
+            if items[i].type == MenuItems.foodTypes.SALAD {
+                items[i].addOns.append(MenuOption(description: "Grilled Chicken", price: 2.00))
+                items[i].addOns.append(MenuOption(description: "Plain Chicken Finger", price: 1.00))
+                items[i].addOns.append(MenuOption(description: "Buffalo Chicken Finger", price: 1.00))
+                items[i].addOns.append(MenuOption(description: "Shaved Steak", price: 1.75))
             }
             
-            if item.type == MenuItems.foodTypes.COLD_SANDWICH || item.type == MenuItems.foodTypes.HOT_SANDWICH {
-                item.sides.append(MenuOption(description: "baked potato chips", price: 0.00))
-                item.sides.append(MenuOption(description: "side salada", price: 0.00))
-                item.sides.append(MenuOption(description: "sliced fresh veggies", price: 0.00))
-                item.sides.append(MenuOption(description: "sliced fresh fruit", price: 0.00))
-                item.sides.append(MenuOption(description: "French fries", price: 1.00))
+            if items[i].type == MenuItems.foodTypes.COLD_SANDWICH || items[i].type == MenuItems.foodTypes.HOT_SANDWICH {
+                items[i].sides.append(MenuOption(description: "baked potato chips", price: 0.00))
+                items[i].sides.append(MenuOption(description: "side salad", price: 0.00))
+                items[i].sides.append(MenuOption(description: "sliced fresh veggies", price: 0.00))
+                items[i].sides.append(MenuOption(description: "sliced fresh fruit", price: 0.00))
+                items[i].sides.append(MenuOption(description: "French fries", price: 1.00))
             }
             
-            if item.type == MenuItems.foodTypes.PIZZA || item.type == MenuItems.foodTypes.CALZONE {
-                item.addOns = [MenuOption(description: "Pepperoni", price: 0.00), MenuOption(description: "Sausage", price: 0.00), MenuOption(description: "Ham", price: 0.00), MenuOption(description: "Ground Beed", price: 0.00), MenuOption(description: "Bacon", price: 0.00), MenuOption(description: "Chicken", price: 0.00), MenuOption(description: "Green Peppers", price: 0.00), MenuOption(description: "Roasted Red Peppers", price: 0.00), MenuOption(description: "Onions", price: 0.00), MenuOption(description: "Mushrooms", price: 0.00), MenuOption(description: "Artichoke Hearts", price: 0.00), MenuOption(description: "Tomato", price: 0.00), MenuOption(description: "Pineapple", price: 0.00), MenuOption(description: "Feta Cheese", price: 0.00), MenuOption(description: "Pesto", price: 0.00)]
+            if items[i].type == MenuItems.foodTypes.PIZZA || items[i].type == MenuItems.foodTypes.CALZONE {
+                items[i].addOns = [MenuOption(description: "Pepperoni", price: 0.00), MenuOption(description: "Sausage", price: 0.00), MenuOption(description: "Ham", price: 0.00), MenuOption(description: "Ground Beed", price: 0.00), MenuOption(description: "Bacon", price: 0.00), MenuOption(description: "Chicken", price: 0.00), MenuOption(description: "Green Peppers", price: 0.00), MenuOption(description: "Roasted Red Peppers", price: 0.00), MenuOption(description: "Onions", price: 0.00), MenuOption(description: "Mushrooms", price: 0.00), MenuOption(description: "Artichoke Hearts", price: 0.00), MenuOption(description: "Tomato", price: 0.00), MenuOption(description: "Pineapple", price: 0.00), MenuOption(description: "Feta Cheese", price: 0.00), MenuOption(description: "Pesto", price: 0.00)]
             }
         }
         

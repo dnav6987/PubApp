@@ -22,7 +22,7 @@ class SidesTableViewController: UITableViewController {
             dispatch_async(dispatch_get_main_queue()) {
                 [unowned self] in
                 let fakeSender = UIButton()
-                fakeSender.accessibilityIdentifier = "0"
+                fakeSender.accessibilityIdentifier = "-1"
                 self.performSegueWithIdentifier("ToToppings", sender: fakeSender)
             }
         }
@@ -57,10 +57,9 @@ class SidesTableViewController: UITableViewController {
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if let navCon = segue.destinationViewController as? UINavigationController {
             if let toppingMenu = navCon.visibleViewController as? ToppingsTableViewController {
-                menuItem.sides = [menuItem.sides[Int((sender?.accessibilityIdentifier)!)!]]
+                if menuItem.sides.count > 1 { menuItem.sides = [menuItem.sides[Int((sender?.accessibilityIdentifier)!)!]] }
                 toppingMenu.menuItem = menuItem
             }
         }
     }
-
 }
