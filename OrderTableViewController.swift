@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Foundation
 
 //typealias 
 
@@ -71,6 +72,22 @@ class OrderTableViewController: UITableViewController {
     
     func confirmOrder(sender:UIButton!) {
         // HUGE TODO
+        
+        let addr = "127.0.0.1"
+        let port = 5555
+        
+        var inp :NSInputStream?
+        var out :NSOutputStream?
+        
+        NSStream.getStreamsToHostWithName(addr, port: port, inputStream: &inp, outputStream: &out)
+        
+        let inputStream = inp!
+        let outputStream = out!
+        inputStream.open()
+        outputStream.open()
+
+        // buffer is a UInt8 array containing bytes of the string "Jonathan Yaniv.".
+        outputStream.write("Hello", maxLength: "Hello".length)
     }
     
     func cancelOrder(sender:UIButton!) {
