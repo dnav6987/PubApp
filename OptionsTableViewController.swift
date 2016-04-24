@@ -28,7 +28,8 @@ class OptionsTableViewController: UITableViewController {
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("OptionCell", forIndexPath: indexPath)
-
+        cell.accessibilityIdentifier = "\(indexPath.row)"
+        
         let option = menuItem.options[indexPath.row].asString().characters.split{$0 == "$"}.map(String.init)
         if option.count == 1 {
             cell.textLabel?.text = MenuItems.Options.NO_OPTIONS
@@ -37,6 +38,7 @@ class OptionsTableViewController: UITableViewController {
             cell.textLabel?.text = option[0]
             cell.detailTextLabel?.text = option[1]
         }
+
         return cell
     }
 
@@ -45,7 +47,10 @@ class OptionsTableViewController: UITableViewController {
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if let navCon = segue.destinationViewController as? UINavigationController {
             if let sideMenu = navCon.visibleViewController as? SidesTableViewController {
-                sideMenu.menuItem = menuItem
+                sideMenu.menuItem = MenuItem(name: menuItem.name,
+                                             description: menuItem.description,
+                                             options: [menuItem.options[Int((sender?.accessibilityIdentifier)!)!]],
+                                             type: menuItem.type)
             }
         }
     }
