@@ -389,6 +389,31 @@ class MenuItem {
     }
     
     init() {}
+    
+    // Assumes that an order will only have 1 option and 1 side
+    func asStringAndPrice() -> (string: String, price: Float) {
+        var price: Float = 0.00
+        
+        if options.count == 0 { return (name, price) }
+        
+        var resultString = options[0].description + name
+        price += options[0].price
+        
+        if sides.count > 0 {
+            resultString += " with " + sides[0].description
+            price += sides[0].price
+        }
+            
+        if addOns.count > 0 {
+            resultString += " " + addOns[0].description
+            price += addOns[0].price
+            for i in 1..<addOns.count-1 {
+                resultString += ", " + addOns[i].description
+                price += addOns[i].price
+            }
+        }
+        return (resultString, price)
+    }
 }
 
 class MenuOption {
@@ -403,7 +428,13 @@ class MenuOption {
     init() {}
     
     func asString() -> String {
-        if description != MenuItems.Options.NO_OPTIONS { return description + " $" + String(format: "%.2f", price) }
-        return "$" + String(format: "%.2f", price)
+        if description != MenuItems.Options.NO_OPTIONS { return description + " " + price.asPriceString() }
+        return price.asPriceString()
+    }
+}
+
+extension Float {
+    func asPriceString() -> String {
+        return "$" + String(format: "%.2f", self)
     }
 }

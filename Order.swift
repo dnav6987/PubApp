@@ -13,6 +13,7 @@
  see if back button can be set programatically and look better
  
  $ on prices
+ make a menuItem as string function where it goes option, name, addons, price
 */
 import Foundation
 

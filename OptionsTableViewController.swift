@@ -42,15 +42,9 @@ class OptionsTableViewController: UITableViewController {
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("OptionCell", forIndexPath: indexPath)
         cell.accessibilityIdentifier = "\(indexPath.row)"
-        
-        let option = menuItem.options[indexPath.row].asString().characters.split{$0 == "$"}.map(String.init)
-        if option.count == 1 {
-            cell.textLabel?.text = MenuItems.Options.NO_OPTIONS
-            cell.detailTextLabel?.text = option[0]
-        } else {
-            cell.textLabel?.text = option[0]
-            cell.detailTextLabel?.text = option[1]
-        }
+
+        cell.textLabel?.text = menuItem.options[indexPath.row].description
+        cell.detailTextLabel?.text = menuItem.options[indexPath.row].price.asPriceString()
 
         return cell
     }

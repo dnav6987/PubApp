@@ -24,16 +24,16 @@ class ToppingsTableViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("ToppingCell", forIndexPath: indexPath)
+        
         cell.accessibilityIdentifier = "\(indexPath.row)"
         
-        let topping = menuItem.addOns[indexPath.row].asString().characters.split{$0 == "$"}.map(String.init)
-        if topping.count == 1 {
-            cell.textLabel?.text = MenuItems.Options.NO_OPTIONS
-            cell.detailTextLabel?.text = topping[0]
-        } else {
-            cell.textLabel?.text = topping[0]
-            cell.detailTextLabel?.text = topping[1]
-        }
+        cell.textLabel?.text = menuItem.addOns[indexPath.row].description
+        cell.detailTextLabel?.text = menuItem.addOns[indexPath.row].price.asPriceString()
+        
+        let offSwitch = UISwitch(frame: CGRectZero) as UISwitch
+        offSwitch.on = false
+        cell.accessoryView = offSwitch
+        
         return cell
     }
     

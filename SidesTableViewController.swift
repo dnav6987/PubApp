@@ -39,14 +39,9 @@ class SidesTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCellWithIdentifier("SideCell", forIndexPath: indexPath)
         cell.accessibilityIdentifier = "\(indexPath.row)"
         
-        let side = menuItem.sides[indexPath.row].asString().characters.split{$0 == "$"}.map(String.init)
-        if side.count == 1 {
-            cell.textLabel?.text = MenuItems.Options.NO_OPTIONS
-            cell.detailTextLabel?.text = side[0]
-        } else {
-            cell.textLabel?.text = side[0]
-            cell.detailTextLabel?.text = side[1]
-        }
+        cell.textLabel?.text = menuItem.sides[indexPath.row].description
+        cell.detailTextLabel?.text = menuItem.sides[indexPath.row].price.asPriceString()
+        
         return cell
     }
     
