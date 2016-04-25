@@ -113,8 +113,11 @@ class OrderTableViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("Item", forIndexPath: indexPath) as! OrderTableViewCell
-        if order != nil { cell.menuItem = (order[indexPath.row], prices[indexPath.row]) }
+        let cell = tableView.dequeueReusableCellWithIdentifier("Item", forIndexPath: indexPath)
+        if order != nil {
+            cell.textLabel?.text = order[indexPath.row]
+            cell.detailTextLabel?.text = "\(prices[indexPath.row])"
+        }
         return cell
     }
     

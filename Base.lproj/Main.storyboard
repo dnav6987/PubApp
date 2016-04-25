@@ -107,7 +107,7 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Options" id="DS6-0J-Rxg">
-                        <barButtonItem key="leftBarButtonItem" style="plain" id="GPf-cQ-elQ">
+                        <barButtonItem key="leftBarButtonItem" id="GPf-cQ-elQ">
                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="kSV-JK-qr3">
                                 <rect key="frame" x="20" y="7" width="133" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -204,7 +204,7 @@
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <state key="normal" title="Add To Cart"/>
                             <connections>
-                                <segue destination="H1h-qO-2N1" kind="show" identifier="ToCart" id="CLz-fo-ylW"/>
+                                <segue destination="uIJ-7i-kmA" kind="show" id="gy8-V1-t1k"/>
                             </connections>
                         </button>
                         <prototypes>
@@ -256,14 +256,14 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <label key="tableHeaderView" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Total Price: $0.00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="tqo-cR-v3p">
-                            <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                            <rect key="frame" x="0.0" y="64" width="600" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <button key="tableFooterView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="fhs-uW-gwr">
-                            <rect key="frame" x="0.0" y="139" width="600" height="44"/>
+                            <rect key="frame" x="0.0" y="203" width="600" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <state key="normal" title="Clear Cart"/>
                             <connections>
@@ -271,8 +271,8 @@
                             </connections>
                         </button>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Item" textLabel="8c7-J6-11C" detailTextLabel="GBb-Ke-e5U" rowHeight="67" style="IBUITableViewCellStyleSubtitle" id="6HT-EN-bJ9" customClass="OrderTableViewCell" customModule="PubApp" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="72" width="600" height="67"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Item" textLabel="8c7-J6-11C" detailTextLabel="GBb-Ke-e5U" rowHeight="67" style="IBUITableViewCellStyleSubtitle" id="6HT-EN-bJ9">
+                                <rect key="frame" x="0.0" y="136" width="600" height="67"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="6HT-EN-bJ9" id="ctz-ry-pRM">
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="66"/>
@@ -294,10 +294,6 @@
                                         </label>
                                     </subviews>
                                 </tableViewCellContentView>
-                                <connections>
-                                    <outlet property="orderDetail" destination="GBb-Ke-e5U" id="93S-XA-C3y"/>
-                                    <outlet property="orderTitle" destination="8c7-J6-11C" id="gpk-HP-rHy"/>
-                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -324,7 +320,7 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="detailDisclosureButton" indentationWidth="10" reuseIdentifier="MenuCell" textLabel="eSJ-RA-b1k" rowHeight="60" style="IBUITableViewCellStyleDefault" id="Cr2-rS-YOf" customClass="OrderTableViewCell" customModule="PubApp" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="detailDisclosureButton" indentationWidth="10" reuseIdentifier="MenuCell" textLabel="eSJ-RA-b1k" rowHeight="60" style="IBUITableViewCellStyleDefault" id="Cr2-rS-YOf">
                                 <rect key="frame" x="0.0" y="114" width="600" height="60"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Cr2-rS-YOf" id="rbV-7b-Hcg">
@@ -366,7 +362,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Q9Y-OG-by1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1926" y="1725"/>
+            <point key="canvasLocation" x="1106" y="1701"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="sI7-0D-lyf">
@@ -426,7 +422,4 @@
             <point key="canvasLocation" x="1918" y="-633"/>
         </scene>
     </scenes>
-    <inferredMetricsTieBreakers>
-        <segue reference="gc5-TO-dcY"/>
-    </inferredMetricsTieBreakers>
 </document>

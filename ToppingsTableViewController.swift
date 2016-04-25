@@ -67,5 +67,9 @@ class ToppingsTableViewController: UITableViewController {
             prices.append(menuItem.asStringAndPrice().price)
             Order.defaults.setObject(prices, forKey: Order.PRICES_STRING)
         }
+        
+        if let test = segue.destinationViewController as? UITabBarController {
+            test.selectedIndex = 1
+        }
     }
 }
