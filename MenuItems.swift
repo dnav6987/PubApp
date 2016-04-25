@@ -388,6 +388,15 @@ class MenuItem {
         self.type = type
     }
     
+    init(otherMenuItem: MenuItem) {
+        self.name = otherMenuItem.name
+        self.description = otherMenuItem.description
+        self.options = otherMenuItem.options
+        self.addOns = otherMenuItem.addOns
+        self.sides = otherMenuItem.sides
+        self.type = otherMenuItem.type
+    }
+    
     init() {}
     
     // Assumes that an order will only have 1 option and 1 side
@@ -396,7 +405,7 @@ class MenuItem {
         
         if options.count == 0 { return (name, price) }
         
-        var resultString = options[0].description + name
+        var resultString = options[0].description + " " + name
         price += options[0].price
         
         if sides.count > 0 {

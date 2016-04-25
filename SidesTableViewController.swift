@@ -11,8 +11,15 @@ import UIKit
 class SidesTableViewController: UITableViewController {
     var menuItem: MenuItem!
 
+    @IBOutlet weak var descriptionLabel: UILabel!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let menuItemWithOutSidesOrAddons = MenuItem(otherMenuItem: menuItem)
+        menuItemWithOutSidesOrAddons.sides = [MenuOption]()
+        menuItemWithOutSidesOrAddons.addOns = [MenuOption]()
+        descriptionLabel.text = menuItemWithOutSidesOrAddons.asStringAndPrice().string + "\n" + descriptionLabel.text!
         
         if menuItem.sides.count <= 1 {
             dispatch_async(dispatch_get_main_queue()) {

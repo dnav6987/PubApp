@@ -15,8 +15,12 @@ class OptionsTableViewController: UITableViewController {
         dismissViewControllerAnimated(true, completion: nil)
     }
 
+    @IBOutlet weak var descriptionLabel: UILabel!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        descriptionLabel.text = menuItem.name
         
         if menuItem.options.count == 1 {
             dispatch_async(dispatch_get_main_queue()) {

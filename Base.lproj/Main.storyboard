@@ -64,9 +64,16 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <label key="tableHeaderView" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="vNq-CE-wjn">
+                            <rect key="frame" x="0.0" y="64" width="600" height="44"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="OptionCell" textLabel="cno-WD-Htd" detailTextLabel="9CH-aO-fuL" style="IBUITableViewCellStyleSubtitle" id="OeS-fF-M1z">
-                                <rect key="frame" x="0.0" y="92" width="600" height="44"/>
+                                <rect key="frame" x="0.0" y="136" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="OeS-fF-M1z" id="Gdv-du-MXg">
                                     <rect key="frame" x="0.0" y="0.0" width="567" height="43"/>
@@ -111,6 +118,9 @@
                             </button>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="descriptionLabel" destination="vNq-CE-wjn" id="Ze3-ko-SGi"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3uS-o8-9Py" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -124,7 +134,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <label key="tableHeaderView" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pick One Side" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="EKz-HW-htI">
+                        <label key="tableHeaderView" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pick One Side" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="EKz-HW-htI">
                             <rect key="frame" x="0.0" y="64" width="600" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -166,6 +176,9 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Sides" id="Gof-2n-Nhx"/>
+                    <connections>
+                        <outlet property="descriptionLabel" destination="EKz-HW-htI" id="5P8-Wg-QAA"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4Wg-Jn-NGJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -179,14 +192,24 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <label key="tableHeaderView" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="dHD-8n-fr5">
+                            <rect key="frame" x="0.0" y="64" width="600" height="44"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
                         <button key="tableFooterView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Vyu-J2-7As">
-                            <rect key="frame" x="0.0" y="136" width="600" height="44"/>
+                            <rect key="frame" x="0.0" y="180" width="600" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <state key="normal" title="Add To Cart"/>
+                            <connections>
+                                <segue destination="H1h-qO-2N1" kind="show" identifier="ToCart" id="CLz-fo-ylW"/>
+                            </connections>
                         </button>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ToppingCell" textLabel="ZsC-L2-g7C" detailTextLabel="Pse-Rb-x7w" style="IBUITableViewCellStyleSubtitle" id="Ar0-3e-d6m">
-                                <rect key="frame" x="0.0" y="92" width="600" height="44"/>
+                                <rect key="frame" x="0.0" y="136" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Ar0-3e-d6m" id="N87-Qg-Xmb">
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
@@ -216,6 +239,9 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Add Ons &amp; Toppings" id="nad-mW-FCR"/>
+                    <connections>
+                        <outlet property="descriptionLabel" destination="dHD-8n-fr5" id="ywh-mb-66I"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YOA-PL-4y3" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -230,14 +256,14 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <label key="tableHeaderView" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Total Price: $0.00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="tqo-cR-v3p">
-                            <rect key="frame" x="0.0" y="64" width="600" height="44"/>
+                            <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <button key="tableFooterView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="fhs-uW-gwr">
-                            <rect key="frame" x="0.0" y="203" width="600" height="44"/>
+                            <rect key="frame" x="0.0" y="139" width="600" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <state key="normal" title="Clear Cart"/>
                             <connections>
@@ -246,7 +272,7 @@
                         </button>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Item" textLabel="8c7-J6-11C" detailTextLabel="GBb-Ke-e5U" rowHeight="67" style="IBUITableViewCellStyleSubtitle" id="6HT-EN-bJ9" customClass="OrderTableViewCell" customModule="PubApp" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="136" width="600" height="67"/>
+                                <rect key="frame" x="0.0" y="72" width="600" height="67"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="6HT-EN-bJ9" id="ctz-ry-pRM">
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="66"/>
@@ -279,6 +305,7 @@
                             <outlet property="delegate" destination="H1h-qO-2N1" id="thO-Up-9VW"/>
                         </connections>
                     </tableView>
+                    <tabBarItem key="tabBarItem" title="My Order" id="RVg-0L-uTy"/>
                     <navigationItem key="navigationItem" title="My Order" id="spD-qv-7wR"/>
                     <connections>
                         <outlet property="priceLabel" destination="tqo-cR-v3p" id="kVS-lf-K5S"/>
@@ -286,7 +313,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ISH-XL-K6P" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1918" y="907"/>
+            <point key="canvasLocation" x="1106" y="907"/>
         </scene>
         <!--Menu-->
         <scene sceneID="VVG-Zb-EEx">
@@ -352,32 +379,13 @@
                     </tabBar>
                     <connections>
                         <segue destination="JDd-5s-NnB" kind="relationship" relationship="viewControllers" id="Wvw-bZ-xYS"/>
-                        <segue destination="5Gg-Xe-H2q" kind="relationship" relationship="viewControllers" id="Qv9-fJ-AXz"/>
+                        <segue destination="H1h-qO-2N1" kind="relationship" relationship="viewControllers" id="gc5-TO-dcY"/>
                         <segue destination="oB3-R5-oPF" kind="relationship" relationship="viewControllers" id="upq-Y5-Oli"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mCH-Ka-drq" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="128" y="907"/>
-        </scene>
-        <!--My Order-->
-        <scene sceneID="Jti-zA-ToE">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="5Gg-Xe-H2q" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="My Order" id="un2-tv-mhZ"/>
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="cxa-Yo-gzH">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="H1h-qO-2N1" kind="relationship" relationship="rootViewController" id="evD-Rg-rWF"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="4kS-9E-MRR" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1106" y="907"/>
         </scene>
         <!--Menu-->
         <scene sceneID="xuj-Fl-r6B">
@@ -418,4 +426,7 @@
             <point key="canvasLocation" x="1918" y="-633"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="gc5-TO-dcY"/>
+    </inferredMetricsTieBreakers>
 </document>

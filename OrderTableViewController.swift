@@ -9,8 +9,6 @@
 import UIKit
 import Foundation
 
-//typealias 
-
 class OrderTableViewController: UITableViewController {
     var order: [String]!
     var prices: [Float]!

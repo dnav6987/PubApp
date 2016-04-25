@@ -11,6 +11,16 @@ import UIKit
 class ToppingsTableViewController: UITableViewController {
     var menuItem: MenuItem!
     
+    @IBOutlet weak var descriptionLabel: UILabel!
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        let menuItemWithOutAddons = MenuItem(otherMenuItem: menuItem)
+        menuItemWithOutAddons.addOns = [MenuOption]()
+        descriptionLabel.text = menuItemWithOutAddons.asStringAndPrice().string
+    }
+    
     // MARK: - Table view data source
     
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -37,12 +47,25 @@ class ToppingsTableViewController: UITableViewController {
         return cell
     }
     
-//    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-//        if let navCon = segue.destinationViewController as? UINavigationController {
-//            if let toppingMenu = navCon.visibleViewController as? ToppingsTableViewController {
-//                menuItem.sides = [menuItem.sides[Int((sender?.accessibilityIdentifier)!)!]]
-//                toppingMenu.menuItem = menuItem
-//            }
-//        }
-//    }
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        var selectedToppings = [MenuOption]()
+        for cell in tableView.visibleCells {
+            if let cellSwitch = cell.accessoryView as? UISwitch {
+                print("\(Int(cell.accessibilityIdentifier!)!)")
+                if cellSwitch.on {
+                    selectedToppings.append(menuItem.addOns[Int(cell.accessibilityIdentifier!)!])
+                }
+            }
+        }
+        
+        if var order = Order.defaults.arrayForKey(Order.ORDER_STRING) as? [String] {
+            order.append(menuItem.asStringAndPrice().string)
+            Order.defaults.setObject(order, forKey: Order.ORDER_STRING)
+        }
+        
+        if var prices = Order.defaults.arrayForKey(Order.PRICES_STRING) as? [Float] {
+            prices.append(menuItem.asStringAndPrice().price)
+            Order.defaults.setObject(prices, forKey: Order.PRICES_STRING)
+        }
+    }
 }
