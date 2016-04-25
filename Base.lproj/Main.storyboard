@@ -89,7 +89,7 @@
                                     </subviews>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <segue destination="xKB-pn-Xye" kind="showDetail" identifier="ToSides" id="uBF-X0-dak"/>
+                                    <segue destination="opr-yQ-YAf" kind="show" identifier="ToSides" id="6Hh-dG-SVr"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -156,7 +156,7 @@
                                     </subviews>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <segue destination="jUo-57-bUu" kind="showDetail" identifier="ToToppings" id="odZ-yA-rdw"/>
+                                    <segue destination="I0T-gc-3XR" kind="show" identifier="ToToppings" id="VKH-IB-pPG"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -165,21 +165,7 @@
                             <outlet property="delegate" destination="opr-yQ-YAf" id="9ip-AH-cdi"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Sides" id="Gof-2n-Nhx">
-                        <barButtonItem key="leftBarButtonItem" style="plain" id="DfR-VC-AnE">
-                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="zRS-nT-QTQ">
-                                <rect key="frame" x="20" y="7" width="133" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Back"/>
-                                <connections>
-                                    <action selector="back:" destination="opr-yQ-YAf" eventType="touchUpInside" id="3Eo-cg-pDL"/>
-                                </connections>
-                            </button>
-                            <connections>
-                                <action selector="back:" destination="opr-yQ-YAf" id="rqc-Mb-0hu"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="Sides" id="Gof-2n-Nhx"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4Wg-Jn-NGJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -206,7 +192,7 @@
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5tF-oU-huD">
+                                        <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="5tF-oU-huD">
                                             <rect key="frame" x="543" y="6" width="51" height="31"/>
                                         </switch>
                                     </subviews>
@@ -222,18 +208,7 @@
                             <outlet property="delegate" destination="I0T-gc-3XR" id="0ev-F5-Dg1"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Add Ons &amp; Toppings" id="nad-mW-FCR">
-                        <barButtonItem key="leftBarButtonItem" style="plain" id="siY-3l-5aL">
-                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="ucl-I4-7yA">
-                                <rect key="frame" x="20" y="7" width="133" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Back"/>
-                                <connections>
-                                    <action selector="back:" destination="I0T-gc-3XR" eventType="touchUpInside" id="Vth-6N-Xfo"/>
-                                </connections>
-                            </button>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="Add Ons &amp; Toppings" id="nad-mW-FCR"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YOA-PL-4y3" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -419,6 +394,7 @@
         <!--Navigation Controller-->
         <scene sceneID="ap4-dh-Bxn">
             <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="VtH-99-Z59" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="WLr-TG-myn" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="vPw-jt-ung"/>
@@ -431,45 +407,8 @@
                         <segue destination="ChS-yP-Cod" kind="relationship" relationship="rootViewController" id="Y0i-Wg-U37"/>
                     </connections>
                 </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="VtH-99-Z59" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2636" y="918"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="KZh-PC-YbZ">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="xKB-pn-Xye" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="cHZ-8R-k9X">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="opr-yQ-YAf" kind="relationship" relationship="rootViewController" id="rUx-DT-lGk"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="tdj-VB-Afx" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2636" y="1725"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="vfN-rW-Vme">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="jUo-57-bUu" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="2b2-za-2TM">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="I0T-gc-3XR" kind="relationship" relationship="rootViewController" id="mhg-0D-2DC"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="p2g-Kt-clm" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2636" y="2530"/>
         </scene>
     </scenes>
 </document>

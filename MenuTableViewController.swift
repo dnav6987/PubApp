@@ -11,11 +11,6 @@ import UIKit
 class MenuTableViewController: UITableViewController, UIPopoverPresentationControllerDelegate {
     let menuItems = MenuItems()
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-    }
-
     // MARK: - Seuges
 
     func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {

@@ -22,7 +22,6 @@ class MenuItemViewController: UIViewController {
         if let navCon = segue.destinationViewController as? UINavigationController {
             if let optionMenu = navCon.visibleViewController as? OptionsTableViewController {
                 optionMenu.menuItem = menuItem
-                print("\(menuItem.addOns)")
             }
         }
     }

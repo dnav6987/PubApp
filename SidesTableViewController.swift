@@ -10,11 +10,7 @@ import UIKit
 
 class SidesTableViewController: UITableViewController {
     var menuItem: MenuItem!
-    
-    @IBAction func back(sender: UIButton) {
-        dismissViewControllerAnimated(true, completion: nil)
-    }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -55,11 +51,11 @@ class SidesTableViewController: UITableViewController {
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if let navCon = segue.destinationViewController as? UINavigationController {
-            if let toppingMenu = navCon.visibleViewController as? ToppingsTableViewController {
-                if menuItem.sides.count > 1 { menuItem.sides = [menuItem.sides[Int((sender?.accessibilityIdentifier)!)!]] }
-                toppingMenu.menuItem = menuItem
+        if let toppingMenu = segue.destinationViewController as? ToppingsTableViewController {
+            if menuItem.sides.count > 1 {
+                menuItem.sides = [menuItem.sides[Int((sender?.accessibilityIdentifier)!)!]]
             }
+            toppingMenu.menuItem = menuItem
         }
     }
 }

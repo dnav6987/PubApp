@@ -6,6 +6,14 @@
 //  Copyright © 2016 Dan Navarro. All rights reserved.
 //
 
+/*
+ TODOs
+ make all labels have lines = 0 (they cut off on my phone)
+ get all sides, toppings, options in one table view with 3 prototype cells and sections
+ see if back button can be set programatically and look better
+ 
+ $ on prices
+*/
 import Foundation
 
 struct Order {

@@ -10,10 +10,6 @@ import UIKit
 
 class ToppingsTableViewController: UITableViewController {
     var menuItem: MenuItem!
-
-    @IBAction func back(sender: UIButton) {
-        dismissViewControllerAnimated(true, completion: nil)
-    }
     
     // MARK: - Table view data source
     

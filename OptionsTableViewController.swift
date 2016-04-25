@@ -56,13 +56,12 @@ class OptionsTableViewController: UITableViewController {
     }
 
     // MARK: - Navigation
-
+    
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if let navCon = segue.destinationViewController as? UINavigationController {
-            if let sideMenu = navCon.visibleViewController as? SidesTableViewController {
-                menuItem.options = [menuItem.options[Int((sender?.accessibilityIdentifier)!)!]]
-                sideMenu.menuItem = menuItem
-            }
+        if let sideMenu = segue.destinationViewController as? SidesTableViewController {
+            menuItem.options = [menuItem.options[Int((sender?.accessibilityIdentifier)!)!]]
+            sideMenu.menuItem = menuItem
+            
         }
     }
 }
