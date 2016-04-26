@@ -9,10 +9,6 @@
 import UIKit
 
 class MenuItemViewController: UIViewController {
-    private struct Constants {
-        static let BUTTON_HEIGHT = CGFloat(25)
-    }
-    
     var menuItem: MenuItem!
 
     @IBOutlet weak var descriptionLabel: UILabel!
@@ -23,7 +19,7 @@ class MenuItemViewController: UIViewController {
         if let tabCon = segue.destinationViewController as? UITabBarController {
             if let navCon = storyboard?.instantiateViewControllerWithIdentifier("OrderFlow") as? UINavigationController {
                 if let optionMenu = navCon.visibleViewController as? OptionsTableViewController {
-                    optionMenu.menuItem = menuItem
+                    optionMenu.menuItem = MenuItem(otherMenuItem: menuItem)
                     tabCon.viewControllers?.insert(navCon, atIndex: 1)
                     navCon.tabBarItem.title = "Customize Order"
                     tabCon.selectedIndex = 1

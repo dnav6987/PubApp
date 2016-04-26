@@ -57,8 +57,9 @@ class OptionsTableViewController: UITableViewController {
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if let sideMenu = segue.destinationViewController as? SidesTableViewController {
-            menuItem.options = [menuItem.options[Int((sender?.accessibilityIdentifier)!)!]]
-            sideMenu.menuItem = menuItem
+            let newMenuItem = MenuItem(otherMenuItem: menuItem)
+            newMenuItem.options = [menuItem.options[Int((sender?.accessibilityIdentifier)!)!]]
+            sideMenu.menuItem = newMenuItem
             
         }
     }

@@ -19,7 +19,8 @@ class SidesTableViewController: UITableViewController {
         let menuItemWithOutSidesOrAddons = MenuItem(otherMenuItem: menuItem)
         menuItemWithOutSidesOrAddons.sides = [MenuOption]()
         menuItemWithOutSidesOrAddons.addOns = [MenuOption]()
-        descriptionLabel.text = menuItemWithOutSidesOrAddons.asStringAndPrice().string + "\n" + descriptionLabel.text!
+        let menuItemDescription = menuItemWithOutSidesOrAddons.asStringAndPrice()
+        descriptionLabel.text = menuItemDescription.string + "\n" + menuItemDescription.price.asPriceString()
         
         if menuItem.sides.count <= 1 {
             dispatch_async(dispatch_get_main_queue()) {
@@ -54,10 +55,11 @@ class SidesTableViewController: UITableViewController {
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if let toppingMenu = segue.destinationViewController as? ToppingsTableViewController {
-            if menuItem.sides.count > 1 {
-                menuItem.sides = [menuItem.sides[Int((sender?.accessibilityIdentifier)!)!]]
+            let newMenuItem = MenuItem(otherMenuItem: menuItem)
+            if newMenuItem.sides.count > 1 {
+                newMenuItem.sides = [newMenuItem.sides[Int((sender?.accessibilityIdentifier)!)!]]
             }
-            toppingMenu.menuItem = menuItem
+            toppingMenu.menuItem = newMenuItem
         }
     }
 }

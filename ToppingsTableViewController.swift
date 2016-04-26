@@ -18,7 +18,7 @@ class ToppingsTableViewController: UITableViewController {
         
         let menuItemWithOutAddons = MenuItem(otherMenuItem: menuItem)
         menuItemWithOutAddons.addOns = [MenuOption]()
-        descriptionLabel.text = menuItemWithOutAddons.asStringAndPrice().string
+        descriptionLabel.text = menuItemWithOutAddons.asStringAndPrice().string + "\n" + menuItemWithOutAddons.asStringAndPrice().price.asPriceString()
     }
     
     // MARK: - Table view data source
@@ -57,13 +57,16 @@ class ToppingsTableViewController: UITableViewController {
             }
         }
         
+        let newMenuItem = MenuItem(otherMenuItem: menuItem)
+        newMenuItem.addOns = selectedToppings
+        
         if var order = Order.defaults.arrayForKey(Order.ORDER_STRING) as? [String] {
-            order.append(menuItem.asStringAndPrice().string)
+            order.append(newMenuItem.asStringAndPrice().string)
             Order.defaults.setObject(order, forKey: Order.ORDER_STRING)
         }
         
         if var prices = Order.defaults.arrayForKey(Order.PRICES_STRING) as? [Float] {
-            prices.append(menuItem.asStringAndPrice().price)
+            prices.append(newMenuItem.asStringAndPrice().price)
             Order.defaults.setObject(prices, forKey: Order.PRICES_STRING)
         }
         

@@ -116,7 +116,7 @@ class OrderTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCellWithIdentifier("Item", forIndexPath: indexPath)
         if order != nil {
             cell.textLabel?.text = order[indexPath.row]
-            cell.detailTextLabel?.text = "\(prices[indexPath.row])"
+            cell.detailTextLabel?.text = prices[indexPath.row].asPriceString()
         }
         return cell
     }

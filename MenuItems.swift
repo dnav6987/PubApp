@@ -446,7 +446,7 @@ class MenuItem {
         if addOns.count > 0 {
             resultString += " Add " + addOns[0].description
             price += addOns[0].price
-            for i in 1..<addOns.count-1 {
+            for i in 1..<addOns.count {
                 resultString += ", Add " + addOns[i].description
                 price += addOns[i].price
             }

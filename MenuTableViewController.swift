@@ -1,5 +1,5 @@
 //
-//  TestTableViewController.swift
+//  MenuTableViewController.swift
 //  PubApp
 //
 //  Created by Dan Navarro on 4/23/16.
@@ -18,7 +18,6 @@ class MenuTableViewController: UITableViewController, UIPopoverPresentationContr
     }
 
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-//        performSegueWithIdentifier("ToDetailedMenu", sender: indexPath)
         if let detailedMenuPopover = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("DetailedMenuViewController") as? MenuItemViewController {
             detailedMenuPopover.menuItem = menuItems.menu[indexPath.section][indexPath.row]
             detailedMenuPopover.modalPresentationStyle = .Popover
@@ -31,23 +30,7 @@ class MenuTableViewController: UITableViewController, UIPopoverPresentationContr
             }
         }
     }
-    
-//    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-//        if let indexPath = sender as? NSIndexPath {
-//            if let detailedMenuPopover = segue.destinationViewController as? MenuItemViewController {
-//                detailedMenuPopover.menuItem = menuItems.menu[indexPath.section][indexPath.row]
-//                detailedMenuPopover.modalPresentationStyle = .Popover
-//                
-//                if let ppc = detailedMenuPopover.popoverPresentationController {
-//                    ppc.delegate = self
-//                    ppc.permittedArrowDirections = [.Up, .Down]
-//                    ppc.sourceView = tableView.cellForRowAtIndexPath(indexPath)?.contentView
-//                    presentViewController(detailedMenuPopover, animated: false, completion: nil)
-//                }
-//            }
-//        }
-//    }
-    
+
     // MARK: - Table view data source
 
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
