@@ -98,7 +98,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3uS-o8-9Py" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1915" y="2467"/>
+            <point key="canvasLocation" x="1106" y="907"/>
         </scene>
         <!--Sides-->
         <scene sceneID="qq4-5i-nRI">
@@ -156,7 +156,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4Wg-Jn-NGJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2675" y="2467"/>
+            <point key="canvasLocation" x="1866" y="907"/>
         </scene>
         <!--Add Ons & Toppings-->
         <scene sceneID="yx0-Es-tBY">
@@ -220,7 +220,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YOA-PL-4y3" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3439" y="2467"/>
+            <point key="canvasLocation" x="2630" y="907"/>
         </scene>
         <!--My Order-->
         <scene sceneID="4ya-JA-wBc">
@@ -285,7 +285,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ISH-XL-K6P" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1918" y="907"/>
+            <point key="canvasLocation" x="1918" y="1727"/>
         </scene>
         <!--Menu-->
         <scene sceneID="VVG-Zb-EEx">
@@ -351,7 +351,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Q9Y-OG-by1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1106" y="1701"/>
+            <point key="canvasLocation" x="1106" y="2521"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="sI7-0D-lyf">
@@ -391,26 +391,6 @@
             </objects>
             <point key="canvasLocation" x="1106" y="135"/>
         </scene>
-        <!--Item-->
-        <scene sceneID="ap4-dh-Bxn">
-            <objects>
-                <navigationController storyboardIdentifier="OrderFlow" automaticallyAdjustsScrollViewInsets="NO" id="WLr-TG-myn" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Item" id="Aer-fB-ALN"/>
-                    <toolbarItems/>
-                    <navigationItem key="navigationItem" id="vPw-jt-ung"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="zGR-fR-F6q">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="ChS-yP-Cod" kind="relationship" relationship="rootViewController" id="Y0i-Wg-U37"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="VtH-99-Z59" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1106" y="2467"/>
-        </scene>
         <!--My Order-->
         <scene sceneID="bJe-I8-fVF">
             <objects>
@@ -428,10 +408,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yyd-Zu-WX3" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1106" y="907"/>
+            <point key="canvasLocation" x="1106" y="1727"/>
         </scene>
     </scenes>
-    <inferredMetricsTieBreakers>
-        <segue reference="Y0i-Wg-U37"/>
-    </inferredMetricsTieBreakers>
 </document>

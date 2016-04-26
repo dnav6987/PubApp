@@ -21,9 +21,9 @@ class MenuTableViewController: UITableViewController, UIPopoverPresentationContr
     override func tableView(tableView: UITableView, accessoryButtonTappedForRowWithIndexPath indexPath: NSIndexPath) {
         if let detailedMenuPopover = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("DetailedMenuViewController") as? TextViewController {
             let menuItem = menuItems.menu[indexPath.section][indexPath.row]
-            var description = menuItem.name
-            if menuItem.description != "" { description += "\n" + menuItem.description }
-            for option in menuItem.options { description += "\n" + option.asString() }
+            var description = menuItem.description + (menuItem.description != "" ? "\n": "")
+            for option in menuItem.options { description += option.asString() + "\n" }
+            description.removeAtIndex(description.characters.endIndex.predecessor())
             
             detailedMenuPopover.text = description
             detailedMenuPopover.modalPresentationStyle = .Popover
@@ -32,7 +32,7 @@ class MenuTableViewController: UITableViewController, UIPopoverPresentationContr
                 ppc.delegate = self
                 ppc.permittedArrowDirections = [.Up, .Down]
                 ppc.sourceView = tableView.cellForRowAtIndexPath(indexPath)?.contentView
-                presentViewController(detailedMenuPopover, animated: false, completion: nil)
+                presentViewController(detailedMenuPopover, animated: true, completion: nil)
             }
         }
     }
