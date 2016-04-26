@@ -8,12 +8,12 @@
 
 /*
  TODOs
- make all labels have lines = 0 (they cut off on my phone)
- get all sides, toppings, options in one table view with 3 prototype cells and sections
- see if back button can be set programatically and look better
- 
- $ on prices
- make a menuItem as string function where it goes option, name, addons, price
+ -make all labels have lines = 0 (they cut off on my phone)
+ -get all sides, toppings, options in one table view with 3 prototype cells and sections?
+ -when you get to order from menu it ruins the navigation bar
+ -try to get segue from fake button from menu to detailed menu
+ -try to keep them all in tabview controller
+ -when there is no options and it autosegues, still need to make a button to progress in case they go back
 */
 import Foundation
 

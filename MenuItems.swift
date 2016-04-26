@@ -47,7 +47,7 @@ class MenuItems {
     init() {
         // APPETIZERS
         items = [
-            MenuItem(name: "Garlic - Herb Breadsticks with Marinara Sauce",
+            MenuItem(name: "Garlic-Herb Breadsticks with Marinara Sauce",
                 description: "",
                 options: [MenuOption(description: Options.SMALL, price: 2.25),
                     MenuOption(description: Options.LARGE, price: 3.75)],
@@ -94,9 +94,9 @@ class MenuItems {
                 type: foodTypes.APP),
             MenuItem(name: "Monterey Jack Cheese Quesadilla",
                 description: "",
-                options: [MenuOption(description: "Plain", price: 4.75),
-                    MenuOption(description: "Add Veggies", price: 5.50),
-                    MenuOption(description: "Add Chicken", price: 5.50)],
+                options: [MenuOption(description: "Plain", price: 4.75)],
+                addOns: [MenuOption(description: "Chicken", price: 0.75),
+                    MenuOption(description: "Veggies", price: 0.75)],
                 type: foodTypes.APP),
             
             // SALADS
@@ -129,7 +129,7 @@ class MenuItems {
                 type: foodTypes.SALAD),
             
             // PANINIS
-            MenuItem(name: "Chicken Pesto PAnino",
+            MenuItem(name: "Chicken Pesto Panino",
                 description: "Grilled chicken, pesto, roasted red peppers and mozzarella on an herbed ciabatta roll",
                 options: [MenuOption(description: Options.NO_OPTIONS, price: 6.25)],
                 type: foodTypes.PANINI),
@@ -154,8 +154,21 @@ class MenuItems {
             // Cold Sandwiches
             
             MenuItem(name: "Jack's Deli Sandwich",
-                description: "TODO need to work on this stull",
-                options: [MenuOption(description: Options.NO_OPTIONS, price: 5.50)],
+                description: "Turkey, Ham, Tuna or Chicken Salad on your choice of bread with lettuce & tomato",
+                options: [MenuOption(description: "Turkey", price: 5.50),
+                        MenuOption(description: "Ham", price: 5.50),
+                        MenuOption(description: "Tuna", price: 5.50),
+                        MenuOption(description: "Chicken Salad", price: 5.50)],
+                addOns: [MenuOption(description: "American Cheese", price: 0.75),
+                        MenuOption(description: "Swiss Cheese", price: 0.75),
+                        MenuOption(description: "Cheddar Cheese", price: 0.75),
+                        MenuOption(description: "White Bread", price: 0.00),
+                        MenuOption(description: "Wheat Bread", price: 0.00),
+                        MenuOption(description: "Rye Bread", price: 0.00),
+                        MenuOption(description: "Sourdough", price: 0.00),
+                        MenuOption(description: "Multi-grain Bread", price: 0.00),
+                        MenuOption(description: "Wrap", price: 0.00),
+                        MenuOption(description: "Ciabatta Roll", price: 0.50)],
                 type: foodTypes.COLD_SANDWICH),
             MenuItem(name: "Jack’s Double-Decker Turkey Club",
                 description: "",
@@ -388,6 +401,23 @@ class MenuItem {
         self.type = type
     }
     
+    init(name: String, description: String, options: [MenuOption], addOns: [MenuOption], type: String) {
+        self.name = name
+        self.description = description
+        self.options = options
+        self.addOns = addOns
+        self.type = type
+    }
+    
+    init(name: String, description: String, options: [MenuOption], sides: [MenuOption], addOns: [MenuOption], type: String) {
+        self.name = name
+        self.description = description
+        self.options = options
+        self.sides = sides
+        self.addOns = addOns
+        self.type = type
+    }
+    
     init(otherMenuItem: MenuItem) {
         self.name = otherMenuItem.name
         self.description = otherMenuItem.description
@@ -414,10 +444,10 @@ class MenuItem {
         }
             
         if addOns.count > 0 {
-            resultString += " " + addOns[0].description
+            resultString += " Add " + addOns[0].description
             price += addOns[0].price
             for i in 1..<addOns.count-1 {
-                resultString += ", " + addOns[i].description
+                resultString += ", Add " + addOns[i].description
                 price += addOns[i].price
             }
         }

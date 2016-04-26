@@ -301,7 +301,6 @@
                             <outlet property="delegate" destination="H1h-qO-2N1" id="thO-Up-9VW"/>
                         </connections>
                     </tableView>
-                    <tabBarItem key="tabBarItem" title="My Order" id="RVg-0L-uTy"/>
                     <navigationItem key="navigationItem" title="My Order" id="spD-qv-7wR"/>
                     <connections>
                         <outlet property="priceLabel" destination="tqo-cR-v3p" id="kVS-lf-K5S"/>
@@ -309,7 +308,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ISH-XL-K6P" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1106" y="907"/>
+            <point key="canvasLocation" x="1918" y="907"/>
         </scene>
         <!--Menu-->
         <scene sceneID="VVG-Zb-EEx">
@@ -319,6 +318,15 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
+                        <button key="tableFooterView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="28J-ka-m6T">
+                            <rect key="frame" x="0.0" y="212" width="600" height="0.0"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <connections>
+                                <segue destination="KtT-1S-NuH" kind="popoverPresentation" identifier="ToDetailedMenu" popoverAnchorView="28J-ka-m6T" id="gck-Uj-Mfj">
+                                    <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
+                                </segue>
+                            </connections>
+                        </button>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="detailDisclosureButton" indentationWidth="10" reuseIdentifier="MenuCell" textLabel="eSJ-RA-b1k" rowHeight="60" style="IBUITableViewCellStyleDefault" id="Cr2-rS-YOf">
                                 <rect key="frame" x="0.0" y="114" width="600" height="60"/>
@@ -375,7 +383,7 @@
                     </tabBar>
                     <connections>
                         <segue destination="JDd-5s-NnB" kind="relationship" relationship="viewControllers" id="Wvw-bZ-xYS"/>
-                        <segue destination="H1h-qO-2N1" kind="relationship" relationship="viewControllers" id="gc5-TO-dcY"/>
+                        <segue destination="IS2-cU-YHZ" kind="relationship" relationship="viewControllers" id="gc5-TO-dcY"/>
                         <segue destination="oB3-R5-oPF" kind="relationship" relationship="viewControllers" id="upq-Y5-Oli"/>
                     </connections>
                 </tabBarController>
@@ -405,7 +413,6 @@
         <!--Navigation Controller-->
         <scene sceneID="ap4-dh-Bxn">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="VtH-99-Z59" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="WLr-TG-myn" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="vPw-jt-ung"/>
@@ -418,8 +425,28 @@
                         <segue destination="ChS-yP-Cod" kind="relationship" relationship="rootViewController" id="Y0i-Wg-U37"/>
                     </connections>
                 </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="VtH-99-Z59" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1918" y="-633"/>
+        </scene>
+        <!--My Order-->
+        <scene sceneID="bJe-I8-fVF">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="IS2-cU-YHZ" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="My Order" id="RVg-0L-uTy"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Lph-kG-muZ">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="H1h-qO-2N1" kind="relationship" relationship="rootViewController" id="sRf-6E-3lK"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="yyd-Zu-WX3" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1106" y="907"/>
         </scene>
     </scenes>
 </document>
