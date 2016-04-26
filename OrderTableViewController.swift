@@ -69,25 +69,32 @@ class OrderTableViewController: UITableViewController {
     }
     
     func confirmOrder(sender:UIButton!) {
-        // HUGE TODO
+        let connection = NetworkConnection()
+        connection.connect("127.0.0.1", port: 5555)
+        if connection.outputStream != nil {
+            var orderDataString = "[ \n\n"
+            for item in order { orderDataString += item + "\n\n"}
+            orderDataString += "price: \(totalPrice)\n\nfrom user: DNAV\n\n]"
+            connection.outputStream!.write(orderDataString, maxLength: orderDataString.characters.count)
+            
+            if connection.status != NetworkConnection.StatusConstants.SEND {
+                couldNotSendAlert()
+            } else {
+                clearCart(UIButton())
+            }
+        } else {
+            couldNotSendAlert()
+        }
         
-        let addr = "127.0.0.1"
-        let port = 5555
+        connection.close()
+    }
+    
+    func couldNotSendAlert() {
+        let alertController = UIAlertController(title: "Error", message:
+            "Oops! The server could not be reached. Try submitting your order at a later time or just call it in at\n(207) 725-3888", preferredStyle: UIAlertControllerStyle.Alert)
+        alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default,handler: nil))
         
-        var inp :NSInputStream?
-        var out :NSOutputStream?
-        
-        NSStream.getStreamsToHostWithName(addr, port: port, inputStream: &inp, outputStream: &out)
-        
-        let outputStream = out!
-        outputStream.open()
-
-        var orderDataString = "[ "
-        for item in order { orderDataString += item + " "}
-        orderDataString += "]"
-        outputStream.write(orderDataString, maxLength: orderDataString.characters.count)
-        
-        clearCart(UIButton())
+        self.presentViewController(alertController, animated: true, completion: nil)
     }
     
     func cancelOrder(sender:UIButton!) {
