@@ -51,7 +51,6 @@ class ToppingsTableViewController: UITableViewController {
         var selectedToppings = [MenuOption]()
         for cell in tableView.visibleCells {
             if let cellSwitch = cell.accessoryView as? UISwitch {
-                print("\(Int(cell.accessibilityIdentifier!)!)")
                 if cellSwitch.on {
                     selectedToppings.append(menuItem.addOns[Int(cell.accessibilityIdentifier!)!])
                 }
@@ -68,8 +67,8 @@ class ToppingsTableViewController: UITableViewController {
             Order.defaults.setObject(prices, forKey: Order.PRICES_STRING)
         }
         
-        if let test = segue.destinationViewController as? UITabBarController {
-            test.selectedIndex = 1
+        if let tabCon = segue.destinationViewController as? UITabBarController {
+            tabCon.selectedIndex = 1
         }
     }
 }

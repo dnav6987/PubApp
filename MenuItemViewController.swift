@@ -19,11 +19,14 @@ class MenuItemViewController: UIViewController {
     @IBOutlet weak var startOrderButton: UIButton!
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if let TEST = segue.destinationViewController as? UITabBarController {
-            TEST.selectedIndex = 3
-            if let navCon = TEST.viewControllers![TEST.selectedIndex] as? UINavigationController {
+        
+        if let tabCon = segue.destinationViewController as? UITabBarController {
+            if let navCon = storyboard?.instantiateViewControllerWithIdentifier("OrderFlow") as? UINavigationController {
                 if let optionMenu = navCon.visibleViewController as? OptionsTableViewController {
                     optionMenu.menuItem = menuItem
+                    tabCon.viewControllers?.insert(navCon, atIndex: 1)
+                    navCon.tabBarItem.title = "Customize Order"
+                    tabCon.selectedIndex = 1
                 }
             }
         }
