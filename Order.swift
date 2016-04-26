@@ -10,10 +10,8 @@
  TODOs
  -make all labels have lines = 0 (they cut off on my phone)
  -get all sides, toppings, options in one table view with 3 prototype cells and sections?
- -when you get to order from menu it ruins the navigation bar
- -try to get segue from fake button from menu to detailed menu
- -try to keep them all in tabview controller
  -when there is no options and it autosegues, still need to make a button to progress in case they go back
+ -add/delete the tab where things are customized. also, do something about it not having a menuItem, causes crash
 */
 import Foundation
 

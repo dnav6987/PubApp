@@ -19,9 +19,12 @@ class MenuItemViewController: UIViewController {
     @IBOutlet weak var startOrderButton: UIButton!
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if let navCon = segue.destinationViewController as? UINavigationController {
-            if let optionMenu = navCon.visibleViewController as? OptionsTableViewController {
-                optionMenu.menuItem = menuItem
+        if let TEST = segue.destinationViewController as? UITabBarController {
+            TEST.selectedIndex = 3
+            if let navCon = TEST.viewControllers![TEST.selectedIndex] as? UINavigationController {
+                if let optionMenu = navCon.visibleViewController as? OptionsTableViewController {
+                    optionMenu.menuItem = menuItem
+                }
             }
         }
     }

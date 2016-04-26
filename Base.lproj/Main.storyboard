@@ -25,7 +25,7 @@
                                 </constraints>
                                 <state key="normal" title="Add to order"/>
                                 <connections>
-                                    <segue destination="WLr-TG-myn" kind="show" id="Wbm-Sg-aXz"/>
+                                    <segue destination="uIJ-7i-kmA" kind="show" id="6Oz-Gb-RBn"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DDB-l8-Et3">
@@ -54,7 +54,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6o5-4s-tV6" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1106" y="-633"/>
+            <point key="canvasLocation" x="2648" y="135"/>
         </scene>
         <!--Options-->
         <scene sceneID="xyy-J0-YnF">
@@ -124,7 +124,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3uS-o8-9Py" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2727" y="-633"/>
+            <point key="canvasLocation" x="1915" y="2467"/>
         </scene>
         <!--Sides-->
         <scene sceneID="qq4-5i-nRI">
@@ -182,7 +182,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4Wg-Jn-NGJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3487" y="-633"/>
+            <point key="canvasLocation" x="2675" y="2467"/>
         </scene>
         <!--Add Ons & Toppings-->
         <scene sceneID="yx0-Es-tBY">
@@ -204,7 +204,7 @@
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <state key="normal" title="Add To Cart"/>
                             <connections>
-                                <segue destination="uIJ-7i-kmA" kind="show" id="gy8-V1-t1k"/>
+                                <segue destination="uIJ-7i-kmA" kind="presentation" id="CZu-LY-i4Q"/>
                             </connections>
                         </button>
                         <prototypes>
@@ -245,7 +245,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YOA-PL-4y3" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4251" y="-633"/>
+            <point key="canvasLocation" x="3439" y="2467"/>
         </scene>
         <!--My Order-->
         <scene sceneID="4ya-JA-wBc">
@@ -385,6 +385,7 @@
                         <segue destination="JDd-5s-NnB" kind="relationship" relationship="viewControllers" id="Wvw-bZ-xYS"/>
                         <segue destination="IS2-cU-YHZ" kind="relationship" relationship="viewControllers" id="gc5-TO-dcY"/>
                         <segue destination="oB3-R5-oPF" kind="relationship" relationship="viewControllers" id="upq-Y5-Oli"/>
+                        <segue destination="WLr-TG-myn" kind="relationship" relationship="viewControllers" id="JsA-du-7aC"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mCH-Ka-drq" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -410,10 +411,11 @@
             </objects>
             <point key="canvasLocation" x="1106" y="135"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--Item-->
         <scene sceneID="ap4-dh-Bxn">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="WLr-TG-myn" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Item" id="Aer-fB-ALN"/>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="vPw-jt-ung"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="zGR-fR-F6q">
@@ -427,7 +429,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VtH-99-Z59" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1918" y="-633"/>
+            <point key="canvasLocation" x="1106" y="2467"/>
         </scene>
         <!--My Order-->
         <scene sceneID="bJe-I8-fVF">
@@ -449,4 +451,7 @@
             <point key="canvasLocation" x="1106" y="907"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="6Oz-Gb-RBn"/>
+    </inferredMetricsTieBreakers>
 </document>
