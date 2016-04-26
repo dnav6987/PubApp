@@ -39,7 +39,10 @@ class SidesTableViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if menuItem != nil { return menuItem.sides.count }
+        if menuItem != nil {
+            if menuItem.sides.count == 0 { return 1 }
+            return menuItem.sides.count
+        }
         return 0
     }
     
@@ -47,8 +50,13 @@ class SidesTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCellWithIdentifier("SideCell", forIndexPath: indexPath)
         cell.accessibilityIdentifier = "\(indexPath.row)"
         
-        cell.textLabel?.text = menuItem.sides[indexPath.row].description
-        cell.detailTextLabel?.text = menuItem.sides[indexPath.row].price.asPriceString()
+        if menuItem.sides.count == 0 {
+            cell.textLabel?.text = "No side options. Press to continue to sides"
+            cell.detailTextLabel?.text = ""
+        } else {
+            cell.textLabel?.text = menuItem.sides[indexPath.row].description
+            cell.detailTextLabel?.text = menuItem.sides[indexPath.row].price.asPriceString()
+        }
         
         return cell
     }

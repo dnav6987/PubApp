@@ -206,7 +206,7 @@
                             <fontDescription key="fontDescription" type="system" pointSize="20"/>
                             <state key="normal" title="Add To Cart"/>
                             <connections>
-                                <segue destination="uIJ-7i-kmA" kind="presentation" id="CZu-LY-i4Q"/>
+                                <segue destination="uIJ-7i-kmA" kind="presentation" identifier="ToCart" id="CZu-LY-i4Q"/>
                             </connections>
                         </button>
                         <prototypes>

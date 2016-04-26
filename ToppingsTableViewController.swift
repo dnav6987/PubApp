@@ -28,7 +28,9 @@ class ToppingsTableViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if menuItem != nil { return menuItem.addOns.count }
+        if menuItem != nil {
+            if menuItem.addOns.count == 0 { return 1 }
+            return menuItem.addOns.count }
         return 0
     }
     
@@ -37,12 +39,17 @@ class ToppingsTableViewController: UITableViewController {
         
         cell.accessibilityIdentifier = "\(indexPath.row)"
         
-        cell.textLabel?.text = menuItem.addOns[indexPath.row].description
-        cell.detailTextLabel?.text = menuItem.addOns[indexPath.row].price.asPriceString()
+        if menuItem.addOns.count == 0 {
+            cell.textLabel?.text = "No toppings options. Continue to cart"
+            cell.detailTextLabel?.text = ""
+        } else {
+            cell.textLabel?.text = menuItem.addOns[indexPath.row].description
+            cell.detailTextLabel?.text = menuItem.addOns[indexPath.row].price.asPriceString()
         
-        let offSwitch = UISwitch(frame: CGRectZero) as UISwitch
-        offSwitch.on = false
-        cell.accessoryView = offSwitch
+            let offSwitch = UISwitch(frame: CGRectZero) as UISwitch
+            offSwitch.on = false
+            cell.accessoryView = offSwitch
+        }
         
         return cell
     }

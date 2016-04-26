@@ -22,7 +22,7 @@ class OptionsTableViewController: UITableViewController {
         
         descriptionLabel.text = menuItem.name
         
-        if menuItem.options.count == 1 {
+        if menuItem.options.count <= 1 {
             dispatch_async(dispatch_get_main_queue()) {
                 [unowned self] in
                 let fakeSender = UIButton()
@@ -39,7 +39,10 @@ class OptionsTableViewController: UITableViewController {
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if menuItem != nil { return menuItem.options.count }
+        if menuItem != nil {
+            if menuItem.options.count == 0 { return 1 }
+            return menuItem.options.count
+        }
         return 0
     }
 
@@ -47,8 +50,13 @@ class OptionsTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCellWithIdentifier("OptionCell", forIndexPath: indexPath)
         cell.accessibilityIdentifier = "\(indexPath.row)"
 
-        cell.textLabel?.text = menuItem.options[indexPath.row].description
-        cell.detailTextLabel?.text = menuItem.options[indexPath.row].price.asPriceString()
+        if menuItem.options.count == 0 {
+            cell.textLabel?.text = "No options. Press to continue to sides"
+            cell.detailTextLabel?.text = ""
+        } else {
+            cell.textLabel?.text = menuItem.options[indexPath.row].description
+            cell.detailTextLabel?.text = menuItem.options[indexPath.row].price.asPriceString()
+        }
 
         return cell
     }
