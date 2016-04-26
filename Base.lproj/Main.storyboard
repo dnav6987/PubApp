@@ -3,13 +3,12 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
-        <!--Menu Item View Controller-->
+        <!--Text View Controller-->
         <scene sceneID="9fp-BC-6Gu">
             <objects>
-                <viewController storyboardIdentifier="DetailedMenuViewController" id="KtT-1S-NuH" customClass="MenuItemViewController" customModule="PubApp" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="DetailedMenuViewController" id="KtT-1S-NuH" customClass="TextViewController" customModule="PubApp" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Yvu-8Z-pb3"/>
                         <viewControllerLayoutGuide type="bottom" id="bSV-mL-VLX"/>
@@ -18,38 +17,23 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dny-TO-Ea0">
-                                <rect key="frame" x="20" y="20" width="560" height="30"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="30" id="Dj8-r4-psu"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                <state key="normal" title="Add to order"/>
-                                <connections>
-                                    <segue destination="uIJ-7i-kmA" kind="show" id="6Oz-Gb-RBn"/>
-                                </connections>
-                            </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DDB-l8-Et3">
-                                <rect key="frame" x="20" y="58" width="560" height="20"/>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="nqJ-Fm-9Ku">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="leadingMargin" secondItem="DDB-l8-Et3" secondAttribute="leading" id="5tc-ts-z1e"/>
-                            <constraint firstItem="DDB-l8-Et3" firstAttribute="top" secondItem="dny-TO-Ea0" secondAttribute="bottom" constant="8" id="8SB-57-pGQ"/>
-                            <constraint firstItem="dny-TO-Ea0" firstAttribute="top" secondItem="Yvu-8Z-pb3" secondAttribute="bottom" id="RKN-51-40U"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="dny-TO-Ea0" secondAttribute="trailing" id="eAO-dH-fvZ"/>
-                            <constraint firstItem="dny-TO-Ea0" firstAttribute="centerX" secondItem="H0o-kb-igs" secondAttribute="centerX" id="iDL-RU-F72"/>
-                            <constraint firstAttribute="leadingMargin" secondItem="dny-TO-Ea0" secondAttribute="leading" id="jWw-up-1af"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="DDB-l8-Et3" secondAttribute="trailing" id="o3G-83-8QA"/>
+                            <constraint firstItem="nqJ-Fm-9Ku" firstAttribute="top" secondItem="H0o-kb-igs" secondAttribute="top" id="E5z-If-fqq"/>
+                            <constraint firstItem="nqJ-Fm-9Ku" firstAttribute="leading" secondItem="H0o-kb-igs" secondAttribute="leading" id="RjX-Ne-dR0"/>
+                            <constraint firstAttribute="trailing" secondItem="nqJ-Fm-9Ku" secondAttribute="trailing" id="ezG-em-xKR"/>
+                            <constraint firstItem="nqJ-Fm-9Ku" firstAttribute="bottom" secondItem="bSV-mL-VLX" secondAttribute="top" id="idD-nT-T2q"/>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="descriptionLabel" destination="DDB-l8-Et3" id="xJh-0d-YMX"/>
-                        <outlet property="startOrderButton" destination="dny-TO-Ea0" id="0Bt-W7-Yna"/>
+                        <outlet property="textView" destination="nqJ-Fm-9Ku" id="OqZ-nP-doM"/>
                         <outlet property="view" destination="H0o-kb-igs" id="iaD-Ne-5ud"/>
                     </connections>
                 </viewController>
@@ -107,18 +91,7 @@
                             <outlet property="delegate" destination="ChS-yP-Cod" id="h55-bd-xPR"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Options" id="DS6-0J-Rxg">
-                        <barButtonItem key="leftBarButtonItem" id="GPf-cQ-elQ">
-                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="kSV-JK-qr3">
-                                <rect key="frame" x="20" y="7" width="133" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Back"/>
-                                <connections>
-                                    <action selector="back:" destination="ChS-yP-Cod" eventType="touchUpInside" id="noZ-jD-M0t"/>
-                                </connections>
-                            </button>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="Options" id="DS6-0J-Rxg"/>
                     <connections>
                         <outlet property="descriptionLabel" destination="vNq-CE-wjn" id="Ze3-ko-SGi"/>
                     </connections>
@@ -349,6 +322,9 @@
                                         </label>
                                     </subviews>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <segue destination="ChS-yP-Cod" kind="show" id="SlW-cn-lYO"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                     </tableView>
@@ -456,6 +432,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="CZu-LY-i4Q"/>
+        <segue reference="Y0i-Wg-U37"/>
     </inferredMetricsTieBreakers>
 </document>

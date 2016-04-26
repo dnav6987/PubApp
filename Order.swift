@@ -6,10 +6,6 @@
 //  Copyright © 2016 Dan Navarro. All rights reserved.
 //
 
-/*
- TODOs
- -when there is no options and it autosegues, still need to make a button to progress in case they go back
-*/
 import Foundation
 
 struct Order {

@@ -10,10 +10,6 @@ import UIKit
 
 class OptionsTableViewController: UITableViewController {
     var menuItem: MenuItem!
-    
-    @IBAction func back(sender: UIButton) {
-        dismissViewControllerAnimated(true, completion: nil)
-    }
 
     @IBOutlet weak var descriptionLabel: UILabel!
     
