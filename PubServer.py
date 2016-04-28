@@ -14,7 +14,9 @@ class Server:
     def __init__(self, server_addr = DEFAULT_ADDR):
         thread.start_new_thread(self.network_loop, server_addr)
 
-        self.GUI = Display()
+        self.customers = dict()
+
+        self.GUI = Display(self)
         self.GUI.mainloop()
 
     def network_loop(self, name, port):
@@ -39,27 +41,31 @@ class Server:
         connection_socket.send('rcv')
         connection_socket.close()
         user, order = self.format_request(request_message)
-        self.GUI.takeOrder(order)
+        self.customers[user] = connection_socket
+        self.GUI.takeOrder(user, order)
 
     def format_request(self, request):
-        # TODO check for empty
         request = request.split('\n\n')
         user = request[-2].split('from user: ')[1] # TODO
         request = request[1:-3]
         
-        order = ''
         for item in request:
-            name = item.split('with')
-            order += name[0]
-            # TODO all messed up
-            # if len(name) > 1:
-            #     sides = name[1].split('Add')
-            #     order += '\n\twith ' + sides[0]
+            item = item.split()
+
+            word_index = 0 
+            while word_index < len(item):
+                if item[word_index] == 'with' or item[word_index] == 'Add':
+                    item.insert(word_index, '\n\t')
+                    word_index += 1
+                word_index += 1
             
-            # for topping in sides[1:]:
-            #     order += '\n\tAdd' + topping
+            order = ' '.join(item)
 
         return user, order
+
+    def send_msg(self, customer_id, response):
+        print 'sending', response, 'to', self.customers[customer_id]
+
 
 if __name__=='__main__':
     addr = None

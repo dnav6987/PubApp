@@ -1,5 +1,4 @@
 from Tkinter import Tk, Button, Label, OptionMenu, StringVar
-from tkFont import Font
 from ttk import Treeview
 
 class ResponseCodes:
@@ -13,13 +12,14 @@ class ResponseCodes:
         return [ResponseCodes.RCV, ResponseCodes.RDY, ResponseCodes.ERR_ID, ResponseCodes.ERR]
 
 class Display:
-    def __init__(self):
+    def __init__(self, controller):
+        self.controller = controller
+
         self.currIndex = 0
 
         # initialize the GUI
         self.app = Tk()
-        self.app.title('Tic Tac Toe')
-        self.font = Font(family="Courier", size=16)
+        self.app.title('Jack Magee\'s Pub')
 
         self.tree = Treeview(self.app, height=30)
         self.tree["columns"]=("one", "two")
@@ -40,15 +40,16 @@ class Display:
     def OnDoubleClick(self, event):
         item = self.tree.selection()[0]
         response =  self.tree.item(item,"text")
+        customer_id = self.tree.item(self.tree.parent(item),"text")
 
         for code in ResponseCodes.codes():
             if response == code:
-                print "sending:", code
+                self.controller.send_msg(customer_id, response)
                 break
 
-    def takeOrder(self, order):
+    def takeOrder(self, customer_id, order):
         thisRow = str(self.currIndex)
-        self.tree.insert("", self.currIndex, thisRow, text="B6151")
+        self.tree.insert("", self.currIndex, thisRow, text=customer_id)
         self.tree.insert(thisRow, 0, text=ResponseCodes.RDY, values=("", "Ready For Pick Up"))
         self.tree.insert(thisRow, 1, text=ResponseCodes.ERR_ID, values=("", "Invalid ID"))
         self.tree.insert(thisRow, 2, text=ResponseCodes.ERR, values=("", "Miscellanious Error"))
