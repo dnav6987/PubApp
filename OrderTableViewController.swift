@@ -13,6 +13,13 @@ class OrderTableViewController: UITableViewController {
     var order: [String]!
     var prices: [Float]!
     
+    struct AlertMessages {
+        static let SERVER_ERROR = "Oops! The server could not be reached. Try submitting your order at a later time or just call it in at\n(207) 725-3888"
+        static let EMPTY_CART = "Oops! Cannot place an empty order."
+        static let RCVD = "Your order has been recieved!"
+    }
+    
+    
     @IBOutlet weak var priceLabel: UILabel!
     
     var totalPrice: Float = 0.0 {
@@ -69,29 +76,48 @@ class OrderTableViewController: UITableViewController {
     }
     
     func confirmOrder(sender:UIButton!) {
-        let connection = NetworkConnection()
-        connection.connect("127.0.0.1", port: 5555)
-        if connection.outputStream != nil {
-            var orderDataString = "[ \n\n"
-            for item in order { orderDataString += item + "\n\n"}
-            orderDataString += "price: \(totalPrice)\n\nfrom user: DNAV\n\n]"
-            connection.outputStream!.write(orderDataString, maxLength: orderDataString.characters.count)
-            
-            if connection.status != NetworkConnection.StatusConstants.SEND {
-                couldNotSendAlert()
+        if order.count != 0 {
+            let connection = NetworkConnection()
+            connection.connect("127.0.0.1", port: 5555)
+            if connection.outputStream != nil {
+                var orderDataString = "[ \n\n"
+                for item in order { orderDataString += item + "\n\n"}
+                orderDataString += "price: \(totalPrice)\n\nfrom user: DNAV\n\n]"
+                connection.outputStream!.write(orderDataString, maxLength: orderDataString.characters.count)
+                
+                if connection.status != NetworkConnection.StatusConstants.SEND {
+                    alert("Error", message: OrderTableViewController.AlertMessages.SERVER_ERROR)
+                } else {
+                    var buffer = [UInt8](count: 3, repeatedValue: 0)
+                    let start = NSDate()
+                    while true {
+                        connection.inputStream?.read(&buffer, maxLength: buffer.count)
+                        
+                        if String(bytes: buffer, encoding: NSUTF8StringEncoding) == "rcv" {
+                            alert("Success", message: OrderTableViewController.AlertMessages.RCVD)
+                            clearCart(UIButton())
+                            break
+                        }
+                        
+                        if NSDate().timeIntervalSinceDate(start) >= 3 {
+                            alert("Error", message: OrderTableViewController.AlertMessages.SERVER_ERROR)
+                            break
+                        }
+                    }
+                }
             } else {
-                clearCart(UIButton())
+                alert("Error", message: OrderTableViewController.AlertMessages.SERVER_ERROR)
             }
+            
+            connection.close()
         } else {
-            couldNotSendAlert()
+            alert("Error", message: OrderTableViewController.AlertMessages.EMPTY_CART)
         }
-        
-        connection.close()
     }
     
-    func couldNotSendAlert() {
-        let alertController = UIAlertController(title: "Error", message:
-            "Oops! The server could not be reached. Try submitting your order at a later time or just call it in at\n(207) 725-3888", preferredStyle: UIAlertControllerStyle.Alert)
+    func alert(title: String, message: String) {
+        let alertController = UIAlertController(title: title, message:
+            message, preferredStyle: UIAlertControllerStyle.Alert)
         alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default,handler: nil))
         
         self.presentViewController(alertController, animated: true, completion: nil)

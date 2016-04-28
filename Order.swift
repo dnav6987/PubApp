@@ -8,6 +8,12 @@
 
 import Foundation
 
+/*
+ - add a name and ID fields in order view (perhaps make a UIViewcontroller that has the current order view plus the additional fields
+ - once the order is placed, put a loading spinner and wait for response from server
+- respond with alert (order recieved, could not reach server, invalid ID)
+ */
+
 struct Order {
     static var defaults = NSUserDefaults.standardUserDefaults()
     static let ORDER_STRING = "Order"
