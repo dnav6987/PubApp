@@ -10,22 +10,19 @@
 
 import UIKit
 
+protocol NetworkConnectionDelegate {
+    func alert(title: String, message: String)
+}
+
 class NetworkConnection: NSObject, NSStreamDelegate {
-    struct StatusConstants {
-        static let ERROR = "ERR"
-        static let OPEN = "OPEN"
-        static let SEND = "SEND"
-        static let RCV = "RCV"
-    }
-    
     var host:String?
     var port:Int?
     var inputStream: NSInputStream?
     var outputStream: NSOutputStream?
     var status = ""
+    var delegate: NetworkConnectionDelegate!
     
     func connect(host: String, port: Int) {
-        
         self.host = host
         self.port = port
         
@@ -36,6 +33,10 @@ class NetworkConnection: NSObject, NSStreamDelegate {
             // Set delegate
             inputStream!.delegate = self
             outputStream!.delegate = self
+            
+            // Schedule
+            inputStream!.scheduleInRunLoop(.mainRunLoop(), forMode: NSDefaultRunLoopMode)
+            outputStream!.scheduleInRunLoop(.mainRunLoop(), forMode: NSDefaultRunLoopMode)
             
             // Open!
             inputStream!.open()
@@ -48,14 +49,24 @@ class NetworkConnection: NSObject, NSStreamDelegate {
             switch eventCode {
             case NSStreamEvent.ErrorOccurred:
                 print("input: ErrorOccurred: \(aStream.streamError?.description)")
-                status = StatusConstants.ERROR
             case NSStreamEvent.OpenCompleted:
                 print("input: OpenCompleted")
-                status = StatusConstants.OPEN
             case NSStreamEvent.HasBytesAvailable:
                 print("input: HasBytesAvailable")
-                status = StatusConstants.RCV
-                                
+                
+                var buffer = [UInt8](count: 3, repeatedValue: 0)
+                inputStream!.read(&buffer, maxLength: buffer.count)
+                
+                if String(bytes: buffer, encoding: NSUTF8StringEncoding) == "rdy" {
+                    if let otvc = delegate as? OrderTableViewController {
+                        if let tbc = otvc.tabBarController {
+                            tbc.selectedIndex = 1
+                            delegate.alert("Ready For Pick Up", message: AlertMessages.RDY)
+                            inputStream!.close()
+                        }
+                    }
+                }
+                
             default:
                 break
             }
@@ -64,24 +75,14 @@ class NetworkConnection: NSObject, NSStreamDelegate {
             switch eventCode {
             case NSStreamEvent.ErrorOccurred:
                 print("output: ErrorOccurred: \(aStream.streamError?.description)")
-                status = StatusConstants.ERROR
             case NSStreamEvent.OpenCompleted:
                 print("output: OpenCompleted")
-                status = StatusConstants.OPEN
             case NSStreamEvent.HasSpaceAvailable:
                 print("output: HasSpaceAvailable")
-                status = StatusConstants.SEND
                 
             default:
                 break
             }
-        }
-    }
-    
-    func close() {
-        if inputStream != nil && outputStream != nil {
-            inputStream?.close()
-            outputStream?.close()
         }
     }
 }

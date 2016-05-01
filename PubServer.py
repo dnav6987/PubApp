@@ -39,7 +39,6 @@ class Server:
         request_message = connection_socket.recv(2048)
         print 'recieved request:', request_message, 'from:', addr
         connection_socket.send('rcv')
-        connection_socket.close()
         user, order = self.format_request(request_message)
         self.customers[user] = connection_socket
         self.GUI.takeOrder(user, order)
@@ -49,6 +48,7 @@ class Server:
         user = request[-2].split('from user: ')[1] # TODO
         request = request[1:-3]
         
+        order = ''
         for item in request:
             item = item.split()
 
@@ -59,13 +59,15 @@ class Server:
                     word_index += 1
                 word_index += 1
             
-            order = ' '.join(item)
+            order += ' '.join(item) + '\n'
 
         return user, order
 
     def send_msg(self, customer_id, response):
         print 'sending', response, 'to', self.customers[customer_id]
-
+        self.customers[customer_id].send(response)
+        del self.customers[customer_id]
+        self.cs.close()
 
 if __name__=='__main__':
     addr = None

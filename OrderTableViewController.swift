@@ -9,16 +9,16 @@
 import UIKit
 import Foundation
 
-class OrderTableViewController: UITableViewController {
+struct AlertMessages {
+    static let SERVER_ERROR = "Oops! The server could not be reached. Try submitting your order at a later time or just call it in at\n(207) 725-3888"
+    static let EMPTY_CART = "Oops! Cannot place an empty order."
+    static let RCVD = "Your order has been recieved! Thank you for ordering from Jack Magee's Pub."
+    static let RDY = "Your order is ready for pick up. Enjoy your meal."
+}
+
+class OrderTableViewController: UITableViewController, NetworkConnectionDelegate {
     var order: [String]!
     var prices: [Float]!
-    
-    struct AlertMessages {
-        static let SERVER_ERROR = "Oops! The server could not be reached. Try submitting your order at a later time or just call it in at\n(207) 725-3888"
-        static let EMPTY_CART = "Oops! Cannot place an empty order."
-        static let RCVD = "Your order has been recieved!"
-    }
-    
     
     @IBOutlet weak var priceLabel: UILabel!
     
@@ -48,9 +48,17 @@ class OrderTableViewController: UITableViewController {
                                action: #selector(OrderTableViewController.cancelOrder(_:)))
     }()
     
+    var connection = NetworkConnection()
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        connection.delegate = self
+    }
+    
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         refresh()
+        connection.connect("127.0.0.1", port: 5555)
     }
     
     func refresh() {
@@ -77,41 +85,41 @@ class OrderTableViewController: UITableViewController {
     
     func confirmOrder(sender:UIButton!) {
         if order.count != 0 {
-            let connection = NetworkConnection()
-            connection.connect("127.0.0.1", port: 5555)
-            if connection.outputStream != nil {
+            if connection.outputStream != nil && connection.inputStream != nil {
+                connection.outputStream!.open()
+                
                 var orderDataString = "[ \n\n"
                 for item in order { orderDataString += item + "\n\n"}
                 orderDataString += "price: \(totalPrice)\n\nfrom user: DNAV\n\n]"
-                connection.outputStream!.write(orderDataString, maxLength: orderDataString.characters.count)
                 
-                if connection.status != NetworkConnection.StatusConstants.SEND {
-                    alert("Error", message: OrderTableViewController.AlertMessages.SERVER_ERROR)
-                } else {
-                    var buffer = [UInt8](count: 3, repeatedValue: 0)
-                    let start = NSDate()
-                    while true {
-                        connection.inputStream?.read(&buffer, maxLength: buffer.count)
-                        
+                connection.outputStream!.write(orderDataString, maxLength: orderDataString.characters.count)
+                connection.outputStream!.close()
+                
+                let start = NSDate()
+                
+                while true {
+                    if connection.inputStream!.hasBytesAvailable {
+                        var buffer = [UInt8](count: 3, repeatedValue: 0)
+                        connection.inputStream!.read(&buffer, maxLength: buffer.count)
+                                                
                         if String(bytes: buffer, encoding: NSUTF8StringEncoding) == "rcv" {
-                            alert("Success", message: OrderTableViewController.AlertMessages.RCVD)
+                            alert("Success", message: AlertMessages.RCVD)
                             clearCart(UIButton())
                             break
                         }
-                        
-                        if NSDate().timeIntervalSinceDate(start) >= 3 {
-                            alert("Error", message: OrderTableViewController.AlertMessages.SERVER_ERROR)
-                            break
-                        }
+                    }
+                    
+                    if NSDate().timeIntervalSinceDate(start) >= 3 {
+                        alert("Error", message: AlertMessages.SERVER_ERROR)
+                        break
                     }
                 }
             } else {
-                alert("Error", message: OrderTableViewController.AlertMessages.SERVER_ERROR)
+                alert("Error", message: AlertMessages.SERVER_ERROR)
             }
             
-            connection.close()
         } else {
-            alert("Error", message: OrderTableViewController.AlertMessages.EMPTY_CART)
+            alert("Error", message: AlertMessages.EMPTY_CART)
         }
     }
     

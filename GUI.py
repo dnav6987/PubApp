@@ -1,16 +1,6 @@
 from Tkinter import Tk, Button, Label, OptionMenu, StringVar
 from ttk import Treeview
 
-class ResponseCodes:
-    RCV = "rcv"
-    RDY = "rdy"
-    ERR_ID = "eid"
-    ERR = "err"
-
-    @staticmethod
-    def codes():
-        return [ResponseCodes.RCV, ResponseCodes.RDY, ResponseCodes.ERR_ID, ResponseCodes.ERR]
-
 class Display:
     def __init__(self, controller):
         self.controller = controller
@@ -40,18 +30,18 @@ class Display:
     def OnDoubleClick(self, event):
         item = self.tree.selection()[0]
         response =  self.tree.item(item,"text")
-        customer_id = self.tree.item(self.tree.parent(item),"text")
 
-        for code in ResponseCodes.codes():
-            if response == code:
-                self.controller.send_msg(customer_id, response)
-                break
+        if response == 'rdy':
+            parent = self.tree.parent(item)
+            customer_id = self.tree.item(parent,"text")
+
+            self.tree.delete(parent)
+            self.controller.send_msg(customer_id, response)
+
 
     def takeOrder(self, customer_id, order):
         thisRow = str(self.currIndex)
         self.tree.insert("", self.currIndex, thisRow, text=customer_id)
-        self.tree.insert(thisRow, 0, text=ResponseCodes.RDY, values=("", "Ready For Pick Up"))
-        self.tree.insert(thisRow, 1, text=ResponseCodes.ERR_ID, values=("", "Invalid ID"))
-        self.tree.insert(thisRow, 2, text=ResponseCodes.ERR, values=("", "Miscellanious Error"))
-        self.tree.insert(thisRow, 3, text="order",values=(order,""))
+        self.tree.insert(thisRow, 0, text='rdy', values=("", "Ready For Pick Up"))
+        self.tree.insert(thisRow, 1, text="order",values=(order,""))
         self.currIndex += 1
