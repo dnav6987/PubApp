@@ -6,9 +6,16 @@
 //  Copyright © 2016 Dan Navarro. All rights reserved.
 //
 
+/*
+    This is where the user's order is displayed in a table. The order can be placed and alerts tell the user the status of the order.
+ */
+
 import UIKit
 import Foundation
 
+// MARK: - Alert Message constants
+
+// Messages to notify the user
 struct AlertMessages {
     static let SERVER_ERROR = "Oops! The server could not be reached. Try submitting your order at a later time or just call it in at\n(207) 725-3888"
     static let EMPTY_CART = "Oops! Cannot place an empty order."
@@ -16,17 +23,21 @@ struct AlertMessages {
     static let RDY = "Your order is ready for pick up. Enjoy your meal."
 }
 
+// MARK: - Order Table View Controller
+
 class OrderTableViewController: UITableViewController, NetworkConnectionDelegate {
-    var order: [String]!
-    var prices: [Float]!
+    var order: [String]!    // the items being ordered
+    var prices: [Float]!    // the prices of the items
     
-    @IBOutlet weak var priceLabel: UILabel!
+    @IBOutlet weak var priceLabel: UILabel! // display the total price
     
-    var totalPrice: Float = 0.0 {
+    var totalPrice: Float = 0.0 {   // the total price
         didSet {
             if priceLabel != nil { priceLabel.text = "Total Price $" + String(format: "%.2f", totalPrice) }
         }
     }
+    
+    // MARK: - User Control Buttons
     
     lazy var orderButton: UIBarButtonItem! = {
         return UIBarButtonItem(title: "Place Order",
@@ -48,110 +59,165 @@ class OrderTableViewController: UITableViewController, NetworkConnectionDelegate
                                action: #selector(OrderTableViewController.cancelOrder(_:)))
     }()
     
-    var connection = NetworkConnection()
+    var connection = NetworkConnection()    // Connection to server
+    
+    // MARK: - Initializations
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        connection.delegate = self
+        connection.delegate = self  //  need this view controller to be notified when data is recieved
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        refresh()
-        connection.connect("127.0.0.1", port: 5555)
+        refresh()   // refresh the data
+        connection.connect("127.0.0.1", port: 5555) // connect to the server (may be redundant but it is a good chance to try to reconnect if it was previously down)
     }
     
+    // get the order data and reset the view
     func refresh() {
+        // set the user control buttons
         navigationItem.leftBarButtonItem = editButtonItem()
         navigationItem.rightBarButtonItem = orderButton
         
+        // get the current order and prices
         order = Order.defaults.arrayForKey(Order.ORDER_STRING) as? [String]
         prices = Order.defaults.arrayForKey(Order.PRICES_STRING) as? [Float]
-        if order == nil {   // NOTE that if one is nil the other must be too
+        
+        // initialize order and prices if they have not yet been set
+        if order == nil {   // NOTE that if order is nil prices must be too
             order = [String]()
             prices = [Float]()
             Order.defaults.setObject(order, forKey: Order.ORDER_STRING)
             Order.defaults.setObject(prices, forKey: Order.PRICES_STRING)
         }
         
-        totalPrice = prices.reduce(0, combine: +) // Sum of the list
+        totalPrice = prices.reduce(0, combine: +) // Sum of the prices list
+        
         tableView.reloadData()
     }
     
+    // MARK: - User controls
+    
+    // give user the option to confirm their order or cancel it
     func placeOrder(sender:UIButton!) {
         navigationItem.leftBarButtonItem = confirmButton
         navigationItem.rightBarButtonItem = cancelButton
     }
     
+    // just reset the user control buttons
+    func cancelOrder(sender:UIButton!) {
+        navigationItem.leftBarButtonItem = editButtonItem()
+        navigationItem.rightBarButtonItem = orderButton
+    }
+    
+    // empty the cart
+    @IBAction func clearCart(sender: UIButton) {
+        Order.defaults.setObject([String](), forKey: Order.ORDER_STRING)
+        Order.defaults.setObject([Float](), forKey: Order.PRICES_STRING)
+        refresh()
+    }
+    
+    // MARK: - Server interaction (the meat of this file)
+    
+    /* 
+        This is where the application interacts with the server and other interesting stuff happens.
+     
+        Flow of events:
+            1) Make sure there is an order to send
+            2) Get the name and i.d. of the user (any pub enthusiast will recognize this from ordering over the phone)
+            3) Connect to server
+            4) Send order to server
+            5) Wait for confirmation from server
+     
+        If at any point an error occurs the user will be updated with an alert message
+    */
     func confirmOrder(sender:UIButton!) {
-        if order.count != 0 {
+        if order.count != 0 {   // make sure there is actually an order
+            // text fields for the user to enter their information
             var nameTextField: UITextField?
             var idTextField: UITextField?
             
+            // prompt the user for their name and i.d.
             let alertController = UIAlertController(title: "Personal Information", message: "Please enter your name and Bowdoin I.D. Number", preferredStyle: .Alert)
             
+            // submit button: remember the user's information for next time and send order to server
             let submit = UIAlertAction(title: "Submit", style: .Default, handler: { (action) -> Void in
                 Order.defaults.setObject(nameTextField?.text, forKey: Order.NAME)
                 Order.defaults.setObject(idTextField?.text, forKey: Order.ID)
                 self.sendOrderToServer()
             })
             
+            // cancel button
             let cancel = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
             
+            // add the buttons
             alertController.addAction(submit)
             alertController.addAction(cancel)
+            
+            // add the text fields
             
             alertController.addTextFieldWithConfigurationHandler { (textField) -> Void in
                 nameTextField = textField
                 nameTextField?.placeholder = "Name"
-                
+                // use the name they have previously provided
                 if let name = Order.defaults.objectForKey(Order.NAME) as? String { nameTextField?.text = name }
             }
             
             alertController.addTextFieldWithConfigurationHandler { (textField) -> Void in
                 idTextField = textField
                 idTextField?.placeholder = "I.D."
-                
+                // use the i.d. they have previously provided
                 if let id = Order.defaults.objectForKey(Order.ID) as? String { idTextField?.text = id }
             }
             
             self.presentViewController(alertController, animated: true, completion: nil)
+            
         } else {
             alert("Error", message: AlertMessages.EMPTY_CART)
         }
     }
     
+    // this is where the actual server connections happen
     func sendOrderToServer() {
         if connection.outputStream != nil && connection.inputStream != nil {
-            connection.outputStream!.open()
+            connection.outputStream!.open() // open the output connection to the server
             
+            // order items seperated by two lines and then add on price and user information. This makes it easy to parse at the server
+            // TODO use the user inputed name and I.D
             var orderDataString = "[ \n\n"
             for item in order { orderDataString += item + "\n\n"}
             orderDataString += "price: \(totalPrice)\n\nfrom user: DNAV\n\n]"
             
+            // send the data and then close the connection, it only needs to write once
             connection.outputStream!.write(orderDataString, maxLength: orderDataString.characters.count)
             connection.outputStream!.close()
             
+            // the connection may be slow so present an activity view controller so the user isn't left confused (we won't wait forever though!)
             let activitiyViewController = ActivityViewController(message: "Connecting...")
             presentViewController(activitiyViewController, animated: true, completion: nil)
             
-            let start = NSDate()
+            let start = NSDate()    // time at which the connection started (too track wait time)
             
-            while true {
+            while true {    // I know, I know, this is dangerous... but living on the edge (and a gauruntee that a timer will break out of the loop)
                 if connection.inputStream!.hasBytesAvailable {
+                    // Wait for confirmation that the server recieved the order. If timer runsout, assume the data was lost
+                    
+                    // see the the server has sent data back
                     var buffer = [UInt8](count: 3, repeatedValue: 0)
                     connection.inputStream!.read(&buffer, maxLength: buffer.count)
                     
+                    // when the data recieves an order it should send back a "rcv". If so, stop the activity view and display a success alert
                     if String(bytes: buffer, encoding: NSUTF8StringEncoding) == "rcv" {
                         activitiyViewController.dismissViewControllerAnimated(false, completion: { () -> Void in
                             self.alert("Success", message: AlertMessages.RCVD)
                         })
-                        clearCart(UIButton())
+                        clearCart(UIButton())   // empty the cart, it has already been ordered
                         break
                     }
                 }
                 
-                if NSDate().timeIntervalSinceDate(start) >= 3 {
+                if NSDate().timeIntervalSinceDate(start) >= 3 { // if this amount of time (in seconds) is exceeded, report and error
                     activitiyViewController.dismissViewControllerAnimated(false, completion: { () -> Void in
                         self.alert("Error", message: AlertMessages.SERVER_ERROR)
                     })
@@ -163,30 +229,15 @@ class OrderTableViewController: UITableViewController, NetworkConnectionDelegate
         }
     }
     
-    func getUserInfo() {
-        let activitiyViewController = ActivityViewController(message: "Connecting...")
-        presentViewController(activitiyViewController, animated: true, completion: nil)
-        
-    }
+    // MARK: - alerts
     
+    // Display and alert view
     func alert(title: String, message: String) {
-        let alertController = UIAlertController(title: title, message:
-            message, preferredStyle: .Alert)
-        alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default,handler: nil))
-        
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .Alert)
+        alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default,handler: nil))  // button to dismiss the alert
         self.presentViewController(alertController, animated: true, completion: nil)
     }
-    
-    func cancelOrder(sender:UIButton!) {
-        navigationItem.leftBarButtonItem = editButtonItem()
-        navigationItem.rightBarButtonItem = orderButton
-    }
-    
-    @IBAction func clearCart(sender: UIButton) {
-        Order.defaults.setObject([String](), forKey: Order.ORDER_STRING)
-        Order.defaults.setObject([Float](), forKey: Order.PRICES_STRING)
-        refresh()
-    }
+
     
     // MARK: - Table view data source
     
@@ -199,6 +250,7 @@ class OrderTableViewController: UITableViewController, NetworkConnectionDelegate
         return 0
     }
     
+    // set each cell. title = the item's name, subtitle = the price
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("Item", forIndexPath: indexPath)
         if order != nil {
@@ -208,13 +260,16 @@ class OrderTableViewController: UITableViewController, NetworkConnectionDelegate
         return cell
     }
     
+    // deleting items from the order (because we all make mistakes)
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == .Delete {
-            // Delete the row from the data source
+            // update the data source
             order.removeAtIndex(indexPath.row)
             Order.defaults.setObject(order, forKey: Order.ORDER_STRING)
             prices.removeAtIndex(indexPath.row)
             Order.defaults.setObject(prices, forKey: Order.PRICES_STRING)
+            
+            // delete the cell
             tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
             refresh()
         }
