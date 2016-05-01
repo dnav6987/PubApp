@@ -2,48 +2,47 @@
 //  NetworkConnection.swift
 //  PubApp
 //
-//  Created by Dan Navarro on 4/26/16.
-//  Copyright © 2016 Dan Navarro. All rights reserved.
-//
+//  An implementation of http://stackoverflow.com/questions/28971858/nsstream-on-iphone-not-working
+//  Comments by Dan Navarro
 
-// TODO give stack overflow credit
+/*
+    This is a generic network connection class that will communicate with a python server via a TCP socket
+ */
 
 import UIKit
 
+// The connection will use alerts to notify the delegate when data has been recieved
 protocol NetworkConnectionDelegate {
     func alert(title: String, message: String)
 }
 
 class NetworkConnection: NSObject, NSStreamDelegate {
-    var host:String?
-    var port:Int?
     var inputStream: NSInputStream?
     var outputStream: NSOutputStream?
     var status = ""
     var delegate: NetworkConnectionDelegate!
     
     func connect(host: String, port: Int) {
-        self.host = host
-        self.port = port
-        
+        // set up the input and output streams with the server
         NSStream.getStreamsToHostWithName(host, port: port, inputStream: &inputStream, outputStream: &outputStream)
         
         if inputStream != nil && outputStream != nil {
             
-            // Set delegate
+            // This notifies when data is sent or recieved in the stream method
             inputStream!.delegate = self
             outputStream!.delegate = self
             
-            // Schedule
+            // Schedule the streams
             inputStream!.scheduleInRunLoop(.mainRunLoop(), forMode: NSDefaultRunLoopMode)
             outputStream!.scheduleInRunLoop(.mainRunLoop(), forMode: NSDefaultRunLoopMode)
             
-            // Open!
+            // Open them for communication
             inputStream!.open()
             outputStream!.open()
         }
     }
     
+    // delegate function that allows handling of sending and recieving data
     func stream(aStream: NSStream, handleEvent eventCode: NSStreamEvent) {
         if aStream === inputStream {
             switch eventCode {
@@ -54,15 +53,21 @@ class NetworkConnection: NSObject, NSStreamDelegate {
             case NSStreamEvent.HasBytesAvailable:
                 print("input: HasBytesAvailable")
                 
+                // data was recieved, let's read it!
+                
+                // Buffer to hold the data. All server messages are of length three characters
                 var buffer = [UInt8](count: 3, repeatedValue: 0)
                 inputStream!.read(&buffer, maxLength: buffer.count)
                 
+                // "rdy" is the server's message notifying that food is ready for pick up.
+                // At this point in time we expect no other messages from the server
                 if String(bytes: buffer, encoding: NSUTF8StringEncoding) == "rdy" {
                     if let otvc = delegate as? OrderTableViewController {
                         if let tbc = otvc.tabBarController {
+                            // Present an alert message that the food is ready for pick up
                             tbc.selectedIndex = 1
                             delegate.alert("Ready For Pick Up", message: AlertMessages.RDY)
-                            inputStream!.close()
+                            inputStream!.close()    // network communication stops when order is ready
                         }
                     }
                 }

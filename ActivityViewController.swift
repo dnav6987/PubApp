@@ -2,9 +2,7 @@
 //  ActivityViewController.swift
 //  PubApp
 //
-//  Created by Dan Navarro on 5/1/16.
-//  Copyright © 2016 Dan Navarro. All rights reserved.
-//
+//  Direclty taken from http://stackoverflow.com/questions/25652101/please-wait-dialog-in-ios8
 
 import UIKit
 
