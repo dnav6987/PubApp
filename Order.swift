@@ -6,13 +6,12 @@
 //  Copyright © 2016 Dan Navarro. All rights reserved.
 //
 
-import Foundation
-
 /*
- - add a name and ID fields in order view (perhaps make a UIViewcontroller that has the current order view plus the additional fields
- - once the order is placed, put a loading spinner and wait for response from server
-- respond with alert (order recieved, could not reach server, invalid ID)
- */
+    This is used to globally store the order information and remember it between launches.
+    The strings the identifiers used for object names in the defaults.
+*/
+
+import Foundation
 
 struct Order {
     static var defaults = NSUserDefaults.standardUserDefaults()

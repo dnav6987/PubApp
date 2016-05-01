@@ -2,9 +2,11 @@
 //  TextViewController.swift
 //  Professor
 //
-//  Created by Dan Navarro on 2/25/16.
-//  Copyright © 2016 Dan Navarro. All rights reserved.
-//
+//  Taken from a lecture by Eric Chown
+
+/*
+    This is a view for displaying popovers that contain text. The view is sized so that it just fits the text
+*/
 
 import UIKit
 

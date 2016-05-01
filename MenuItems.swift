@@ -6,11 +6,25 @@
 //  Copyright © 2016 Dan Navarro. All rights reserved.
 //
 
+/*
+    The most painful file to write...
+ 
+    This is the menu that the app uses. All of the items are taken from Jack Magee's Pub's menu.
+    Items have a name, description and modifiers.
+        - Options are choices that must be made about an item (i.e. size, or what type of sandwich meat, etc.)
+        - Sides are side orders that can come with the meal
+        - add ons and toppings can be added to the order
+ 
+    The items are divided by type as in the real menu
+*/
+
 import Foundation
 
 class MenuItems {
+    // all of the items
     var items = [MenuItem]()
-    // TODO rethink this
+    
+    // item grouped by type
     var menu = [[MenuItem]]()
     var apps = [MenuItem]()
     var salads = [MenuItem]()
@@ -24,12 +38,14 @@ class MenuItems {
     var sides = [MenuItem]()
     var beverages = [MenuItem]()
     
+    // Some standard options
     struct Options {
         static let NO_OPTIONS = "Regular"
         static let SMALL = "Small"
         static let LARGE = "Large"
     }
     
+    // The food groupings
     struct foodTypes {
         static let APP = "APPETIZERS"
         static let SALAD = "SALADS"
@@ -100,7 +116,6 @@ class MenuItems {
                 type: foodTypes.APP),
             
             // SALADS
-            // TODO make add ons for salads
             MenuItem(name: "Spinach & Feta Salad",
                 description: "Fresh baby spinach with craisins, toasted walnuts, crumbled feta cheese, sliced apple & lemon poppy seed vinaigrette",
                 options: [MenuOption(description: Options.NO_OPTIONS, price: 6.50)],
@@ -340,10 +355,10 @@ class MenuItems {
                 type: foodTypes.BEVERAGE)
         ]
         
-        // TODO gluten free bread and pizza dough, pizza toppings add (V) and (VE), add ons and additional options in a drop down menu maybe
+        // TODO gluten free bread and pizza dough, pizza toppings add (V) and (VE)
         
-        // TODO SO MANY LOOPS
         for i in 0..<items.count {
+            // all salads have these add ons
             if items[i].type == MenuItems.foodTypes.SALAD {
                 items[i].addOns.append(MenuOption(description: "Grilled Chicken", price: 2.00))
                 items[i].addOns.append(MenuOption(description: "Plain Chicken Finger", price: 1.00))
@@ -351,6 +366,7 @@ class MenuItems {
                 items[i].addOns.append(MenuOption(description: "Shaved Steak", price: 1.75))
             }
             
+            // all sandwiches have these sides
             if items[i].type == MenuItems.foodTypes.COLD_SANDWICH || items[i].type == MenuItems.foodTypes.HOT_SANDWICH {
                 items[i].sides.append(MenuOption(description: "baked potato chips", price: 0.00))
                 items[i].sides.append(MenuOption(description: "side salad", price: 0.00))
@@ -359,12 +375,13 @@ class MenuItems {
                 items[i].sides.append(MenuOption(description: "French fries", price: 1.00))
             }
             
+            // all pizzas have these toppings
             if items[i].type == MenuItems.foodTypes.PIZZA || items[i].type == MenuItems.foodTypes.CALZONE {
                 items[i].addOns = [MenuOption(description: "Pepperoni", price: 0.00), MenuOption(description: "Sausage", price: 0.00), MenuOption(description: "Ham", price: 0.00), MenuOption(description: "Ground Beed", price: 0.00), MenuOption(description: "Bacon", price: 0.00), MenuOption(description: "Chicken", price: 0.00), MenuOption(description: "Green Peppers", price: 0.00), MenuOption(description: "Roasted Red Peppers", price: 0.00), MenuOption(description: "Onions", price: 0.00), MenuOption(description: "Mushrooms", price: 0.00), MenuOption(description: "Artichoke Hearts", price: 0.00), MenuOption(description: "Tomato", price: 0.00), MenuOption(description: "Pineapple", price: 0.00), MenuOption(description: "Feta Cheese", price: 0.00), MenuOption(description: "Pesto", price: 0.00)]
             }
         }
         
-        // TODO rethink this
+        // group the menu by type
         for item in items {
             switch item.type {
             case foodTypes.APP: apps.append(item)
@@ -386,6 +403,8 @@ class MenuItems {
     }
 }
 
+// MARK: - Menu items
+
 class MenuItem {
     var name = ""
     var description = ""
@@ -393,6 +412,8 @@ class MenuItem {
     var addOns = [MenuOption]()
     var sides = [MenuOption]()
     var type = ""
+    
+    // constructors
     
     init(name: String, description: String, options: [MenuOption], type: String) {
         self.name = name
@@ -429,6 +450,7 @@ class MenuItem {
     
     init() {}
     
+    // Turn an item into a string
     // Assumes that an order will only have 1 option and 1 side
     func asStringAndPrice() -> (string: String, price: Float) {
         var price: Float = 0.00
@@ -455,6 +477,8 @@ class MenuItem {
     }
 }
 
+// MARK: - Menu option
+
 class MenuOption {
     var description: String = ""
     var price: Float = -1.0
@@ -472,6 +496,7 @@ class MenuOption {
     }
 }
 
+// print prices with 2 decimal places
 extension Float {
     func asPriceString() -> String {
         return "$" + String(format: "%.2f", self)
