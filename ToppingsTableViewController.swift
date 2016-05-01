@@ -15,10 +15,15 @@ import UIKit
 class ToppingsTableViewController: UITableViewController {
     var menuItem: MenuItem! // the item being ordered
     
+    var switches = [UISwitch]()
+    
     @IBOutlet weak var descriptionLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // initializes the switches
+        for _ in 0..<menuItem.addOns.count { switches.append(UISwitch(frame: CGRectZero) as UISwitch) }
         
         // display the item being orderd
         
@@ -57,9 +62,7 @@ class ToppingsTableViewController: UITableViewController {
             cell.detailTextLabel?.text = menuItem.addOns[indexPath.row].price.asPriceString()
         
             // add a switch so toppings can be easily added
-            let offSwitch = UISwitch(frame: CGRectZero) as UISwitch
-            offSwitch.on = false
-            cell.accessoryView = offSwitch
+            cell.accessoryView = switches[indexPath.row]
         }
         
         return cell
