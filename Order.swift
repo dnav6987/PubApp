@@ -18,9 +18,6 @@ struct Order {
     static var defaults = NSUserDefaults.standardUserDefaults()
     static let ORDER_STRING = "Order"
     static let PRICES_STRING = "Prices"
-}
-
-struct OrderItem {
-    var name: String!
-    var price: Float!
+    static let NAME = "Name"
+    static let ID = "ID"
 }

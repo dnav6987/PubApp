@@ -85,47 +85,93 @@ class OrderTableViewController: UITableViewController, NetworkConnectionDelegate
     
     func confirmOrder(sender:UIButton!) {
         if order.count != 0 {
-            if connection.outputStream != nil && connection.inputStream != nil {
-                connection.outputStream!.open()
+            var nameTextField: UITextField?
+            var idTextField: UITextField?
+            
+            let alertController = UIAlertController(title: "Personal Information", message: "Please enter your name and Bowdoin I.D. Number", preferredStyle: .Alert)
+            
+            let submit = UIAlertAction(title: "Submit", style: .Default, handler: { (action) -> Void in
+                Order.defaults.setObject(nameTextField?.text, forKey: Order.NAME)
+                Order.defaults.setObject(idTextField?.text, forKey: Order.ID)
+                self.sendOrderToServer()
+            })
+            
+            let cancel = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
+            
+            alertController.addAction(submit)
+            alertController.addAction(cancel)
+            
+            alertController.addTextFieldWithConfigurationHandler { (textField) -> Void in
+                nameTextField = textField
+                nameTextField?.placeholder = "Name"
                 
-                var orderDataString = "[ \n\n"
-                for item in order { orderDataString += item + "\n\n"}
-                orderDataString += "price: \(totalPrice)\n\nfrom user: DNAV\n\n]"
-                
-                connection.outputStream!.write(orderDataString, maxLength: orderDataString.characters.count)
-                connection.outputStream!.close()
-                
-                let start = NSDate()
-                
-                while true {
-                    if connection.inputStream!.hasBytesAvailable {
-                        var buffer = [UInt8](count: 3, repeatedValue: 0)
-                        connection.inputStream!.read(&buffer, maxLength: buffer.count)
-                                                
-                        if String(bytes: buffer, encoding: NSUTF8StringEncoding) == "rcv" {
-                            alert("Success", message: AlertMessages.RCVD)
-                            clearCart(UIButton())
-                            break
-                        }
-                    }
-                    
-                    if NSDate().timeIntervalSinceDate(start) >= 3 {
-                        alert("Error", message: AlertMessages.SERVER_ERROR)
-                        break
-                    }
-                }
-            } else {
-                alert("Error", message: AlertMessages.SERVER_ERROR)
+                if let name = Order.defaults.objectForKey(Order.NAME) as? String { nameTextField?.text = name }
             }
             
+            alertController.addTextFieldWithConfigurationHandler { (textField) -> Void in
+                idTextField = textField
+                idTextField?.placeholder = "I.D."
+                
+                if let id = Order.defaults.objectForKey(Order.ID) as? String { idTextField?.text = id }
+            }
+            
+            self.presentViewController(alertController, animated: true, completion: nil)
         } else {
             alert("Error", message: AlertMessages.EMPTY_CART)
         }
     }
     
+    func sendOrderToServer() {
+        if connection.outputStream != nil && connection.inputStream != nil {
+            connection.outputStream!.open()
+            
+            var orderDataString = "[ \n\n"
+            for item in order { orderDataString += item + "\n\n"}
+            orderDataString += "price: \(totalPrice)\n\nfrom user: DNAV\n\n]"
+            
+            connection.outputStream!.write(orderDataString, maxLength: orderDataString.characters.count)
+            connection.outputStream!.close()
+            
+            let activitiyViewController = ActivityViewController(message: "Connecting...")
+            presentViewController(activitiyViewController, animated: true, completion: nil)
+            
+            let start = NSDate()
+            
+            while true {
+                if connection.inputStream!.hasBytesAvailable {
+                    var buffer = [UInt8](count: 3, repeatedValue: 0)
+                    connection.inputStream!.read(&buffer, maxLength: buffer.count)
+                    
+                    if String(bytes: buffer, encoding: NSUTF8StringEncoding) == "rcv" {
+                        activitiyViewController.dismissViewControllerAnimated(false, completion: { () -> Void in
+                            self.alert("Success", message: AlertMessages.RCVD)
+                        })
+                        clearCart(UIButton())
+                        break
+                    }
+                }
+                
+                if NSDate().timeIntervalSinceDate(start) >= 3 {
+                    activitiyViewController.dismissViewControllerAnimated(false, completion: { () -> Void in
+                        self.alert("Error", message: AlertMessages.SERVER_ERROR)
+                    })
+                    break
+                }
+            }
+        } else {
+            alert("Error", message: AlertMessages.SERVER_ERROR)
+        }
+    }
+    
+    func getUserInfo() {
+        let activitiyViewController = ActivityViewController(message: "Connecting...")
+        presentViewController(activitiyViewController, animated: true, completion: nil)
+        
+    }
+    
     func alert(title: String, message: String) {
         let alertController = UIAlertController(title: title, message:
-            message, preferredStyle: UIAlertControllerStyle.Alert)
+            message, preferredStyle: .Alert)
         alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default,handler: nil))
         
         self.presentViewController(alertController, animated: true, completion: nil)
