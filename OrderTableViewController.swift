@@ -145,6 +145,7 @@ class OrderTableViewController: UITableViewController, NetworkConnectionDelegate
             let submit = UIAlertAction(title: "Submit", style: .Default, handler: { (action) -> Void in
                 Order.defaults.setObject(nameTextField?.text, forKey: Order.NAME)
                 Order.defaults.setObject(idTextField?.text, forKey: Order.ID)
+                
                 self.sendOrderToServer()
             })
             
@@ -181,6 +182,10 @@ class OrderTableViewController: UITableViewController, NetworkConnectionDelegate
     // this is where the actual server connections happen
     func sendOrderToServer() {
         if connection.outputStream != nil && connection.inputStream != nil {
+            // the connection may be slow so present an activity view controller so the user isn't left confused (we won't wait forever though!)
+            let activityViewController = ActivityViewController(message: "Connecting...")
+            presentViewController(activityViewController, animated: true, completion: nil)
+            
             connection.outputStream!.open() // open the output connection to the server
             
             // order items seperated by two lines and then add on price and user information. This makes it easy to parse at the server
@@ -192,36 +197,39 @@ class OrderTableViewController: UITableViewController, NetworkConnectionDelegate
             // send the data and then close the connection, it only needs to write once
             connection.outputStream!.write(orderDataString, maxLength: orderDataString.characters.count)
             connection.outputStream!.close()
-            
-            // the connection may be slow so present an activity view controller so the user isn't left confused (we won't wait forever though!)
-            let activitiyViewController = ActivityViewController(message: "Connecting...")
-            presentViewController(activitiyViewController, animated: true, completion: nil)
-            
-            let start = NSDate()    // time at which the connection started (too track wait time)
-            
-            while true {    // I know, I know, this is dangerous... but living on the edge (and a gauruntee that a timer will break out of the loop)
-                if connection.inputStream!.hasBytesAvailable {
-                    // Wait for confirmation that the server recieved the order. If timer runsout, assume the data was lost
+        
+            // wait for response from server, this could take a while so do in another thread
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+                let start = NSDate()    // time at which the connection started (too track wait time)
+                
+                while true {    // I know, I know, this is dangerous... but living on the edge (and a gauruntee that a timer will break out of the loop)
+                    if self.connection.inputStream!.hasBytesAvailable {
+                        // Wait for confirmation that the server recieved the order. If timer runsout, assume the data was lost
+                        
+                        // see if the server has sent data back (server only sends three chars)
+                        var buffer = [UInt8](count: 3, repeatedValue: 0)
+                        self.connection.inputStream!.read(&buffer, maxLength: buffer.count)
+                        
+                        // when the data recieves an order it should send back a "rcv". If so, stop the activity view and display a success alert
+                        if String(bytes: buffer, encoding: NSUTF8StringEncoding) == "rcv" {
+                            dispatch_async(dispatch_get_main_queue()) {
+                                activityViewController.dismissViewControllerAnimated(false, completion: { () -> Void in
+                                    self.alert("Success", message: AlertMessages.RCVD)
+                                })
+                                self.clearCart(UIButton())   // empty the cart, it has already been ordered
+                            }
+                            break
+                        }
+                    }
                     
-                    // see the the server has sent data back
-                    var buffer = [UInt8](count: 3, repeatedValue: 0)
-                    connection.inputStream!.read(&buffer, maxLength: buffer.count)
-                    
-                    // when the data recieves an order it should send back a "rcv". If so, stop the activity view and display a success alert
-                    if String(bytes: buffer, encoding: NSUTF8StringEncoding) == "rcv" {
-                        activitiyViewController.dismissViewControllerAnimated(false, completion: { () -> Void in
-                            self.alert("Success", message: AlertMessages.RCVD)
-                        })
-                        clearCart(UIButton())   // empty the cart, it has already been ordered
+                    if NSDate().timeIntervalSinceDate(start) >= 8 { // if this amount of time (in seconds) is exceeded, report and error
+                        dispatch_async(dispatch_get_main_queue()) {
+                            activityViewController.dismissViewControllerAnimated(false, completion: { () -> Void in
+                                self.alert("Error", message: AlertMessages.SERVER_ERROR)
+                            })
+                        }
                         break
                     }
-                }
-                
-                if NSDate().timeIntervalSinceDate(start) >= 3 { // if this amount of time (in seconds) is exceeded, report and error
-                    activitiyViewController.dismissViewControllerAnimated(false, completion: { () -> Void in
-                        self.alert("Error", message: AlertMessages.SERVER_ERROR)
-                    })
-                    break
                 }
             }
         } else {
