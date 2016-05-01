@@ -192,7 +192,9 @@ class OrderTableViewController: UITableViewController, NetworkConnectionDelegate
             // TODO use the user inputed name and I.D
             var orderDataString = "[ \n\n"
             for item in order { orderDataString += item + "\n\n"}
-            orderDataString += "price: \(totalPrice)\n\nfrom user: DNAV\n\n]"
+            orderDataString += "Price: \(totalPrice.asPriceString())\n\n"
+            orderDataString += "Name: \(Order.defaults.objectForKey(Order.NAME) as! String)\n\n"
+            orderDataString += "Bowdoin I.D.: \(Order.defaults.objectForKey(Order.ID) as! String)\n\n]"
             
             // send the data and then close the connection, it only needs to write once
             connection.outputStream!.write(orderDataString, maxLength: orderDataString.characters.count)

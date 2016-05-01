@@ -12,10 +12,13 @@ class Server:
     DEFAULT_ADDR = ('127.0.0.1', 5555)
 
     def __init__(self, server_addr = DEFAULT_ADDR):
+        # run network connections in it's own thread
         thread.start_new_thread(self.network_loop, server_addr)
 
+        # store all of the connections so they can be responded to
         self.customers = dict()
 
+        # create and run the gui
         self.GUI = Display(self)
         self.GUI.mainloop()
 
@@ -33,20 +36,22 @@ class Server:
 
         while 1:
             connection_socket, addr = server_socket.accept()    # accept connection
-            thread.start_new_thread(self.service_client, (connection_socket, addr))  # create a new thread to service the query
+            thread.start_new_thread(self.service_client, (connection_socket, addr))  # create a new thread to service a client
 
     def service_client(self, connection_socket, addr):
-        request_message = connection_socket.recv(2048)
+        request_message = connection_socket.recv(2048) 
         print 'recieved request:', request_message, 'from:', addr
         connection_socket.send('rcv')
-        user, order = self.format_request(request_message)
+        user, name, order, price = self.format_request(request_message)
         self.customers[user] = connection_socket
-        self.GUI.takeOrder(user, order)
+        self.GUI.takeOrder(user, name, order, price)
 
     def format_request(self, request):
         request = request.split('\n\n')
-        user = request[-2].split('from user: ')[1] # TODO
-        request = request[1:-3]
+        price = request[-4].split('Price: ')[1]
+        name = request[-3].split('Name: ')[1]
+        user = request[-2].split('Bowdoin I.D.: ')[1] # TODO
+        request = request[1:-4]
         
         order = ''
         for item in request:
@@ -61,13 +66,13 @@ class Server:
             
             order += ' '.join(item) + '\n'
 
-        return user, order
+        return user, name, order, price
 
     def send_msg(self, customer_id, response):
         print 'sending', response, 'to', self.customers[customer_id]
         self.customers[customer_id].send(response)
+        self.customers[customer_id].close()
         del self.customers[customer_id]
-        self.cs.close()
 
 if __name__=='__main__':
     addr = None
