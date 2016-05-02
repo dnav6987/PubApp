@@ -189,7 +189,6 @@ class OrderTableViewController: UITableViewController, NetworkConnectionDelegate
             connection.outputStream!.open() // open the output connection to the server
             
             // order items seperated by two lines and then add on price and user information. This makes it easy to parse at the server
-            // TODO use the user inputed name and I.D
             var orderDataString = "[ \n\n"
             for item in order { orderDataString += item + "\n\n"}
             orderDataString += "Price: \(totalPrice.asPriceString())\n\n"
@@ -198,6 +197,7 @@ class OrderTableViewController: UITableViewController, NetworkConnectionDelegate
             
             // send the data and then close the connection, it only needs to write once
             connection.outputStream!.write(orderDataString, maxLength: orderDataString.characters.count)
+//            connection.outputStream!.write("qry Dan Navarro", maxLength: "qry Dan Navarro".characters.count)
             connection.outputStream!.close()
         
             // wait for response from server, this could take a while so do in another thread

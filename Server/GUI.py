@@ -4,8 +4,6 @@ from ttk import Treeview
 # A GUI for a food ordering server. Displayed as a tree view. Responses to clients can be sent by double clicking
 # response fields
 
-# todo set up query to return all orders
-
 class Display:
     def __init__(self, controller):
         self.controller = controller

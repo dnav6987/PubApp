@@ -4,6 +4,8 @@
 # you can use another IP and port by providing them as arguments when executed from the terminal
 ###
 
+# TODO send last thirty entries either out of all or with certain name
+
 from socket import *
 import thread
 import sys
@@ -19,6 +21,7 @@ class Server:
 
         # store all of the connections so they can be responded to
         self.customers = dict()
+        self.order_database = []
 
         # create and run the gui
         self.GUI = Display(self)
@@ -40,16 +43,29 @@ class Server:
             connection_socket, addr = server_socket.accept()    # accept connection
             thread.start_new_thread(self.service_client, (connection_socket, addr))  # create a new thread to service a client
 
+    # TODO comment
     def service_client(self, connection_socket, addr):
         request_message = connection_socket.recv(2048)  # read the data from the client
         print 'recieved request:', request_message, 'from:', addr
-        connection_socket.send('rcv')   # let the client know that its order was recieved
-        # parse the message
-        user, name, order, price = self.parse_request(request_message)
-        # store the customer's information for later contact
-        self.customers[user] = connection_socket
-        # update the GUI
-        self.GUI.takeOrder(user, name, order, price)
+        
+        if request_message != '':
+            if request_message.split()[0] == 'qry':
+                if len(request_message.split()):
+                    response = self.query_response(' '.join(request_message.split()[1:]))
+                else:
+                    response = self.query_response()
+
+                if response == '': response = 'emt'
+                print response
+                # connection_socket.send(response)
+            else:
+                connection_socket.send('rcv')   # let the client know that its order was recieved
+                # parse the message
+                user, name, order, price = self.parse_request(request_message)
+                # store the customer's information for later contact
+                self.customers[user] = connection_socket
+                # update the GUI
+                self.GUI.takeOrder(user, name, order, price)
 
     #################################################################################################################################
     #   parse the request. The request format is defined as such:                                                                   #
@@ -78,10 +94,12 @@ class Server:
         # these fields are garuanteed
         price = request[-4].split('Price: ')[1]
         name = request[-3].split('Name: ')[1]
-        user = request[-2].split('Bowdoin I.D.: ')[1] # TODO
+        user = request[-2].split('Bowdoin I.D.: ')[1]
         
         # this is the order part of the message
         request = request[1:-4]
+
+        self.store_in_database(name, request)   # store the order
         
         # parse the order
 
@@ -108,13 +126,36 @@ class Server:
 
         return user, name, order, price
 
+    # TODO comment
+    def store_in_database(self, name, request):
+        for item in request:
+            self.order_database.append((name, item))
+    # TODO comment
+    def query_response(self, name=None):
+        MAX_RESPONSE_SIZE = 30  # TODO test this value
+        curr_response_size = 0
+
+        response = ''
+
+        for index in reversed(range(len(self.order_database))):
+            if curr_response_size >= MAX_RESPONSE_SIZE: break
+
+            this_item = self.order_database[index]
+
+            # format the response: name:item;name:item;.... for ease of parsing in the clients
+            if not name or this_item[0] == name:
+                response += this_item[0] + ':' + this_item[1] + ';'
+                curr_response_size += 1
+
+        return response
+
     # send a message to a customer. We only need to do this once so then the connection can be closed
-    #   TODO make sure the customer_id is legit
     def send_msg(self, customer_id, response):
-        print 'sending', response, 'to', self.customers[customer_id]
-        self.customers[customer_id].send(response)
-        self.customers[customer_id].close()
-        del self.customers[customer_id]
+        if customer_id in self.customers.keys():
+            print 'sending', response, 'to', self.customers[customer_id]
+            self.customers[customer_id].send(response)
+            self.customers[customer_id].close()
+            del self.customers[customer_id]
 
 if __name__=='__main__':
     addr = None

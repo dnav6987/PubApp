@@ -55,6 +55,8 @@ class NetworkConnection: NSObject, NSStreamDelegate {
                 
                 // data was recieved, let's read it!
                 
+                // TODO recieve 2^12
+                
                 // Buffer to hold the data. All server messages are of length three characters
                 var buffer = [UInt8](count: 3, repeatedValue: 0)
                 inputStream!.read(&buffer, maxLength: buffer.count)
