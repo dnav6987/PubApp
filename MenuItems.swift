@@ -375,6 +375,8 @@ class MenuItems {
                 items[i].sides.append(MenuOption(description: "French fries", price: 1.00))
             }
             
+            // TODO pricing these
+            
             // all pizzas have these toppings
             if items[i].type == MenuItems.foodTypes.PIZZA || items[i].type == MenuItems.foodTypes.CALZONE {
                 items[i].addOns = [MenuOption(description: "Pepperoni", price: 0.00), MenuOption(description: "Sausage", price: 0.00), MenuOption(description: "Ham", price: 0.00), MenuOption(description: "Ground Beed", price: 0.00), MenuOption(description: "Bacon", price: 0.00), MenuOption(description: "Chicken", price: 0.00), MenuOption(description: "Green Peppers", price: 0.00), MenuOption(description: "Roasted Red Peppers", price: 0.00), MenuOption(description: "Onions", price: 0.00), MenuOption(description: "Mushrooms", price: 0.00), MenuOption(description: "Artichoke Hearts", price: 0.00), MenuOption(description: "Tomato", price: 0.00), MenuOption(description: "Pineapple", price: 0.00), MenuOption(description: "Feta Cheese", price: 0.00), MenuOption(description: "Pesto", price: 0.00)]

@@ -39,35 +39,75 @@ class Server:
             thread.start_new_thread(self.service_client, (connection_socket, addr))  # create a new thread to service a client
 
     def service_client(self, connection_socket, addr):
-        request_message = connection_socket.recv(2048) 
+        request_message = connection_socket.recv(2048)  # read the data from the client
         print 'recieved request:', request_message, 'from:', addr
-        connection_socket.send('rcv')
-        user, name, order, price = self.format_request(request_message)
+        connection_socket.send('rcv')   # let the client know that its order was recieved
+        # parse the message
+        user, name, order, price = self.parse_request(request_message)
+        # store the customer's information for later contact
         self.customers[user] = connection_socket
+        # update the GUI
         self.GUI.takeOrder(user, name, order, price)
 
-    def format_request(self, request):
+    #################################################################################################################################
+    #   parse the request. The request format is defined as such:                                                                   #
+    #                                                                                                                               #
+    #   [                                                                                                                           #
+    #                                                                                                                               #
+    #   <order name> <{optional}with [side]> <{optional}Add [topping]>, <{optional}Add [topping]>, ...., <{optional}Add [topping]>  #
+    #                                                                                                                               #
+    #   <order name> <{optional}with [side]> <{optional}Add [topping]>, <{optional}Add [topping]>, ...., <{optional}Add [topping]>  #
+    #   .                                                                                                                           #
+    #   .                                                                                                                           #
+    #   .                                                                                                                           #
+    #                                                                                                                               #
+    #   Price: <price>                                                                                                              #
+    #                                                                                                                               #
+    #   Name: <name>                                                                                                                #
+    #                                                                                                                               #
+    #   Bowdoin I.D.: <i.d.>                                                                                                        #
+    #                                                                                                                               #
+    #   ]                                                                                                                           #
+    #################################################################################################################################
+    def parse_request(self, request):
+        # split it into its constituent parts
         request = request.split('\n\n')
+
+        # these fields are garuanteed
         price = request[-4].split('Price: ')[1]
         name = request[-3].split('Name: ')[1]
         user = request[-2].split('Bowdoin I.D.: ')[1] # TODO
+        
+        # this is the order part of the message
         request = request[1:-4]
         
-        order = ''
-        for item in request:
-            item = item.split()
+        # parse the order
 
-            word_index = 0 
+        order = ''
+        for item in request:    # each item in the order
+            item = item.split() # split into words
+
+            #######################################################################################################
+            # loop through all the words and format the sides and toppings to be easily seen separately like such #
+            #                                                                                                     #
+            # <name>                                                                                              #
+            #       <side>                                                                                        #
+            #       <topping>                                                                                     #
+            #######################################################################################################
+            word_index = 0
             while word_index < len(item):
                 if item[word_index] == 'with' or item[word_index] == 'Add':
                     item.insert(word_index, '\n\t')
                     word_index += 1
                 word_index += 1
             
+            # join it back into one string
             order += ' '.join(item) + '\n'
 
         return user, name, order, price
 
+    # send a message to a customer. We only need to do this once so then the connection can be closed
+    #   TODO make sure the customer_id is legit
     def send_msg(self, customer_id, response):
         print 'sending', response, 'to', self.customers[customer_id]
         self.customers[customer_id].send(response)
