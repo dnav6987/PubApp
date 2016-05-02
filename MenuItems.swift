@@ -129,7 +129,7 @@ class MenuItems {
                 options: [MenuOption(description: Options.SMALL, price: 2.25),
                     MenuOption(description: Options.LARGE, price: 3.75)],
                 type: foodTypes.SALAD),
-            MenuItem(name: "Jack's Casear Salad",
+            MenuItem(name: "Jack's Caesar Salad",
                 description: "",
                 options: [MenuOption(description: Options.SMALL, price: 3.00),
                     MenuOption(description: Options.LARGE, price: 4.25)],
@@ -156,17 +156,20 @@ class MenuItems {
                 description: "Portobello mushrooms with goat cheese, roasted red peppers, spinach & balsamic vinaigrette on an herbed ciabatta roll",
                 options: [MenuOption(description: Options.NO_OPTIONS, price: 6.25)],
                 type: foodTypes.PANINI),
+            
             // BASKETS
             MenuItem(name: "Chicken Finger Basket",
-                description: "Chicken Finger Basket with French fries",
+                description: "with French fries",
                 options: [MenuOption(description: Options.NO_OPTIONS, price: 6.50)],
                 type: foodTypes.BASKET),
             MenuItem(name: "Fish and Chip Basket",
-                description: "Fish and Chip Basket: Fried haddock with French fries and Tartar sauce",
+                description: "Fried haddock with French fries and Tartar sauce",
                 options: [MenuOption(description: Options.NO_OPTIONS, price: 6.50)],
                 type: foodTypes.BASKET),
             
             // Cold Sandwiches
+            
+            // TODO only one bread choice
             
             MenuItem(name: "Jack's Deli Sandwich",
                 description: "Turkey, Ham, Tuna or Chicken Salad on your choice of bread with lettuce & tomato",
@@ -190,11 +193,12 @@ class MenuItems {
                 options: [MenuOption(description: Options.NO_OPTIONS, price: 5.75)],
                 type: foodTypes.COLD_SANDWICH),
             MenuItem(name: "BLT Sandwich",
-                description: "On toasted white or wheat bread", // TODO
-                options: [MenuOption(description: Options.NO_OPTIONS, price: 4.25)],
+                description: "On toasted white or wheat bread",
+                options: [MenuOption(description: "White Bread", price: 4.25),
+                            MenuOption(description: "Wheat Bread", price: 4.25)],
                 type: foodTypes.COLD_SANDWICH),
             MenuItem(name: "Veggie Flatbread (VE)",
-                description: "Lettuce, tomato, cucumber, red onion, carrots, cabbage, avocado and dried cranberries in a grilled whole wheat  atbread with balsamic vinaigrette",
+                description: "Lettuce, tomato, cucumber, red onion, carrots, cabbage, avocado and dried cranberries in a grilled whole wheat flatbread with balsamic vinaigrette",
                 options: [MenuOption(description: Options.NO_OPTIONS, price: 5.50)],
                 type: foodTypes.COLD_SANDWICH),
             
@@ -236,7 +240,7 @@ class MenuItems {
                 description: "Deep fried chicken patty with marinara, mozarella and parmesan on a bulkie roll",
                 options: [MenuOption(description: Options.NO_OPTIONS, price: 4.75)],
                 type: foodTypes.HOT_SANDWICH),
-            MenuItem(name: "Classic Grilled Cheesesandwich (V)",
+            MenuItem(name: "Classic Grilled Cheese Sandwich (V)",
                 description: "",
                 options: [MenuOption(description: Options.NO_OPTIONS, price: 3.00)],
                 type: foodTypes.HOT_SANDWICH),
@@ -244,7 +248,7 @@ class MenuItems {
             
             // BURRITOS & WRAPS
             MenuItem(name: "Fish Taco",
-                description: "A  our tortilla filled with fried fish, shredded cabbage, avocado, Monterey jack cheese, salsa & green onion-mayo",
+                description: "A flour tortilla filled with fried fish, shredded cabbage, avocado, Monterey jack cheese, salsa & green onion-mayo",
                 options: [MenuOption(description: Options.NO_OPTIONS, price: 5.95)],
                 type: foodTypes.WRAP),
             MenuItem(name: "Burrito \"El Grande\"",
@@ -256,15 +260,15 @@ class MenuItems {
                 options: [MenuOption(description: Options.NO_OPTIONS, price: 5.25)],
                 type: foodTypes.WRAP),
             MenuItem(name: "Buffalo Chicken & Blue Cheese Wrap",
-                description: "Buffalo chicken strips, lettuce, tomato and blue cheese dressing in a  our tortilla",
+                description: "Buffalo chicken strips, lettuce, tomato and blue cheese dressing in a flour tortilla",
                 options: [MenuOption(description: Options.NO_OPTIONS, price: 6.50)],
                 type: foodTypes.WRAP),
             MenuItem(name: "Cobb Salad Wrap",
-                description: "A chopped salad in a  our tortilla: romaine lettuce, chicken, crisp bacon, tomato, avocado and egg with blue cheese dressing",
+                description: "A chopped salad in a flour tortilla: romaine lettuce, chicken, crisp bacon, tomato, avocado and egg with blue cheese dressing",
                 options: [MenuOption(description: Options.NO_OPTIONS, price: 5.95)],
                 type: foodTypes.WRAP),
             MenuItem(name: "Tandoori Tempeh Wrap (VE)",
-                description: "Tandoori marinated tempeh with curried cauli ower, quinoa and spicy eggplant relish",
+                description: "Tandoori marinated tempeh with curried cauliflower, quinoa and spicy eggplant relish",
                 options: [MenuOption(description: Options.NO_OPTIONS, price: 6.25)],
                 type: foodTypes.WRAP),
             
@@ -309,7 +313,7 @@ class MenuItems {
             MenuItem(name: "Steak Fries",
                 description: "",
                 options: [MenuOption(description: Options.SMALL, price: 2.25),
-                    MenuOption(description: Options.LARGE, price: 2.75)],
+                    MenuOption(description: Options.LARGE, price: 2.95)],
                 type: foodTypes.SIDE),
             MenuItem(name: "Fajita Fries",
                 description: "",
@@ -355,7 +359,7 @@ class MenuItems {
                 type: foodTypes.BEVERAGE)
         ]
         
-        // TODO gluten free bread and pizza dough, pizza toppings add (V) and (VE)
+        // TODO gluten free bread and pizza dough, pizza toppings prices
         
         for i in 0..<items.count {
             // all salads have these add ons

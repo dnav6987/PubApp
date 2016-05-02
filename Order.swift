@@ -11,6 +11,12 @@
     The strings the identifiers used for object names in the defaults.
 */
 
+/* TODOs:
+        - make server clickable file with icon
+        - make other people's order feed based on smash tag. search by name within the server
+        - search menu items by name and by (V), (VE)
+*/
+
 import Foundation
 
 struct Order {
