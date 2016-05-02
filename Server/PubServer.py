@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 ###
 # you can use another IP and port by providing them as arguments when executed from the terminal
 ###

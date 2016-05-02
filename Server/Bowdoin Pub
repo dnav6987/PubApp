@@ -1,0 +1,4 @@
+#!/bin/bash
+
+find ~/Desktop -name 'PubServer.py' -print0 | xargs -0 python
+killall Terminal
