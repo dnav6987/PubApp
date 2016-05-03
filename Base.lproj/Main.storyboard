@@ -475,7 +475,7 @@
         <scene sceneID="xuj-Fl-r6B">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="JDd-5s-NnB" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Menu" id="xCV-Jf-bl4"/>
+                    <tabBarItem key="tabBarItem" title="Menu" image="Restaurant Filled-50" id="xCV-Jf-bl4"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="dSM-cf-4l6">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -494,7 +494,7 @@
         <scene sceneID="bJe-I8-fVF">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="IS2-cU-YHZ" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="My Order" id="RVg-0L-uTy"/>
+                    <tabBarItem key="tabBarItem" title="My Order" image="Shopping Cart Loaded Filled-50" id="RVg-0L-uTy"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="Lph-kG-muZ">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -513,7 +513,7 @@
         <scene sceneID="fVk-rB-sGx">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="KV5-aE-N6N" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Order Feed" id="lYZ-Kq-Mw5"/>
+                    <tabBarItem key="tabBarItem" title="Order Feed" image="User Menu Male Filled-50" id="lYZ-Kq-Mw5"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="abM-05-tCA">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -528,11 +528,11 @@
             </objects>
             <point key="canvasLocation" x="1106" y="3282"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--Favorites-->
         <scene sceneID="qD5-u7-LEy">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="vdv-gb-Suq" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" systemItem="favorites" id="Jk0-eG-Be9"/>
+                    <tabBarItem key="tabBarItem" title="Favorites" image="Star Filled-50" id="Jk0-eG-Be9"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="mUs-CT-iyi">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -548,6 +548,12 @@
             <point key="canvasLocation" x="1106" y="1728"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="Restaurant Filled-50" width="50" height="50"/>
+        <image name="Shopping Cart Loaded Filled-50" width="50" height="50"/>
+        <image name="Star Filled-50" width="50" height="50"/>
+        <image name="User Menu Male Filled-50" width="50" height="50"/>
+    </resources>
     <inferredMetricsTieBreakers>
         <segue reference="fui-JQ-nZF"/>
     </inferredMetricsTieBreakers>

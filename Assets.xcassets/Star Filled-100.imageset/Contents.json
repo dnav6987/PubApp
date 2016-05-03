@@ -2,17 +2,17 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "pub.png",
+      "filename" : "Star Filled-100.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "pub-1.png",
+      "filename" : "Star Filled-101.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "filename" : "pub-2.png",
+      "filename" : "Star Filled-102.png",
       "scale" : "3x"
     }
   ],

@@ -10,6 +10,8 @@
     This is where the user's order is displayed in a table. The order can be placed and alerts tell the user the status of the order.
  */
 
+// TODO check that they are on bowoin wifi
+
 import UIKit
 import Foundation
 
