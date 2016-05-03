@@ -95,5 +95,8 @@ class FavoritesTableViewController: UITableViewController {
             tabCon.selectedIndex = 1
         }
     }
-
+    
+    override func shouldPerformSegueWithIdentifier(identifier: String?, sender: AnyObject?) -> Bool {
+        return favorites.count > 0
+    }
 }
