@@ -56,7 +56,7 @@ class Server:
                     response = self.query_response()
 
                 if response == '': response = 'emt'
-                print response
+
                 connection_socket.send('qry;' + response)
             else:
                 connection_socket.send('rcv')   # let the client know that its order was recieved
