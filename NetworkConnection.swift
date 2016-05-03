@@ -73,13 +73,22 @@ class NetworkConnection: NSObject, NSStreamDelegate {
                 var buffer = [UInt8](count: ServerResponses.RESPONSE_CODE_LENGTH, repeatedValue: 0)
                 inputStream!.read(&buffer, maxLength: buffer.count)
                 
-                // At this point in time we expect no other messages from the server besides when the order is ready for pick up
+                // Handle the messages from the server
                 if String(bytes: buffer, encoding: NSUTF8StringEncoding) == ServerResponses.READY_FOR_PICK_UP {
                     if let otvc = delegate as? OrderTableViewController {
                         if let tbc = otvc.tabBarController {
                             // Present an alert message that the food is ready for pick up
                             tbc.selectedIndex = 2
                             delegate.alert("Ready For Pick Up", message: AlertMessages.RDY)
+                            inputStream!.close()    // network communication stops when order is ready
+                        }
+                    }
+                } else if String(bytes: buffer, encoding: NSUTF8StringEncoding) == ServerResponses.RECIEVED_ORDER {
+                    if let otvc = delegate as? OrderTableViewController {
+                        if let tbc = otvc.tabBarController {
+                            // Present an alert message that the food is ready for pick up
+                            tbc.selectedIndex = 2
+                            delegate.alert("Sucess", message: AlertMessages.RCVD)
                             inputStream!.close()    // network communication stops when order is ready
                         }
                     }

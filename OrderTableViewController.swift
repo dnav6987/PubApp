@@ -76,11 +76,6 @@ class OrderTableViewController: UITableViewController, NetworkConnectionDelegate
         connection.connect(Server.HOST, port: 5555) // connect to the server (may be redundant but it is a good chance to try to reconnect if it was previously down)
     }
     
-//    override func viewWillDisappear(animated: Bool) {
-//        connection.inputStream!.close()
-//        connection.outputStream!.close()
-//    }
-    
     // get the order data and reset the view
     func refresh() {
         // set the user control buttons

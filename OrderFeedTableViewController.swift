@@ -117,8 +117,8 @@ class OrderFeedTableViewController: UITableViewController, UITextFieldDelegate {
         orders = result
     }
     
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
+    override func viewDidLoad() {
+        super.viewDidLoad()
         refresh()
     }
 

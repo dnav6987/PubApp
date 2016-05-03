@@ -4,8 +4,6 @@
 # you can use another IP and port by providing them as arguments when executed from the terminal
 ###
 
-# TODO send last thirty entries either out of all or with certain name
-
 from socket import *
 import thread
 import sys
@@ -54,10 +52,11 @@ class Server:
                     response = self.query_response(' '.join(request_message.split()[1:]))
                 else:
                     response = self.query_response()
-
-                if response == '': response = 'emt'
-
-                connection_socket.send('qry;' + response)
+                
+                if response == '':
+                    connection_socket.send('emt')
+                else:
+                    connection_socket.send('qry;' + response)
             else:
                 connection_socket.send('rcv')   # let the client know that its order was recieved
                 # parse the message
