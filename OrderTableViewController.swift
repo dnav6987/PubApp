@@ -75,7 +75,7 @@ class OrderTableViewController: UITableViewController, NetworkConnectionDelegate
     }
     
     override func viewWillDisappear(animated: Bool) {
-        connection.inputStream!.close() // TODO check this
+        connection.inputStream!.close()
         connection.outputStream!.close()
     }
     
@@ -150,6 +150,8 @@ class OrderTableViewController: UITableViewController, NetworkConnectionDelegate
             let submit = UIAlertAction(title: "Submit", style: .Default, handler: { (action) -> Void in
                 Order.defaults.setObject(nameTextField?.text, forKey: Order.NAME)
                 Order.defaults.setObject(idTextField?.text, forKey: Order.ID)
+                
+                self.updateFavorites()
                 
                 self.sendOrderToServer()
             })
@@ -250,6 +252,29 @@ class OrderTableViewController: UITableViewController, NetworkConnectionDelegate
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .Alert)
         alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default,handler: nil))  // button to dismiss the alert
         self.presentViewController(alertController, animated: true, completion: nil)
+    }
+    
+    // MARK: - favorites
+    func updateFavorites() {
+        if Order.defaults.objectForKey(Order.FAVORITES_COUNTS) == nil {
+            Order.defaults.setObject([String: Int](), forKey: Order.FAVORITES_COUNTS)
+            Order.defaults.setObject([String: Float](), forKey: Order.FAVORITES_PRICES)
+        }
+        
+        var favoritesCounts = Order.defaults.objectForKey(Order.FAVORITES_COUNTS) as! [String: Int]
+        var favoritesPrices = Order.defaults.objectForKey(Order.FAVORITES_PRICES) as! [String: Float]
+        
+        for itemIndex in 0..<order.count {
+            if let thisItemCount = favoritesCounts[order[itemIndex]] {
+                favoritesCounts[order[itemIndex]] = thisItemCount + 1
+            } else {
+                favoritesCounts[order[itemIndex]] = 1
+                favoritesPrices[order[itemIndex]] = prices[itemIndex]
+            }
+        }
+        
+        Order.defaults.setObject(favoritesCounts, forKey: Order.FAVORITES_COUNTS)
+        Order.defaults.setObject(favoritesPrices, forKey: Order.FAVORITES_PRICES)
     }
 
     

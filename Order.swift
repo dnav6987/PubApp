@@ -25,4 +25,6 @@ struct Order {
     static let PRICES_STRING = "Prices"
     static let NAME = "Name"
     static let ID = "ID"
+    static let FAVORITES_COUNTS = "Fav Count"
+    static let FAVORITES_PRICES = "Fav price"
 }
