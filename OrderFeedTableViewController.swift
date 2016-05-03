@@ -17,7 +17,7 @@ class OrderFeedTableViewController: UITableViewController, UITextFieldDelegate {
         didSet { tableView.reloadData() }
     }
     
-    // this allwos the user to filter the search results to a specific person
+    // this allows the user to filter the search results to a specific person
     var searchText: String = "" {
         didSet {
             searchTextField?.text = searchText

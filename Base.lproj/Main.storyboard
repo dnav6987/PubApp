@@ -404,8 +404,14 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="separatorColor" red="0.74117647060000003" green="0.74117647060000003" blue="0.74117647060000003" alpha="1" colorSpace="calibratedRGB"/>
+                        <textField key="tableHeaderView" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Search Menu" textAlignment="natural" minimumFontSize="17" id="Ca0-ox-46D">
+                            <rect key="frame" x="0.0" y="64" width="600" height="30"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <textInputTraits key="textInputTraits"/>
+                        </textField>
                         <button key="tableFooterView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="28J-ka-m6T">
-                            <rect key="frame" x="0.0" y="232" width="600" height="0.0"/>
+                            <rect key="frame" x="0.0" y="262" width="600" height="0.0"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <connections>
                                 <segue destination="KtT-1S-NuH" kind="popoverPresentation" identifier="ToDetailedMenu" popoverAnchorView="28J-ka-m6T" id="gck-Uj-Mfj">
@@ -415,7 +421,7 @@
                         </button>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="detailDisclosureButton" indentationWidth="10" reuseIdentifier="MenuCell" textLabel="eSJ-RA-b1k" rowHeight="80" style="IBUITableViewCellStyleDefault" id="Cr2-rS-YOf">
-                                <rect key="frame" x="0.0" y="114" width="600" height="80"/>
+                                <rect key="frame" x="0.0" y="144" width="600" height="80"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Cr2-rS-YOf" id="rbV-7b-Hcg">
                                     <rect key="frame" x="0.0" y="0.0" width="533" height="79"/>
@@ -437,6 +443,9 @@
                         </prototypes>
                     </tableView>
                     <navigationItem key="navigationItem" title="Menu" id="srQ-fg-HKj"/>
+                    <connections>
+                        <outlet property="searchTextField" destination="Ca0-ox-46D" id="QK8-sH-mn0"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PX1-gD-dcz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
