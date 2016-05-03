@@ -255,6 +255,8 @@ class OrderTableViewController: UITableViewController, NetworkConnectionDelegate
     }
     
     // MARK: - favorites
+    
+    // Update the favorites counts.
     func updateFavorites() {
         if Order.defaults.objectForKey(Order.FAVORITES_COUNTS) == nil {
             Order.defaults.setObject([String: Int](), forKey: Order.FAVORITES_COUNTS)

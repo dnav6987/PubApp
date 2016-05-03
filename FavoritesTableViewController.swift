@@ -6,6 +6,11 @@
 //  Copyright © 2016 Dan Navarro. All rights reserved.
 //
 
+/*
+    People do not want to go through the menu everytime when they know what they want. Track the most ordered items display them here.
+    Every time an item is ordered, the number of times it has been ordered is updated and we use the most ordered items
+*/
+
 import UIKit
 
 class FavoritesTableViewController: UITableViewController {
@@ -13,6 +18,7 @@ class FavoritesTableViewController: UITableViewController {
     
     var favorites = [String]()
     
+    // get an updated favorites list
     func refresh() {
         if Order.defaults.objectForKey(Order.FAVORITES_COUNTS) == nil {
             Order.defaults.setObject([String: Int](), forKey: Order.FAVORITES_COUNTS)
@@ -22,12 +28,15 @@ class FavoritesTableViewController: UITableViewController {
         let favoritesDict = Order.defaults.objectForKey(Order.FAVORITES_COUNTS) as! [String: Int]
         var favoritesList = [Favorite]()
         
+        // store all of the ordered items in a list
         for (fav, count) in favoritesDict { favoritesList.append((fav, count)) }
         
+        // sort them in descending order
         favoritesList.sortInPlace {
             return $0.1 > $1.1
         }
         
+        // store the top 5 ordered items
         favorites = [String]()
         for fav in favoritesList {
             favorites.append(fav.0)
@@ -61,7 +70,7 @@ class FavoritesTableViewController: UITableViewController {
             cell.textLabel?.text = "Favorites will be updated once you place your first order"
             cell.detailTextLabel?.text = ""
         } else {
-            // title = item, subtitle = name
+            // title = item, subtitle = price
             cell.textLabel?.text = favorites[indexPath.row]
             let prices = Order.defaults.objectForKey(Order.FAVORITES_PRICES) as! [String: Float]
             let thisPrice = prices[favorites[indexPath.row]]
@@ -73,10 +82,8 @@ class FavoritesTableViewController: UITableViewController {
     
     // MARK: - Segue
     
-    
+    // add the item to the order
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // set the order and the prices
-        
         let thisItem = favorites[Int((sender?.accessibilityIdentifier)!)!]
         
         if var order = Order.defaults.arrayForKey(Order.ORDER_STRING) as? [String] {
@@ -96,6 +103,7 @@ class FavoritesTableViewController: UITableViewController {
         }
     }
     
+    // Don't won't to segue if it is not actually a menu item
     override func shouldPerformSegueWithIdentifier(identifier: String?, sender: AnyObject?) -> Bool {
         return favorites.count > 0
     }
