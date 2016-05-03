@@ -73,13 +73,13 @@ class OrderTableViewController: UITableViewController, NetworkConnectionDelegate
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         refresh()   // refresh the data
-        connection.connect("127.0.0.1", port: 5555) // connect to the server (may be redundant but it is a good chance to try to reconnect if it was previously down)
+        connection.connect(Server.HOST, port: 5555) // connect to the server (may be redundant but it is a good chance to try to reconnect if it was previously down)
     }
     
-    override func viewWillDisappear(animated: Bool) {
-        connection.inputStream!.close()
-        connection.outputStream!.close()
-    }
+//    override func viewWillDisappear(animated: Bool) {
+//        connection.inputStream!.close()
+//        connection.outputStream!.close()
+//    }
     
     // get the order data and reset the view
     func refresh() {

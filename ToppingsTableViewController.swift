@@ -98,7 +98,7 @@ class ToppingsTableViewController: UITableViewController {
         
         // segue to the order page, which has tab index 1
         if let tabCon = segue.destinationViewController as? UITabBarController {
-            tabCon.selectedIndex = 1
+            tabCon.selectedIndex = 2
         }
     }
 }

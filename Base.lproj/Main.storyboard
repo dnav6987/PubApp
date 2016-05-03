@@ -462,8 +462,8 @@
                     </tabBar>
                     <connections>
                         <segue destination="JDd-5s-NnB" kind="relationship" relationship="viewControllers" id="Wvw-bZ-xYS"/>
-                        <segue destination="IS2-cU-YHZ" kind="relationship" relationship="viewControllers" id="gc5-TO-dcY"/>
                         <segue destination="vdv-gb-Suq" kind="relationship" relationship="viewControllers" id="9Bx-Mq-y2K"/>
+                        <segue destination="IS2-cU-YHZ" kind="relationship" relationship="viewControllers" id="gc5-TO-dcY"/>
                         <segue destination="KV5-aE-N6N" kind="relationship" relationship="viewControllers" id="Aj7-dV-IV4"/>
                     </connections>
                 </tabBarController>

@@ -1,4 +1,4 @@
-from Tkinter import Tk, Button, Label, OptionMenu, StringVar
+from Tkinter import Tk
 from ttk import Treeview
 
 # A GUI for a food ordering server. Displayed as a tree view. Responses to clients can be sent by double clicking

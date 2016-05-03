@@ -13,7 +13,7 @@ import sys
 from GUI import Display
 
 class Server:
-    DEFAULT_ADDR = ('127.0.0.1', 5555)
+    DEFAULT_ADDR = (gethostbyname(gethostname()), 5555)
 
     def __init__(self, server_addr = DEFAULT_ADDR):
         # run network connections in it's own thread

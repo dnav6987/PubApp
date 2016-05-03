@@ -54,7 +54,7 @@ class OrderFeedTableViewController: UITableViewController, UITextFieldDelegate {
     @IBAction func refresh(sender: UIRefreshControl) {
         // connect to server
         let connection = NetworkConnection()
-        connection.connect("127.0.0.1", port: 5555)
+        connection.connect(Server.HOST, port: 5555)
         
         if connection.outputStream != nil && connection.inputStream != nil {
             let qryString = ServerResponses.QUERY_RESPONSE + (searchText == "" ? "" : " " + searchText) // "qry <name>"

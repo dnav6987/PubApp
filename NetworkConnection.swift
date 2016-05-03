@@ -16,6 +16,10 @@ protocol NetworkConnectionDelegate {
     func alert(title: String, message: String)
 }
 
+// IP address of the server
+struct Server {
+    static let HOST = "139.140.208.100"
+}
 
 // The response codes from the server. All are 3 characters long
 struct ServerResponses {
@@ -74,7 +78,7 @@ class NetworkConnection: NSObject, NSStreamDelegate {
                     if let otvc = delegate as? OrderTableViewController {
                         if let tbc = otvc.tabBarController {
                             // Present an alert message that the food is ready for pick up
-                            tbc.selectedIndex = 1
+                            tbc.selectedIndex = 2
                             delegate.alert("Ready For Pick Up", message: AlertMessages.RDY)
                             inputStream!.close()    // network communication stops when order is ready
                         }
