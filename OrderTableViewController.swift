@@ -74,6 +74,11 @@ class OrderTableViewController: UITableViewController, NetworkConnectionDelegate
         connection.connect("127.0.0.1", port: 5555) // connect to the server (may be redundant but it is a good chance to try to reconnect if it was previously down)
     }
     
+    override func viewWillDisappear(animated: Bool) {
+        connection.inputStream!.close() // TODO check this
+        connection.outputStream!.close()
+    }
+    
     // get the order data and reset the view
     func refresh() {
         // set the user control buttons
@@ -197,7 +202,6 @@ class OrderTableViewController: UITableViewController, NetworkConnectionDelegate
             
             // send the data and then close the connection, it only needs to write once
             connection.outputStream!.write(orderDataString, maxLength: orderDataString.characters.count)
-//            connection.outputStream!.write("qry Dan Navarro", maxLength: "qry Dan Navarro".characters.count)
             connection.outputStream!.close()
         
             // wait for response from server, this could take a while so do in another thread
@@ -209,11 +213,11 @@ class OrderTableViewController: UITableViewController, NetworkConnectionDelegate
                         // Wait for confirmation that the server recieved the order. If timer runsout, assume the data was lost
                         
                         // see if the server has sent data back (server only sends three chars)
-                        var buffer = [UInt8](count: 3, repeatedValue: 0)
+                        var buffer = [UInt8](count: ServerResponses.RESPONSE_CODE_LENGTH, repeatedValue: 0)
                         self.connection.inputStream!.read(&buffer, maxLength: buffer.count)
                         
                         // when the data recieves an order it should send back a "rcv". If so, stop the activity view and display a success alert
-                        if String(bytes: buffer, encoding: NSUTF8StringEncoding) == "rcv" {
+                        if String(bytes: buffer, encoding: NSUTF8StringEncoding) == ServerResponses.RECIEVED_ORDER {
                             dispatch_async(dispatch_get_main_queue()) {
                                 activityViewController.dismissViewControllerAnimated(false, completion: { () -> Void in
                                     self.alert("Success", message: AlertMessages.RCVD)
@@ -224,7 +228,7 @@ class OrderTableViewController: UITableViewController, NetworkConnectionDelegate
                         }
                     }
                     
-                    if NSDate().timeIntervalSinceDate(start) >= 8 { // if this amount of time (in seconds) is exceeded, report and error
+                    else if NSDate().timeIntervalSinceDate(start) >= 8 { // if this amount of time (in seconds) is exceeded, report and error
                         dispatch_async(dispatch_get_main_queue()) {
                             activityViewController.dismissViewControllerAnimated(false, completion: { () -> Void in
                                 self.alert("Error", message: AlertMessages.SERVER_ERROR)

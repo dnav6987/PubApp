@@ -16,6 +16,16 @@ protocol NetworkConnectionDelegate {
     func alert(title: String, message: String)
 }
 
+
+// The response codes from the server. All are 3 characters long
+struct ServerResponses {
+    static let RESPONSE_CODE_LENGTH = 3
+    static let READY_FOR_PICK_UP = "rdy"
+    static let RECIEVED_ORDER = "rcv"
+    static let QUERY_RESPONSE = "qry"
+    static let EMPTY_DATABASE = "emt"
+}
+
 class NetworkConnection: NSObject, NSStreamDelegate {
     var inputStream: NSInputStream?
     var outputStream: NSOutputStream?
@@ -55,15 +65,12 @@ class NetworkConnection: NSObject, NSStreamDelegate {
                 
                 // data was recieved, let's read it!
                 
-                // TODO recieve 2^12
-                
-                // Buffer to hold the data. All server messages are of length three characters
-                var buffer = [UInt8](count: 3, repeatedValue: 0)
+                // Buffer to hold the data
+                var buffer = [UInt8](count: ServerResponses.RESPONSE_CODE_LENGTH, repeatedValue: 0)
                 inputStream!.read(&buffer, maxLength: buffer.count)
                 
-                // "rdy" is the server's message notifying that food is ready for pick up.
-                // At this point in time we expect no other messages from the server
-                if String(bytes: buffer, encoding: NSUTF8StringEncoding) == "rdy" {
+                // At this point in time we expect no other messages from the server besides when the order is ready for pick up
+                if String(bytes: buffer, encoding: NSUTF8StringEncoding) == ServerResponses.READY_FOR_PICK_UP {
                     if let otvc = delegate as? OrderTableViewController {
                         if let tbc = otvc.tabBarController {
                             // Present an alert message that the food is ready for pick up

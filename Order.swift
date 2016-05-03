@@ -14,6 +14,7 @@
 /* TODOs:
         - make other people's order feed based on smash tag. search by name within the server
         - search menu items by name and by (V), (VE)
+        - store a (or a few) favorite items
 */
 
 import Foundation
