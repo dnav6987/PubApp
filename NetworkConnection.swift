@@ -45,7 +45,7 @@ class NetworkConnection: NSObject, NSStreamDelegate {
         
         if inputStream != nil && outputStream != nil {
             // if there is an error, set the streams nil so nobody tries to connect
-            if inputStream!.streamError == nil && outputStream!.streamError == nil {
+            if inputStream!.streamError != nil || outputStream!.streamError != nil {
                 inputStream = nil
                 outputStream = nil
             } else {
