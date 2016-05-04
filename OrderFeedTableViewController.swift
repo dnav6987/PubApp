@@ -56,16 +56,16 @@ class OrderFeedTableViewController: UITableViewController, UITextFieldDelegate, 
     
     // refresh the data. queery the server and see parse it's response
     @IBAction func refresh(sender: UIRefreshControl) {
-        // connect to server
-        connection.connect(Server.HOST, port: 5555)
-        
-        if connection.outputStream != nil && connection.inputStream != nil {
-            let qryString = ServerResponses.QUERY_RESPONSE + (searchText == "" ? "" : " " + searchText) // "qry <name>"
-            connection.outputStream!.write(qryString, maxLength: qryString.characters.count)    // send queery response
-            connection.outputStream!.close()
+        // wait for response in a different thread
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+            // connect to server
+            self.connection.connect(ServerAddress.HOST, port: ServerAddress.PORT)
             
-            // wait for response in a different thread
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+            if self.connection.outputStream != nil && self.connection.inputStream != nil {
+                let qryString = ServerResponses.QUERY_RESPONSE + (self.searchText == "" ? "" : " " + self.searchText) // "qry <name>"
+                self.connection.outputStream!.write(qryString, maxLength: qryString.characters.count)    // send queery response
+                self.connection.outputStream!.close()
+                
                 let start = NSDate()    // time at which the connection started (too track wait time)
                 
                 while true {    // I know, I know, this is dangerous... but living on the edge (and a gauruntee that a timer will break out of the loop)
@@ -110,6 +110,10 @@ class OrderFeedTableViewController: UITableViewController, UITextFieldDelegate, 
                         break
                     }
                 }
+            } else {
+                dispatch_async(dispatch_get_main_queue()) {
+                    sender.endRefreshing()
+                }
             }
         }
     }
@@ -150,7 +154,9 @@ class OrderFeedTableViewController: UITableViewController, UITextFieldDelegate, 
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillAppear(animated)
-        connection.inputStream!.close()
+        if connection.inputStream != nil {
+            connection.inputStream!.close()
+        }
     }
 
     // MARK: - Table view data source

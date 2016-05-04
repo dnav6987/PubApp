@@ -75,7 +75,11 @@ class OrderTableViewController: UITableViewController, NetworkConnectionDelegate
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         refresh()   // refresh the data
-        connection.connect(Server.HOST, port: 5555) // connect to the server (may be redundant but it is a good chance to try to reconnect if it was previously down)
+        // wait for response in a different thread
+
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+            self.connection.connect(ServerAddress.HOST, port: ServerAddress.PORT) // connect to the server (may be redundant but it is a good chance to try to reconnect if it was previously down)
+        }
     }
     
     // get the order data and reset the view
@@ -191,21 +195,23 @@ class OrderTableViewController: UITableViewController, NetworkConnectionDelegate
             // the connection may be slow so present an activity view controller so the user isn't left confused (we won't wait forever though!)
             presentViewController(activityViewController, animated: true, completion: nil)
             
-            connection.outputStream!.open() // open the output connection to the server
-            
-            // order items seperated by two lines and then add on price and user information. This makes it easy to parse at the server
-            var orderDataString = "[ \n\n"
-            for item in order { orderDataString += item + "\n\n"}
-            orderDataString += "Price: \(totalPrice.asPriceString())\n\n"
-            orderDataString += "Name: \(Order.defaults.objectForKey(Order.NAME) as! String)\n\n"
-            orderDataString += "Bowdoin I.D.: \(Order.defaults.objectForKey(Order.ID) as! String)\n\n]"
-            
-            // send the data and then close the connection, it only needs to write once
-            connection.outputStream!.write(orderDataString, maxLength: orderDataString.characters.count)
-            connection.outputStream!.close()
-        
             // wait for response from server, this could take a while so do in another thread
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+                
+                self.connection.outputStream!.open() // open the output connection to the server
+                
+                // order items seperated by two lines and then add on price and user information. This makes it easy to parse at the server
+                var orderDataString = "[ \n\n"
+                for item in self.order { orderDataString += item + "\n\n"}
+                orderDataString += "Price: \(self.totalPrice.asPriceString())\n\n"
+                orderDataString += "Name: \(Order.defaults.objectForKey(Order.NAME) as! String)\n\n"
+                orderDataString += "Bowdoin I.D.: \(Order.defaults.objectForKey(Order.ID) as! String)\n\n]"
+                
+                // send the data and then close the connection, it only needs to write once
+                self.connection.outputStream!.write(orderDataString, maxLength: orderDataString.characters.count)
+                self.connection.outputStream!.close()
+                
+                
                 let start = NSDate()    // time at which the connection started (too track wait time)
                 
                 while true {    // I know, I know, this is dangerous... but living on the edge (and a gauruntee that a timer will break out of the loop)

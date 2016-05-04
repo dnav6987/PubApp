@@ -17,8 +17,9 @@ protocol NetworkConnectionDelegate {
 }
 
 // IP address of the server
-struct Server {
-    static let HOST = "192.168.1.231"
+struct ServerAddress {
+    static let HOST = "127.0.0.1"
+    static let PORT = 5555
 }
 
 // The response codes from the server. All are 3 characters long
@@ -38,21 +39,29 @@ class NetworkConnection: NSObject, NSStreamDelegate {
     
     func connect(host: String, port: Int) {
         // set up the input and output streams with the server
+        autoreleasepool {
         NSStream.getStreamsToHostWithName(host, port: port, inputStream: &inputStream, outputStream: &outputStream)
+        }
         
         if inputStream != nil && outputStream != nil {
-            
-            // This notifies when data is sent or recieved in the stream method
-            inputStream!.delegate = self
-            outputStream!.delegate = self
-            
-            // Schedule the streams
-            inputStream!.scheduleInRunLoop(.mainRunLoop(), forMode: NSDefaultRunLoopMode)
-            outputStream!.scheduleInRunLoop(.mainRunLoop(), forMode: NSDefaultRunLoopMode)
-            
-            // Open them for communication
-            inputStream!.open()
-            outputStream!.open()
+            // if there is an error, set the streams nil so nobody tries to connect
+            if inputStream!.streamError == nil && outputStream!.streamError == nil {
+                inputStream = nil
+                outputStream = nil
+            } else {
+                
+                // This notifies when data is sent or recieved in the stream method
+                inputStream!.delegate = self
+                outputStream!.delegate = self
+                
+                // Schedule the streams
+                inputStream!.scheduleInRunLoop(.mainRunLoop(), forMode: NSDefaultRunLoopMode)
+                outputStream!.scheduleInRunLoop(.mainRunLoop(), forMode: NSDefaultRunLoopMode)
+                
+                // Open them for communication
+                inputStream!.open()
+                outputStream!.open()
+            }
         }
     }
     
