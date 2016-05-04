@@ -42,23 +42,24 @@ class Server:
             connection_socket, addr = server_socket.accept()    # accept connection
             thread.start_new_thread(self.service_client, (connection_socket, addr))  # create a new thread to service a client
 
-    # TODO comment
     def service_client(self, connection_socket, addr):
         request_message = connection_socket.recv(2048)  # read the data from the client
         print 'recieved request:', request_message, 'from:', addr
         
         if request_message != '':
+            # Respond to a query of the data base by sending the most recent orders
+            # query format: qry <optional name>
             if request_message.split()[0] == 'qry':
-                if len(request_message.split()):
+                if len(request_message.split()):    # if they provided a name pass that as an arg
                     response = self.query_response(' '.join(request_message.split()[1:]))
-                else:
+                else:   # just a general query
                     response = self.query_response()
                 
-                if response == '':
+                if response == '':  # if there were no results return an empty response
                     connection_socket.send('emt')
                 else:
                     connection_socket.send('qry;' + response)
-            else:
+            else:   # recieve an order
                 connection_socket.send('rcv')   # let the client know that its order was recieved
                 # parse the message
                 user, name, order, price = self.parse_request(request_message)
@@ -126,19 +127,22 @@ class Server:
 
         return user, name, order, price
 
-    # TODO comment
+    # track the orders in a database (just a list of names and items)
     def store_in_database(self, name, request):
         for item in request:
             self.order_database.append((name, item))
-    # TODO comment
+    
+    # respond to a query with the most recent orders in the database for the name provided
+    # if there is no name then just give the most recent orders by anyone
     def query_response(self, name=None):
         MAX_RESPONSE_SIZE = 30  # TODO test this value
         curr_response_size = 0
 
         response = ''
 
+        # reversed because we want the most recent
         for index in reversed(range(len(self.order_database))):
-            if curr_response_size >= MAX_RESPONSE_SIZE: break
+            if curr_response_size >= MAX_RESPONSE_SIZE: break   # b/c don't want to send too much data
 
             this_item = self.order_database[index]
 
