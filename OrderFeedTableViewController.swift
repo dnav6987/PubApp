@@ -12,10 +12,14 @@
 
 import UIKit
 
-class OrderFeedTableViewController: UITableViewController, UITextFieldDelegate {
+class OrderFeedTableViewController: UITableViewController, UITextFieldDelegate, NetworkConnectionDelegate {
+    // list of the orders in the feed (item_name, customer_name)
     var orders = [(String, String)]() {
         didSet { tableView.reloadData() }
     }
+    
+    // the network connection
+    var connection = NetworkConnection()
     
     // this allows the user to filter the search results to a specific person
     var searchText: String = "" {
@@ -53,7 +57,6 @@ class OrderFeedTableViewController: UITableViewController, UITextFieldDelegate {
     // refresh the data. queery the server and see parse it's response
     @IBAction func refresh(sender: UIRefreshControl) {
         // connect to server
-        let connection = NetworkConnection()
         connection.connect(Server.HOST, port: 5555)
         
         if connection.outputStream != nil && connection.inputStream != nil {
@@ -66,12 +69,12 @@ class OrderFeedTableViewController: UITableViewController, UITextFieldDelegate {
                 let start = NSDate()    // time at which the connection started (too track wait time)
                 
                 while true {    // I know, I know, this is dangerous... but living on the edge (and a gauruntee that a timer will break out of the loop)
-                    if connection.inputStream!.hasBytesAvailable {
+                    if self.connection.inputStream!.hasBytesAvailable {
                         // Wait for confirmation that the server recieved the order. If timer runsout, assume the data was lost
                         
                         // see if the server has sent data back
                         var buffer = [UInt8](count: 4096, repeatedValue: 0)
-                        connection.inputStream!.read(&buffer, maxLength: buffer.count)
+                        self.connection.inputStream!.read(&buffer, maxLength: buffer.count)
                         
                         // convert the data to a string
                         let dataString = String(bytes: buffer, encoding: NSUTF8StringEncoding)
@@ -85,7 +88,14 @@ class OrderFeedTableViewController: UITableViewController, UITextFieldDelegate {
                                 dispatch_async(dispatch_get_main_queue()) {
                                     // parse the response
                                     self.parseQueeryResponse(serverMessage)
-                                    connection.inputStream!.close()
+                                    self.connection.inputStream!.close()
+                                    sender.endRefreshing()
+                                }
+                                break
+                            } else if serverMessage.characters.count >= ServerResponses.RESPONSE_CODE_LENGTH && serverMessage.substringToIndex(serverMessage.startIndex.advancedBy(ServerResponses.RESPONSE_CODE_LENGTH)) == ServerResponses.EMPTY_DATABASE {
+                                dispatch_async(dispatch_get_main_queue()) {
+                                    self.orders = [(String, String)]()
+                                    sender.endRefreshing()
                                 }
                                 break
                             }
@@ -93,14 +103,15 @@ class OrderFeedTableViewController: UITableViewController, UITextFieldDelegate {
                     }
                     
                     else  if NSDate().timeIntervalSinceDate(start) >= 8 { // if this amount of time (in seconds) is exceeded assume the data is lost
-                        connection.inputStream!.close()
+                        self.connection.inputStream!.close()
+                        dispatch_async(dispatch_get_main_queue()) {
+                            sender.endRefreshing()
+                        }
                         break
                     }
                 }
             }
         }
-        
-        sender.endRefreshing()
     }
     
     // parse the queery response and store it in orders.
@@ -117,9 +128,29 @@ class OrderFeedTableViewController: UITableViewController, UITextFieldDelegate {
         orders = result
     }
     
+    func alert(title: String, message: String) {
+        dispatch_async(dispatch_get_main_queue()) {
+            if self.refreshControl != nil {
+                self.refreshControl?.endRefreshing()
+            }
+            
+            if message != ServerResponses.EMPTY_DATABASE {
+                self.parseQueeryResponse(message)
+            } else {
+                self.orders = [(String, String)]()
+            }
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        connection.delegate = self
         refresh()
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillAppear(animated)
+        connection.inputStream!.close()
     }
 
     // MARK: - Table view data source

@@ -18,7 +18,7 @@ protocol NetworkConnectionDelegate {
 
 // IP address of the server
 struct Server {
-    static let HOST = "139.140.208.100"
+    static let HOST = "192.168.1.231"
 }
 
 // The response codes from the server. All are 3 characters long
@@ -73,24 +73,38 @@ class NetworkConnection: NSObject, NSStreamDelegate {
                 var buffer = [UInt8](count: ServerResponses.RESPONSE_CODE_LENGTH, repeatedValue: 0)
                 inputStream!.read(&buffer, maxLength: buffer.count)
                 
-                // Handle the messages from the server
-                if String(bytes: buffer, encoding: NSUTF8StringEncoding) == ServerResponses.READY_FOR_PICK_UP {
-                    if let otvc = delegate as? OrderTableViewController {
-                        if let tbc = otvc.tabBarController {
-                            // Present an alert message that the food is ready for pick up
-                            tbc.selectedIndex = 2
-                            delegate.alert("Ready For Pick Up", message: AlertMessages.RDY)
-                            inputStream!.close()    // network communication stops when order is ready
+                let serverMessage = String(bytes: buffer, encoding: NSUTF8StringEncoding)
+                
+                if serverMessage != nil && serverMessage!.characters.count >= ServerResponses.RESPONSE_CODE_LENGTH {
+                    let responseCode = serverMessage!.substringToIndex(serverMessage!.startIndex.advancedBy(ServerResponses.RESPONSE_CODE_LENGTH))
+                
+                    // handel the message from the server
+                    switch responseCode {
+                    case ServerResponses.READY_FOR_PICK_UP:
+                        if let otvc = delegate as? OrderTableViewController {
+                            if let tbc = otvc.tabBarController {
+                                // Present an alert message that the food is ready for pick up
+                                tbc.selectedIndex = 2
+                                delegate.alert("Ready For Pick Up", message: AlertMessages.RDY)
+                                inputStream!.close()    // network communication stops when order is ready
+                            }
                         }
-                    }
-                } else if String(bytes: buffer, encoding: NSUTF8StringEncoding) == ServerResponses.RECIEVED_ORDER {
-                    if let otvc = delegate as? OrderTableViewController {
-                        if let tbc = otvc.tabBarController {
-                            // Present an alert message that the food is ready for pick up
-                            tbc.selectedIndex = 2
-                            delegate.alert("Sucess", message: AlertMessages.RCVD)
-                            inputStream!.close()    // network communication stops when order is ready
+                    case ServerResponses.RECIEVED_ORDER:
+                        if let otvc = delegate as? OrderTableViewController {
+                            if let tbc = otvc.tabBarController {
+                                // Present an alert message that the food is ready for pick up
+                                tbc.selectedIndex = 2
+                                delegate.alert("Sucess", message: AlertMessages.RCVD)
+                                inputStream!.close()
+                            }
                         }
+                    case ServerResponses.EMPTY_DATABASE:
+                        delegate.alert("", message: ServerResponses.EMPTY_DATABASE)
+                        inputStream!.close()    // network communication stops when order is ready
+                    case ServerResponses.QUERY_RESPONSE:
+                        delegate.alert("", message: serverMessage!)
+                        inputStream!.close()
+                    default: break
                     }
                 }
                 

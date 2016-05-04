@@ -62,6 +62,8 @@ class OrderTableViewController: UITableViewController, NetworkConnectionDelegate
     }()
     
     var connection = NetworkConnection()    // Connection to server
+    // the connection may be slow so present an activity view controller so the user isn't left confused (we won't wait forever though!)
+    let activityViewController = ActivityViewController(message: "Connecting...")
     
     // MARK: - Initializations
     
@@ -187,7 +189,6 @@ class OrderTableViewController: UITableViewController, NetworkConnectionDelegate
     func sendOrderToServer() {
         if connection.outputStream != nil && connection.inputStream != nil {
             // the connection may be slow so present an activity view controller so the user isn't left confused (we won't wait forever though!)
-            let activityViewController = ActivityViewController(message: "Connecting...")
             presentViewController(activityViewController, animated: true, completion: nil)
             
             connection.outputStream!.open() // open the output connection to the server
@@ -218,7 +219,7 @@ class OrderTableViewController: UITableViewController, NetworkConnectionDelegate
                         // when the data recieves an order it should send back a "rcv". If so, stop the activity view and display a success alert
                         if String(bytes: buffer, encoding: NSUTF8StringEncoding) == ServerResponses.RECIEVED_ORDER {
                             dispatch_async(dispatch_get_main_queue()) {
-                                activityViewController.dismissViewControllerAnimated(false, completion: { () -> Void in
+                                self.activityViewController.dismissViewControllerAnimated(false, completion: { () -> Void in
                                     self.alert("Success", message: AlertMessages.RCVD)
                                 })
                                 self.clearCart(UIButton())   // empty the cart, it has already been ordered
@@ -229,7 +230,7 @@ class OrderTableViewController: UITableViewController, NetworkConnectionDelegate
                     
                     else if NSDate().timeIntervalSinceDate(start) >= 8 { // if this amount of time (in seconds) is exceeded, report and error
                         dispatch_async(dispatch_get_main_queue()) {
-                            activityViewController.dismissViewControllerAnimated(false, completion: { () -> Void in
+                            self.activityViewController.dismissViewControllerAnimated(false, completion: { () -> Void in
                                 self.alert("Error", message: AlertMessages.SERVER_ERROR)
                             })
                         }
@@ -246,6 +247,10 @@ class OrderTableViewController: UITableViewController, NetworkConnectionDelegate
     
     // Display and alert view
     func alert(title: String, message: String) {
+        if activityViewController.isViewLoaded() && activityViewController.view.window != nil {
+            activityViewController.dismissViewControllerAnimated(false, completion: nil)
+        }
+        
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .Alert)
         alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default,handler: nil))  // button to dismiss the alert
         self.presentViewController(alertController, animated: true, completion: nil)
