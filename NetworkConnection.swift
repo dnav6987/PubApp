@@ -71,6 +71,7 @@ class NetworkConnection: NSObject, NSStreamDelegate {
             switch eventCode {
             case NSStreamEvent.ErrorOccurred:
                 print("input: ErrorOccurred: \(aStream.streamError?.description)")
+                inputStream = nil
             case NSStreamEvent.OpenCompleted:
                 print("input: OpenCompleted")
             case NSStreamEvent.HasBytesAvailable:
@@ -125,6 +126,7 @@ class NetworkConnection: NSObject, NSStreamDelegate {
             switch eventCode {
             case NSStreamEvent.ErrorOccurred:
                 print("output: ErrorOccurred: \(aStream.streamError?.description)")
+                outputStream = nil
             case NSStreamEvent.OpenCompleted:
                 print("output: OpenCompleted")
             case NSStreamEvent.HasSpaceAvailable:
