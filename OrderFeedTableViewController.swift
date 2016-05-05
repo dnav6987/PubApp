@@ -58,12 +58,12 @@ class OrderFeedTableViewController: UITableViewController, UITextFieldDelegate, 
     
     // refresh the data. queery the server and see parse it's response
     @IBAction func refresh(sender: UIRefreshControl) {
-        if self.connection.outputStream != nil && self.connection.inputStream != nil {
-            // wait for response in a different thread
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
-                // connect to server
-                self.connection.connect(ServerAddress.HOST, port: ServerAddress.PORT)
-                
+        // wait for response in a different thread
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+            // connect to server
+            self.connection.connect(ServerAddress.HOST, port: ServerAddress.PORT)
+            
+            if self.connection.outputStream != nil && self.connection.inputStream != nil {
                 if self.searchText == nil {
                     self.connection.outputStream!.write(ServerResponses.QUERY_RESPONSE, maxLength: ServerResponses.QUERY_RESPONSE.characters.count)    // send queery response
                 } else {
@@ -108,7 +108,7 @@ class OrderFeedTableViewController: UITableViewController, UITextFieldDelegate, 
                             }
                         }
                     }
-                    
+                        
                     else  if NSDate().timeIntervalSinceDate(start) >= 8 { // if this amount of time (in seconds) is exceeded assume the data is lost
                         self.connection.inputStream!.close()
                         dispatch_async(dispatch_get_main_queue()) {
@@ -118,10 +118,10 @@ class OrderFeedTableViewController: UITableViewController, UITextFieldDelegate, 
                         break
                     }
                 }
-            }
-        } else {
-            dispatch_async(dispatch_get_main_queue()) {
-                sender.endRefreshing()
+            }else {
+                dispatch_async(dispatch_get_main_queue()) {
+                    sender.endRefreshing()
+                }
             }
         }
     }
