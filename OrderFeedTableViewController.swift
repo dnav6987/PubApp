@@ -10,6 +10,8 @@
     Display the most recent orders. Orders found by queerying the server. Results can be filtered by name
 */
 
+// lets connect earlier
+
 import UIKit
 
 class OrderFeedTableViewController: UITableViewController, UITextFieldDelegate, NetworkConnectionDelegate {
@@ -22,7 +24,7 @@ class OrderFeedTableViewController: UITableViewController, UITextFieldDelegate, 
     var connection = NetworkConnection()
     
     // this allows the user to filter the search results to a specific person
-    var searchText: String = "" {
+    var searchText: String? {
         didSet {
             searchTextField?.text = searchText
             refresh()
@@ -56,14 +58,18 @@ class OrderFeedTableViewController: UITableViewController, UITextFieldDelegate, 
     
     // refresh the data. queery the server and see parse it's response
     @IBAction func refresh(sender: UIRefreshControl) {
-        // wait for response in a different thread
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
-            // connect to server
-            self.connection.connect(ServerAddress.HOST, port: ServerAddress.PORT)
-            
-            if self.connection.outputStream != nil && self.connection.inputStream != nil {
-                let qryString = ServerResponses.QUERY_RESPONSE + (self.searchText == "" ? "" : " " + self.searchText) // "qry <name>"
-                self.connection.outputStream!.write(qryString, maxLength: qryString.characters.count)    // send queery response
+        if self.connection.outputStream != nil && self.connection.inputStream != nil {
+            // wait for response in a different thread
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+                // connect to server
+                self.connection.connect(ServerAddress.HOST, port: ServerAddress.PORT)
+                
+                if self.searchText == nil {
+                    self.connection.outputStream!.write(ServerResponses.QUERY_RESPONSE, maxLength: ServerResponses.QUERY_RESPONSE.characters.count)    // send queery response
+                } else {
+                    let qryString = ServerResponses.QUERY_RESPONSE + (self.searchText == "" ? "" : " " + self.searchText!) // "qry <name>"
+                    self.connection.outputStream!.write(qryString, maxLength: qryString.characters.count)    // send queery response
+                }
                 self.connection.outputStream!.close()
                 
                 let start = NSDate()    // time at which the connection started (too track wait time)
@@ -73,7 +79,7 @@ class OrderFeedTableViewController: UITableViewController, UITextFieldDelegate, 
                         // Wait for confirmation that the server recieved the order. If timer runsout, assume the data was lost
                         
                         // see if the server has sent data back
-                        var buffer = [UInt8](count: 4096, repeatedValue: 0)
+                        var buffer = [UInt8](count: 512, repeatedValue: 0)
                         self.connection.inputStream!.read(&buffer, maxLength: buffer.count)
                         
                         // convert the data to a string
@@ -85,14 +91,15 @@ class OrderFeedTableViewController: UITableViewController, UITextFieldDelegate, 
                             
                             // check if the begining characters are the correct response code
                             if serverMessage.characters.count >= ServerResponses.RESPONSE_CODE_LENGTH && serverMessage.substringToIndex(serverMessage.startIndex.advancedBy(ServerResponses.RESPONSE_CODE_LENGTH)) == ServerResponses.QUERY_RESPONSE {
+                                self.connection.inputStream!.close()
                                 dispatch_async(dispatch_get_main_queue()) {
                                     // parse the response
                                     self.parseQueeryResponse(serverMessage)
-                                    self.connection.inputStream!.close()
                                     sender.endRefreshing()
                                 }
                                 break
                             } else if serverMessage.characters.count >= ServerResponses.RESPONSE_CODE_LENGTH && serverMessage.substringToIndex(serverMessage.startIndex.advancedBy(ServerResponses.RESPONSE_CODE_LENGTH)) == ServerResponses.EMPTY_DATABASE {
+                                self.connection.inputStream!.close()
                                 dispatch_async(dispatch_get_main_queue()) {
                                     self.orders = [(String, String)]()
                                     sender.endRefreshing()
@@ -105,15 +112,16 @@ class OrderFeedTableViewController: UITableViewController, UITextFieldDelegate, 
                     else  if NSDate().timeIntervalSinceDate(start) >= 8 { // if this amount of time (in seconds) is exceeded assume the data is lost
                         self.connection.inputStream!.close()
                         dispatch_async(dispatch_get_main_queue()) {
+                            self.orders = [(String, String)]()
                             sender.endRefreshing()
                         }
                         break
                     }
                 }
-            } else {
-                dispatch_async(dispatch_get_main_queue()) {
-                    sender.endRefreshing()
-                }
+            }
+        } else {
+            dispatch_async(dispatch_get_main_queue()) {
+                sender.endRefreshing()
             }
         }
     }
@@ -133,29 +141,30 @@ class OrderFeedTableViewController: UITableViewController, UITextFieldDelegate, 
     }
     
     func alert(title: String, message: String) {
-        dispatch_async(dispatch_get_main_queue()) {
-            if self.refreshControl != nil {
-                self.refreshControl?.endRefreshing()
-            }
-            
-            if message != ServerResponses.EMPTY_DATABASE {
-                self.parseQueeryResponse(message)
-            } else {
-                self.orders = [(String, String)]()
-            }
+        if self.refreshControl != nil {
+            self.refreshControl?.endRefreshing()
+        }
+        
+        if message != ServerResponses.EMPTY_DATABASE {
+            self.parseQueeryResponse(message)
+        } else {
+            self.orders = [(String, String)]()
         }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         connection.delegate = self
-        refresh()
+        searchText = ""
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        if connection.inputStream != nil {
-            connection.inputStream!.close()
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+            self.connection.connect(ServerAddress.HOST, port: ServerAddress.PORT) // connect to the server (may be redundant but it is a good chance to try to reconnect if it was previously down)
+            dispatch_async(dispatch_get_main_queue()) {
+                self.refresh()
+            }
         }
     }
 
@@ -175,7 +184,7 @@ class OrderFeedTableViewController: UITableViewController, UITextFieldDelegate, 
         
         // if nothing could be retrieved notify the user
         if orders.count == 0 {
-            cell.textLabel?.text = "Server could not be reached or there are no recent orders"
+            cell.textLabel?.text = "Server could not be reached or there are no recent orders. Pull to refresh."
             cell.detailTextLabel?.text = ""
         } else {
             // title = item, subtitle = name

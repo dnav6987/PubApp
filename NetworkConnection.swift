@@ -80,41 +80,52 @@ class NetworkConnection: NSObject, NSStreamDelegate {
                 // data was recieved, let's read it!
                 
                 // Buffer to hold the data
-                var buffer = [UInt8](count: ServerResponses.RESPONSE_CODE_LENGTH, repeatedValue: 0)
-                inputStream!.read(&buffer, maxLength: buffer.count)
-                
-                let serverMessage = String(bytes: buffer, encoding: NSUTF8StringEncoding)
-                
-                if serverMessage != nil && serverMessage!.characters.count >= ServerResponses.RESPONSE_CODE_LENGTH {
-                    let responseCode = serverMessage!.substringToIndex(serverMessage!.startIndex.advancedBy(ServerResponses.RESPONSE_CODE_LENGTH))
-                
-                    // handel the message from the server
-                    switch responseCode {
-                    case ServerResponses.READY_FOR_PICK_UP:
-                        if let otvc = delegate as? OrderTableViewController {
-                            if let tbc = otvc.tabBarController {
-                                // Present an alert message that the food is ready for pick up
-                                tbc.selectedIndex = 2
-                                delegate.alert("Ready For Pick Up", message: AlertMessages.RDY)
-                                inputStream!.close()    // network communication stops when order is ready
+                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+                    var buffer = [UInt8](count: 512, repeatedValue: 0)
+                    self.inputStream!.read(&buffer, maxLength: buffer.count)
+                    
+                    var serverMessage = String(bytes: buffer, encoding: NSUTF8StringEncoding)
+
+                    serverMessage = serverMessage!.stringByReplacingOccurrencesOfString("\0", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
+                    if serverMessage != nil && serverMessage!.characters.count >= ServerResponses.RESPONSE_CODE_LENGTH {
+                        let responseCode = serverMessage!.substringToIndex(serverMessage!.startIndex.advancedBy(ServerResponses.RESPONSE_CODE_LENGTH))
+
+                        // handel the message from the server
+                        switch responseCode {
+                        case ServerResponses.READY_FOR_PICK_UP:
+                            if let otvc = self.delegate as? OrderTableViewController {
+                                if let tbc = otvc.tabBarController {
+                                    dispatch_async(dispatch_get_main_queue()) {
+                                        // Present an alert message that the food is ready for pick up
+                                        tbc.selectedIndex = 2
+                                        self.delegate.alert("Ready For Pick Up", message: AlertMessages.RDY)
+                                        self.inputStream!.close()    // network communication stops when order is ready
+                                    }
+                                }
                             }
-                        }
-                    case ServerResponses.RECIEVED_ORDER:
-                        if let otvc = delegate as? OrderTableViewController {
-                            if let tbc = otvc.tabBarController {
-                                // Present an alert message that the food is ready for pick up
-                                tbc.selectedIndex = 2
-                                delegate.alert("Sucess", message: AlertMessages.RCVD)
-                                inputStream!.close()
+                        case ServerResponses.RECIEVED_ORDER:
+                            if let otvc = self.delegate as? OrderTableViewController {
+                                if let tbc = otvc.tabBarController {
+                                    dispatch_async(dispatch_get_main_queue()) {
+                                        // Present an alert message that the food is ready for pick up
+                                        tbc.selectedIndex = 2
+                                        self.delegate.alert("Sucess", message: AlertMessages.RCVD)
+                                        self.inputStream!.close()
+                                    }
+                                }
                             }
+                        case ServerResponses.EMPTY_DATABASE:
+                            dispatch_async(dispatch_get_main_queue()) {
+                                self.delegate.alert("", message: ServerResponses.EMPTY_DATABASE)
+                                self.inputStream!.close()    // network communication stops when order is ready
+                            }
+                        case ServerResponses.QUERY_RESPONSE:
+                            dispatch_async(dispatch_get_main_queue()) {
+                                self.delegate.alert("", message: serverMessage!)
+                                self.inputStream!.close()
+                            }
+                        default: break
                         }
-                    case ServerResponses.EMPTY_DATABASE:
-                        delegate.alert("", message: ServerResponses.EMPTY_DATABASE)
-                        inputStream!.close()    // network communication stops when order is ready
-                    case ServerResponses.QUERY_RESPONSE:
-                        delegate.alert("", message: serverMessage!)
-                        inputStream!.close()
-                    default: break
                     }
                 }
                 
