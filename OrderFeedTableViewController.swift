@@ -79,7 +79,7 @@ class OrderFeedTableViewController: UITableViewController, UITextFieldDelegate, 
                         // Wait for confirmation that the server recieved the order. If timer runsout, assume the data was lost
                         
                         // see if the server has sent data back
-                        var buffer = [UInt8](count: 512, repeatedValue: 0)
+                        var buffer = [UInt8](count: 4096, repeatedValue: 0)
                         self.connection.inputStream!.read(&buffer, maxLength: buffer.count)
                         
                         // convert the data to a string

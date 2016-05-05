@@ -87,7 +87,7 @@ class NetworkConnection: NSObject, NSStreamDelegate {
                 
                 // Buffer to hold the data
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
-                    var buffer = [UInt8](count: 512, repeatedValue: 0)
+                    var buffer = [UInt8](count: 4096, repeatedValue: 0)
                     self.inputStream!.read(&buffer, maxLength: buffer.count)
                     
                     var serverMessage = String(bytes: buffer, encoding: NSUTF8StringEncoding)
