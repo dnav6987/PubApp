@@ -63,6 +63,12 @@ class OrderFeedTableViewController: UITableViewController, UITextFieldDelegate, 
             // connect to server
             self.connection.connect(ServerAddress.HOST, port: ServerAddress.PORT)
             
+            var start = NSDate()
+            
+            // THIS is maybe really ugly but winds up that the connection can be refused slightly after the rest of the code starts running
+            // and cause a crash as values will be set nil that are assumed not to be so wait an appropriate amount of time for them to be set nil
+            while NSDate().timeIntervalSinceDate(start) < 1 { }
+            
             if self.connection.outputStream != nil && self.connection.inputStream != nil {
                 if self.searchText == nil {
                     self.connection.outputStream!.write(ServerResponses.QUERY_RESPONSE, maxLength: ServerResponses.QUERY_RESPONSE.characters.count)    // send queery response
@@ -72,9 +78,17 @@ class OrderFeedTableViewController: UITableViewController, UITextFieldDelegate, 
                 }
                 self.connection.outputStream!.close()
                 
-                let start = NSDate()    // time at which the connection started (too track wait time)
+                start = NSDate()    // time at which the connection started (too track wait time)
                 
                 while true {    // I know, I know, this is dangerous... but living on the edge (and a gauruntee that a timer will break out of the loop)
+                    if self.connection.outputStream == nil || self.connection.inputStream == nil {  // can happen if the connection has been refused at any point (see above comment, this is another double check)
+                        dispatch_async(dispatch_get_main_queue()) {
+                            self.orders = [(String, String)]()
+                            sender.endRefreshing()
+                        }
+                        break
+                    }
+                    
                     if self.connection.inputStream!.hasBytesAvailable {
                         // Wait for confirmation that the server recieved the order. If timer runsout, assume the data was lost
                         
@@ -109,7 +123,7 @@ class OrderFeedTableViewController: UITableViewController, UITextFieldDelegate, 
                         }
                     }
                         
-                    else  if NSDate().timeIntervalSinceDate(start) >= 8 { // if this amount of time (in seconds) is exceeded assume the data is lost
+                    else if NSDate().timeIntervalSinceDate(start) >= 8 { // if this amount of time (in seconds) is exceeded assume the data is lost
                         self.connection.inputStream!.close()
                         dispatch_async(dispatch_get_main_queue()) {
                             self.orders = [(String, String)]()
